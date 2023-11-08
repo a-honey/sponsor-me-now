@@ -1,0 +1,17 @@
+body {
+  box-sizing: border-box;
+  background-color: #ededed;
+}
+
+main {
+  display: grid;
+  grid-template-columns: 2fr 400px 1.5fr;
+}
+
+section {
+  width: 400px;
+  height: 900px;
+  position: relative;
+  border-radius: 5px;
+  background-color: #ffffff;
+}
