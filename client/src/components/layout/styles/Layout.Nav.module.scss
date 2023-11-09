@@ -2,9 +2,28 @@
   position: absolute;
   top: 0;
   right: 0;
-  width: 150px;
+  width: 170px;
   height: 100%;
   display: flex;
+  gap: 50px;
+  padding: 30px 10px;
   flex-direction: column;
-  background-color: pink;
+  background-color: #ededed;
+  border-radius: 5px;
+  .cancel {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+  }
+  .links {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    a {
+      font-size: 14px;
+    }
+  }
+  div > button {
+    font-size: 13px;
+  }
 }
