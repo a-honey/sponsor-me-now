@@ -7,12 +7,18 @@
 }
 
 .selectBox {
-  background-color: pink;
+  border: 2px solid #ededed;
   border-radius: 5px;
   cursor: pointer;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  div {
+    font-weight: 700;
+  }
   &.active,
   &:hover {
-    background-color: blue;
+    border: 3px solid #005a34;
   }
 }
