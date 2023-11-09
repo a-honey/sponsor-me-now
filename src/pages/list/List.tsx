@@ -1,5 +1,5 @@
 const List = () => {
-  return <div>List</div>;
+  return <article>List</article>;
 };
 
 export default List;

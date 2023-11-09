@@ -1,5 +1,5 @@
 const Hub = () => {
-  return <div>Hub</div>;
+  return <article>Hub</article>;
 };
 
 export default Hub;
