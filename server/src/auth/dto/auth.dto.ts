@@ -1,4 +1,4 @@
-import { PaymentHistory, Post, Subscribe, Comment } from '@prisma/client';
+import { PaymentHistory, Post, Subscribe, Comment } from "@prisma/client";
 import {
   IsString,
   IsEmail,
@@ -8,9 +8,11 @@ import {
   IsBoolean,
   IsArray,
   IsDate,
-} from 'class-validator';
-import { Exclude } from 'class-transformer';
+} from "class-validator";
+import { SerializeOptions } from "@nestjs/common";
+import { Exclude } from "class-transformer";
 
+@SerializeOptions({ strategy: "exposeAll" })
 export class AuthDto {
   @IsNumber()
   @IsNotEmpty()
@@ -28,9 +30,9 @@ export class AuthDto {
   @IsOptional()
   nickname?: string;
 
-  @Exclude()
   @IsString()
   @IsNotEmpty()
+  @Exclude()
   password: string;
 
   @IsOptional()

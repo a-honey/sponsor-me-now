@@ -1,11 +1,12 @@
-import { Injectable, Res, HttpStatus } from "@nestjs/common";
+import { HttpStatus, Injectable, Res } from "@nestjs/common";
 import { CreatedUserDto } from "./dto/createdUser.dto";
 import { AuthDto } from "./dto/auth.dto";
 import { JwtService } from "@nestjs/jwt";
 import { UserService } from "../user/user.service";
 import { PrismaService } from "../../prisma/prisma.service";
+import { plainToClass, plainToInstance } from "class-transformer";
 import { Response } from "express";
-import { User } from "@prisma/client";
+import * as bcrypt from "bcrypt";
 
 @Injectable()
 export class AuthService {
@@ -16,9 +17,11 @@ export class AuthService {
   ) {}
 
   async createUser(createUserDto: CreatedUserDto): Promise<AuthDto> {
-    return await this.prisma.user.create({
+    createUserDto.password = await bcrypt.hash(createUserDto.password, 10);
+    const createUser = await this.prisma.user.create({
       data: createUserDto,
     });
+    return plainToInstance(AuthDto, createUser);
   }
 
   async validateUser(email: string, password: string): Promise<any> {
@@ -31,7 +34,6 @@ export class AuthService {
 
   async login(user: any, @Res() res: Response) {
     const payload = { username: user.username, id: user.id, isSponsor: user.isSponsor };
-    console.log(payload);
     const access_token: string = this.jwtService.sign(payload);
 
     res.cookie("access_token", access_token, {

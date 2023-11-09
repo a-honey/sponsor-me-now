@@ -1,4 +1,13 @@
-import { Body, Controller, HttpException, Request, Post, UseGuards, Res } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  HttpException,
+  Request,
+  Post,
+  UseGuards,
+  Res,
+  SerializeOptions,
+} from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { AuthDto } from "./dto/auth.dto";
 import { SubmitUserDataDto } from "./dto/submitUserData.dto";
@@ -19,7 +28,8 @@ export class AuthController {
   }
   @Post()
   @ApiBody({ description: "회원가입", type: SubmitUserDataDto })
-  @ApiResponse({ status: 200, type: CreatedUserDto })
+  @ApiResponse({ status: 201, type: AuthDto })
+  @SerializeOptions({ strategy: "exposeAll" })
   async createUser(@Body() submitUserDto: SubmitUserDataDto): Promise<AuthDto> {
     if (!this.isValidPassword(submitUserDto)) {
       throw new HttpException("Passwords do not match", 400);
