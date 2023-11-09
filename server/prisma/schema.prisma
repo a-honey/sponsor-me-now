@@ -1,0 +1,72 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             Int              @id @default(autoincrement())
+  email          String?          @unique
+  username       String?
+  nickname       String?          @unique
+  password       String?
+  snsId          Int?             @unique
+  provider       String?
+  profileImg     String?
+  field          String?
+  description    String?
+  isSponsor      Boolean?
+  subscribe      Subscribe[]
+  paymentHistory PaymentHistory[]
+  post           Post[]
+  comment        Comment[]
+  manager        Boolean          @default(false)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+}
+
+model Subscribe {
+  id     Int   @id @default(autoincrement())
+  User   User? @relation(fields: [userId], references: [id])
+  userId Int?
+}
+
+model PaymentHistory {
+  id     Int   @id @default(autoincrement())
+  User   User? @relation(fields: [userId], references: [id])
+  userId Int?
+}
+
+model Post {
+  id        Int       @id @default(autoincrement())
+  title     String?
+  content   String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  author    User?     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId  Int?
+  viewCount Int       @default(0)
+  comment   Comment[]
+}
+
+model Comment {
+  id        Int       @id @default(autoincrement())
+  content   String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  author    User?     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId  Int?
+  post      Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    Int
+  parent    Comment?  @relation("CommentToComment", fields: [parentId], references: [id], onDelete: Cascade)
+  parentId  Int?
+  children  Comment[] @relation("CommentToComment")
+
+  @@index([parentId])
+}
