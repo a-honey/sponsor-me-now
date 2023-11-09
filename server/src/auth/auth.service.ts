@@ -1,9 +1,11 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Res, HttpStatus } from "@nestjs/common";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { AuthDto } from "./dto/auth.dto";
 import { JwtService } from "@nestjs/jwt";
 import { UserService } from "../user/user.service";
 import { PrismaService } from "../../prisma/prisma.service";
+import { Response } from "express";
+import { User } from "@prisma/client";
 
 @Injectable()
 export class AuthService {
@@ -27,10 +29,22 @@ export class AuthService {
     return null;
   }
 
-  async login(user: any) {
+  async login(user: any, @Res() res: Response) {
     const payload = { username: user.username, id: user.id, isSponsor: user.isSponsor };
-    return {
-      access_token: this.jwtService.sign(payload),
-    };
+    console.log(payload);
+    const access_token: string = this.jwtService.sign(payload);
+
+    res.cookie("access_token", access_token, {
+      httpOnly: true,
+    });
+
+    return res.status(HttpStatus.OK).json({
+      name: user.username,
+      email: user.email,
+      nickname: user.nickname,
+      isSponsor: user.isSponsor,
+      token: access_token,
+    });
+    //todo 토큰은 개발용. 나중에 지워!
   }
 }
