@@ -1,5 +1,5 @@
 import { Injectable, Res, HttpStatus } from "@nestjs/common";
-import { CreateUserDto } from "./dto/create-user.dto";
+import { CreatedUserDto } from "./dto/createdUser.dto";
 import { AuthDto } from "./dto/auth.dto";
 import { JwtService } from "@nestjs/jwt";
 import { UserService } from "../user/user.service";
@@ -15,7 +15,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async createUser(createUserDto: CreateUserDto): Promise<AuthDto> {
+  async createUser(createUserDto: CreatedUserDto): Promise<AuthDto> {
     return await this.prisma.user.create({
       data: createUserDto,
     });
