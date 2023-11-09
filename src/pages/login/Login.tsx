@@ -1,5 +1,7 @@
+import InputBox from './components/Login.InputBox';
+
 const Login = () => {
-  return <div>Login</div>;
+  return <InputBox />;
 };
 
 export default Login;

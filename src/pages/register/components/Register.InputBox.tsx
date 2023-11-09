@@ -1,14 +1,30 @@
+import { useForm } from 'react-hook-form';
+
+interface RegisterDataType {
+  username: string;
+  email: string;
+  password: string;
+  passwordConfirm: string;
+}
+
 const InputBox = () => {
+  const { register, handleSubmit } = useForm<RegisterDataType>();
+
+  const onSubmit = (data: RegisterDataType) => {
+    console.log(data);
+  };
+
   return (
-    <form>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <label>이름</label>
-      <input type="text" />
+      <input type="text" {...register('username')} />
       <label>아이디</label>
-      <input type="text" />
+      <input type="text" {...register('email')} />
       <label>비밀번호</label>
-      <input type="password" />
+      <input type="password" {...register('password')} />
       <label>비밀번호 확인</label>
-      <input type="password" />
+      <input type="password" {...register('passwordConfirm')} />
+      <button type="submit">Register</button>
     </form>
   );
 };
