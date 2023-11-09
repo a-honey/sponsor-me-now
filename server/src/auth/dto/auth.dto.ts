@@ -10,7 +10,7 @@ import {
   IsDate,
 } from "class-validator";
 import { SerializeOptions } from "@nestjs/common";
-import { Exclude } from "class-transformer";
+import { Exclude, Type } from "class-transformer";
 
 @SerializeOptions({ strategy: "exposeAll" })
 export class AuthDto {
@@ -60,19 +60,19 @@ export class AuthDto {
 
   @IsOptional()
   @IsArray()
-  subscribe?: Subscribe[];
+  subscribe?: [];
 
   @IsOptional()
   @IsArray()
-  paymentHistory?: PaymentHistory[];
+  paymentHistory?: [];
 
   @IsOptional()
   @IsArray()
-  post?: Post[];
+  post?: [];
 
   @IsOptional()
   @IsArray()
-  comment?: Comment[];
+  comment?: [];
 
   @IsNotEmpty()
   @IsBoolean()

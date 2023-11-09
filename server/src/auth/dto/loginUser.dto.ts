@@ -5,11 +5,14 @@ export class LoginUserDto {
   username: string;
 
   @ApiProperty()
-  password: string;
+  nickname: string;
 
   @ApiProperty()
   email: string;
 
   @ApiProperty()
   isSponsor: true;
+
+  @ApiProperty()
+  token: string;
 }

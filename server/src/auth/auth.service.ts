@@ -4,9 +4,10 @@ import { AuthDto } from "./dto/auth.dto";
 import { JwtService } from "@nestjs/jwt";
 import { UserService } from "../user/user.service";
 import { PrismaService } from "../../prisma/prisma.service";
-import { plainToClass, plainToInstance } from "class-transformer";
+import { plainToInstance } from "class-transformer";
 import { Response } from "express";
 import * as bcrypt from "bcrypt";
+import { LoginUserDto } from "./dto/loginUser.dto";
 
 @Injectable()
 export class AuthService {
@@ -26,27 +27,27 @@ export class AuthService {
 
   async validateUser(email: string, password: string): Promise<any> {
     const user = await this.userService.getUser(email);
-    if (user && user.password === password) {
-      return user;
+    if (user && (await bcrypt.compare(password, user.password))) {
+      const { password, ...result } = user;
+      return result;
     }
     return null;
   }
 
-  async login(user: any, @Res() res: Response) {
-    const payload = { username: user.username, id: user.id, isSponsor: user.isSponsor };
-    const access_token: string = this.jwtService.sign(payload);
+  async login(user: any, @Res({ passthrough: true }) res: Response): Promise<LoginUserDto> {
+    const { username, id, isSponsor, email, nickname } = user;
+    const payload = { username, id, isSponsor };
+    const access_token = this.jwtService.sign(payload);
 
-    res.cookie("access_token", access_token, {
-      httpOnly: true,
-    });
-
-    return res.status(HttpStatus.OK).json({
-      name: user.username,
-      email: user.email,
-      nickname: user.nickname,
-      isSponsor: user.isSponsor,
+    res.cookie("access_token", access_token, { httpOnly: true });
+    const loginUser: LoginUserDto = {
+      username: username,
+      email: email,
+      nickname: nickname,
+      isSponsor: isSponsor,
       token: access_token,
-    });
-    //todo 토큰은 개발용. 나중에 지워!
+    };
+    res.json(plainToInstance(LoginUserDto, loginUser));
+    return;
   }
 }
