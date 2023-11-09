@@ -1,0 +1,11 @@
+.selectBox {
+  padding: 10px;
+  background-color: pink;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  &.active,
+  &:hover {
+    background-color: blue;
+  }
+}

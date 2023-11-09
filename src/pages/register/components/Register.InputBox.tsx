@@ -7,11 +7,11 @@ interface RegisterDataType {
   passwordConfirm: string;
 }
 
-const InputBox = () => {
+const InputBox = ({ isSponsor }: { isSponsor: boolean | undefined }) => {
   const { register, handleSubmit } = useForm<RegisterDataType>();
 
   const onSubmit = (data: RegisterDataType) => {
-    console.log(data);
+    console.log({ ...data, isSponsor });
   };
 
   return (
