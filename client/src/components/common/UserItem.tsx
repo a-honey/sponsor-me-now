@@ -5,7 +5,7 @@ const UserItem = () => {
   return (
     <div className={styles.userItem}>
       <UserImg />
-      <div>최근 유저</div>
+      <div>nickname</div>
     </div>
   );
 };

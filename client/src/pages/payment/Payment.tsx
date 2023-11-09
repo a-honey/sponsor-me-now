@@ -1,5 +1,11 @@
+import History from './components/Payment.History';
+
 const Payment = () => {
-  return <article>Payment</article>;
+  return (
+    <article>
+      <History />
+    </article>
+  );
 };
 
 export default Payment;

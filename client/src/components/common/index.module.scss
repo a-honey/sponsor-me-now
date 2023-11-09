@@ -1,8 +1,17 @@
 .postItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: pink;
 }
 
 .userItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: yellow;
+  padding: 5px;
   img {
-    width: 100px;
+    width: 70px;
   }
 }
