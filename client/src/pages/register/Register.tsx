@@ -44,7 +44,10 @@ const Register = () => {
 
   return (
     <article>
-      <StepNav handleRegisterStep={handleRegisterStep} />
+      <StepNav
+        registerStep={registerStep}
+        handleRegisterStep={handleRegisterStep}
+      />
       {currentStepComponent}
     </article>
   );

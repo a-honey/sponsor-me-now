@@ -2,9 +2,16 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
+  border-radius: 50%;
   div {
-    background-color: pink;
-    padding: 10px;
+    border: 1px solid #ededed;
+    width: 36px;
+    height: 36px;
+    padding: 8px;
     border-radius: 50%;
+    text-align: center;
+    &.active {
+      border: 2px solid #005a34;
+    }
   }
 }

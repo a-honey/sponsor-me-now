@@ -13,7 +13,7 @@ const Header = () => {
   return (
     <>
       <header className={styles.header}>
-        <div className={styles.logo}>Sponsor Buy Me</div>
+        <div className={styles.logo}>Sponsor Me Now</div>
         <div className={styles.icons}>
           <RxBell>알림</RxBell>
           <RxHamburgerMenu onClick={toggleIsOpenNav}>목록</RxHamburgerMenu>

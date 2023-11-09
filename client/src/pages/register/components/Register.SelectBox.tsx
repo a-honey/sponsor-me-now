@@ -1,4 +1,5 @@
 import styles from '../styles/Register.SelectBox.module.scss';
+import logos from '../assets/logos.png';
 
 const SelectBox = ({
   isSponsor,
@@ -22,7 +23,15 @@ const SelectBox = ({
           handleNextRegisterStep();
         }}
       >
-        후원하기
+        <div
+          style={{
+            background: "url('/logos.png')",
+            width: '200px',
+            height: '200px',
+            backgroundPosition: '0px 0px',
+          }}
+        />
+        <div>후원하기</div>
       </div>
       <div
         className={
@@ -35,7 +44,15 @@ const SelectBox = ({
           handleNextRegisterStep();
         }}
       >
-        후원받기
+        <div
+          style={{
+            background: "url('/logos.png')",
+            width: '200px',
+            height: '200px',
+            backgroundPosition: '-200px 0px',
+          }}
+        />
+        <div>후원받기</div>
       </div>
     </div>
   );
