@@ -15,7 +15,7 @@ const InputBox = ({ isSponsor }: { isSponsor: boolean | undefined }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form className="registerForm" onSubmit={handleSubmit(onSubmit)}>
       <label>이름</label>
       <input type="text" {...register('username')} />
       <label>아이디</label>

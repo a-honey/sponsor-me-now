@@ -21,3 +21,17 @@ article {
   height: 100%;
   padding-top: 40px;
 }
+
+.registerForm {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  label {
+    font-weight: 700;
+  }
+  button {
+    background-color: pink;
+    padding: 10px;
+  }
+}
