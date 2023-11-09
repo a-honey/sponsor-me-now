@@ -2,6 +2,7 @@ import { useState } from 'react';
 import InputBox from './components/Register.InputBox';
 import SelectBox from './components/Register.SelectBox';
 import MoreBox from './components/Register.MoreBox';
+import StepNav from './components/Register.StepNav';
 
 const Register = () => {
   const [isSponsor, setIsSponsor] = useState<boolean | undefined>(undefined);
@@ -9,6 +10,10 @@ const Register = () => {
 
   const handleIsSponsor = (isSponsorArg: boolean) => {
     setIsSponsor(isSponsorArg);
+  };
+
+  const handleRegisterStep = (num: number) => {
+    setRegisterStep(num);
   };
 
   const handleNextRegisterStep = () => {
@@ -37,7 +42,12 @@ const Register = () => {
       currentStepComponent = null;
   }
 
-  return <>{currentStepComponent}</>;
+  return (
+    <article>
+      <StepNav handleRegisterStep={handleRegisterStep} />
+      {currentStepComponent}
+    </article>
+  );
 };
 
 export default Register;

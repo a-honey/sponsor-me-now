@@ -1,5 +1,12 @@
-.selectBox {
+.container {
+  height: 95%;
   padding: 10px;
+  display: grid;
+  gap: 20px;
+  grid-template-rows: 1fr 1fr;
+}
+
+.selectBox {
   background-color: pink;
   border-radius: 5px;
   cursor: pointer;

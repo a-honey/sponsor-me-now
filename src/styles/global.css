@@ -12,7 +12,12 @@ section {
   width: 400px;
   height: 900px;
   padding: 10px;
-  position: relative;
   border-radius: 5px;
   background-color: #ffffff;
+  position: relative;
+}
+
+article {
+  height: 100%;
+  padding-top: 40px;
 }

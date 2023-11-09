@@ -3,6 +3,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin: 0 10px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  background-color: white;
   .logo {
     font-weight: 700;
     font-size: 20px;
