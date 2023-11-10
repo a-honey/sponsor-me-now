@@ -9,7 +9,6 @@ import {
   SerializeOptions,
   Query,
   DefaultValuePipe,
-  ParseIntPipe,
 } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { ApiBody, ApiResponse } from "@nestjs/swagger";
@@ -18,6 +17,7 @@ import { UserDto } from "./dto/user.dto";
 import { AuthGuard } from "@nestjs/passport";
 import { UpdateUserDto } from "./dto/updateUser.dto";
 import { RequestWithUser } from "./interface/requestWithUser";
+import { ParseIntWithDefaultPipe } from "../../utils/parseIntWithDefaultPipe";
 
 @Controller("user")
 export class UserController {
@@ -67,9 +67,9 @@ export class UserController {
   @ApiBody({ description: "유저리스트. 서버사이드 페이지네이션" })
   @ApiResponse({ status: 200, type: UserDto })
   async getUsers(
-    @Query("page", new DefaultValuePipe(1), ParseIntPipe) page: number,
-    @Query("limit", new DefaultValuePipe(10), ParseIntPipe) limit: number,
-  ) {
+    @Query("page", new ParseIntWithDefaultPipe(1)) page: number,
+    @Query("limit", new ParseIntWithDefaultPipe(10)) limit: number,
+  ): Promise<UserDto[]> {
     return this.userService.getUsers(page, limit);
   }
 }
