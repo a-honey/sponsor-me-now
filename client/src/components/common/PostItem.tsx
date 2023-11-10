@@ -1,7 +1,11 @@
+import styles from './index.module.scss';
+
 const PostItem = () => {
   return (
-    <div>
-      <div>최근 게시글</div>
+    <div className={styles.postItem}>
+      <div>title</div>
+      <div>content</div>
+      <div>작성자프로필&이름</div>
     </div>
   );
 };
