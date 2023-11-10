@@ -8,6 +8,8 @@ import {
   Body,
   SerializeOptions,
   Query,
+  DefaultValuePipe,
+  ParseIntPipe,
 } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { ApiBody, ApiResponse } from "@nestjs/swagger";
@@ -59,5 +61,15 @@ export class UserController {
       return await this.userService.findUserById(queryUserId);
     }
     return await this.userService.findUserById(reqUserId);
+  }
+
+  @Get("/list")
+  @ApiBody({ description: "유저리스트. 서버사이드 페이지네이션" })
+  @ApiResponse({ status: 200, type: UserDto })
+  async getUsers(
+    @Query("page", new DefaultValuePipe(1), ParseIntPipe) page: number,
+    @Query("limit", new DefaultValuePipe(10), ParseIntPipe) limit: number,
+  ) {
+    return this.userService.getUsers(page, limit);
   }
 }
