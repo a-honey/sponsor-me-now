@@ -4,12 +4,15 @@ import { AuthGuard } from "@nestjs/passport";
 import { UploadService } from "./upload.service";
 import * as path from "path";
 import { RequestWithUser } from "../user/interface/requestWithUser";
+import { ApiBody, ApiResponse } from "@nestjs/swagger";
 
 @Controller("upload")
 export class UploadController {
   constructor(private readonly uploadService: UploadService) {}
 
   @Post()
+  @ApiBody({ description: "[업로드]" })
+  @ApiResponse({ status: 201, type: String })
   @UseGuards(AuthGuard("jwt"))
   @UseInterceptors(FileInterceptor("profileImage"))
   async uploadProfileImage(@UploadedFile() file, @Req() req: RequestWithUser): Promise<string> {
