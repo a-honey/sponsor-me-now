@@ -11,12 +11,12 @@ import {
 import { AuthService } from "./auth.service";
 import { AuthDto } from "./dto/auth.dto";
 import { SubmitUserDataDto } from "./dto/submitUserData.dto";
-import { LocalAuthGuard } from "./localAuth.guard";
 import { Response } from "express";
 import { ApiBody, ApiResponse, ApiTags } from "@nestjs/swagger";
-import { CreatedUserDto } from "./dto/createdUser.dto";
 import { TryLoginDto } from "./dto/tryLogin.dto";
 import { LoginUserDto } from "./dto/loginUser.dto";
+import { AuthGuard } from "@nestjs/passport";
+import { RequestWithUser } from "../user/interface/requestWithUser";
 
 @ApiTags("auth")
 @Controller("auth")
@@ -38,11 +38,11 @@ export class AuthController {
     return await this.authService.createUser(createUserDto);
   }
 
-  @UseGuards(LocalAuthGuard)
+  @UseGuards(AuthGuard("local"))
   @Post("login")
   @ApiBody({ description: "로그인", type: TryLoginDto })
   @ApiResponse({ type: LoginUserDto })
-  async login(@Request() req, @Res() res: Response) {
-    return this.authService.login(req.user, res);
+  async login(@Request() req: RequestWithUser, @Res() res: Response) {
+    return await this.authService.login(req.user, res);
   }
 }

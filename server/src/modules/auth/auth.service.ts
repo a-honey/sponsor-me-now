@@ -1,4 +1,4 @@
-import { HttpStatus, Injectable, Res } from "@nestjs/common";
+import { Injectable, Res } from "@nestjs/common";
 import { CreatedUserDto } from "./dto/createdUser.dto";
 import { AuthDto } from "./dto/auth.dto";
 import { JwtService } from "@nestjs/jwt";
@@ -46,7 +46,7 @@ export class AuthService {
   async login(user: any, @Res({ passthrough: true }) res: Response): Promise<LoginUserDto> {
     const { username, id, isSponsor, email, nickname } = user;
     const payload = { username, id, isSponsor, email, nickname };
-    const access_token = this.jwtService.sign(payload);
+    const access_token: string = this.jwtService.sign(payload);
 
     res.cookie("access_token", access_token, { httpOnly: true });
     const loginUser: LoginUserDto = {

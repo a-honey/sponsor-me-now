@@ -14,6 +14,7 @@ import { GetUserDto } from "./dto/getUser.dto";
 import { UserDto } from "./dto/user.dto";
 import { AuthGuard } from "@nestjs/passport";
 import { UpdateUserDto } from "./dto/updateUser.dto";
+import { RequestWithUser } from "./interface/requestWithUser";
 
 @Controller("user")
 export class UserController {
@@ -26,7 +27,7 @@ export class UserController {
   })
   @ApiResponse({ status: 200, type: UserDto })
   async getUserByEmail(@Param("email") email: string): Promise<UserDto> {
-    return this.userService.getUserByEmail(email);
+    return await this.userService.getUserByEmail(email);
   }
 
   @UseGuards(AuthGuard("jwt"))
@@ -34,8 +35,11 @@ export class UserController {
   @ApiBody({ description: "회원 정보 업데이트", type: UpdateUserDto })
   @ApiResponse({ status: 200, type: UserDto })
   @SerializeOptions({ strategy: "exposeAll" })
-  async editUser(@Request() req, @Body() updateUserDto: UpdateUserDto): Promise<UserDto> {
+  async editUser(
+    @Request() req: RequestWithUser,
+    @Body() updateUserDto: UpdateUserDto,
+  ): Promise<UserDto> {
     const userId: number = Number(req.user.id);
-    return this.userService.editUser(userId, updateUserDto);
+    return await this.userService.editUser(userId, updateUserDto);
   }
 }
