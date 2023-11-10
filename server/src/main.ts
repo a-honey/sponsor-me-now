@@ -11,8 +11,8 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const config = new DocumentBuilder()
-    .setTitle("헤응")
-    .setDescription("웅앵웅으응웅")
+    .setTitle("Sponsor me now API")
+    .setDescription("")
     .setVersion("1.0")
     .build();
   const document = SwaggerModule.createDocument(app, config);

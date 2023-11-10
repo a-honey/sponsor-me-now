@@ -30,4 +30,11 @@ export class UserService {
     });
     return plainToInstance(UserDto, updatedUser);
   }
+
+  async findUserById(userId: number): Promise<UserDto> {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+    });
+    return plainToInstance(UserDto, user);
+  }
 }

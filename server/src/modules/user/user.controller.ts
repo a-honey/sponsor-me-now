@@ -7,6 +7,7 @@ import {
   Request,
   Body,
   SerializeOptions,
+  Query,
 } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { ApiBody, ApiResponse } from "@nestjs/swagger";
@@ -20,7 +21,7 @@ import { RequestWithUser } from "./interface/requestWithUser";
 export class UserController {
   constructor(private userService: UserService) {}
 
-  @Get(":email")
+  @Get("/internal/:email")
   @ApiBody({
     description: "이메일로 유저 조회, 서비스 로직 내 인증/인가에서 사용하기에 비밀번호 노출",
     type: GetUserDto,
@@ -41,5 +42,22 @@ export class UserController {
   ): Promise<UserDto> {
     const userId: number = Number(req.user.id);
     return await this.userService.editUser(userId, updateUserDto);
+  }
+
+  @UseGuards(AuthGuard("jwt"))
+  @Get()
+  @ApiBody({ description: "사용자 정보 불러오기. 쿼리 값이 있을 시 해당 유저 조회" })
+  @ApiResponse({ status: 200, type: UserDto })
+  async getUser(
+    @Request() req: RequestWithUser,
+    @Query("userId") userId: string,
+  ): Promise<UserDto> {
+    const reqUserId: number = Number(req.user.id);
+    const queryUserId: number = Number(userId);
+    console.log(queryUserId);
+    if (queryUserId !== 0) {
+      return await this.userService.findUserById(queryUserId);
+    }
+    return await this.userService.findUserById(reqUserId);
   }
 }

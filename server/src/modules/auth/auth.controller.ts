@@ -42,7 +42,7 @@ export class AuthController {
   @Post("login")
   @ApiBody({ description: "로그인", type: TryLoginDto })
   @ApiResponse({ type: LoginUserDto })
-  async login(@Request() req: RequestWithUser, @Res() res: Response) {
+  async login(@Request() req: RequestWithUser, @Res() res: Response): Promise<LoginUserDto> {
     return await this.authService.login(req.user, res);
   }
 }
