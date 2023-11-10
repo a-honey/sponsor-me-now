@@ -9,6 +9,7 @@ import {
   SerializeOptions,
   Query,
   DefaultValuePipe,
+  Delete,
 } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { ApiBody, ApiResponse } from "@nestjs/swagger";
@@ -56,7 +57,6 @@ export class UserController {
   ): Promise<UserDto> {
     const reqUserId: number = Number(req.user.id);
     const queryUserId: number = Number(userId);
-    console.log(queryUserId);
     if (queryUserId !== 0) {
       return await this.userService.findUserById(queryUserId);
     }
@@ -70,6 +70,16 @@ export class UserController {
     @Query("page", new ParseIntWithDefaultPipe(1)) page: number,
     @Query("limit", new ParseIntWithDefaultPipe(10)) limit: number,
   ): Promise<UserDto[]> {
-    return this.userService.getUsers(page, limit);
+    return await this.userService.getUsers(page, limit);
+  }
+
+  @UseGuards(AuthGuard("jwt"))
+  @Delete()
+  @ApiBody({ description: "유저 + 관련 레코드 삭제" })
+  @ApiResponse({ status: 204, type: UserDto })
+  @SerializeOptions({ strategy: "exposeAll" })
+  async deleteUser(@Request() req: RequestWithUser): Promise<UserDto> {
+    const userId: number = Number(req.user.id);
+    return await this.userService.deleteUser(userId);
   }
 }

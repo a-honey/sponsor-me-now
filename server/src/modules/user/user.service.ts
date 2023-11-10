@@ -49,4 +49,13 @@ export class UserService {
 
     return plainToInstance(UserDto, users);
   }
+
+  async deleteUser(userId: number): Promise<UserDto> {
+    const deletedUser = await this.prisma.user.delete({
+      where: {
+        id: userId,
+      },
+    });
+    return plainToInstance(UserDto, deletedUser);
+  }
 }
