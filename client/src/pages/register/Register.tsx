@@ -33,7 +33,7 @@ const Register = () => {
       );
       break;
     case 2:
-      currentStepComponent = <InputBox isSponsor={isSponsor} />;
+      currentStepComponent = <InputBox isSponsor={isSponsor!} />;
       break;
     case 3:
       currentStepComponent = <MoreBox />;

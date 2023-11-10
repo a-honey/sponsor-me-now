@@ -1,17 +1,11 @@
+import postRegister, { RegisterBodyType } from '@/api/post/postRegister';
 import { useForm } from 'react-hook-form';
 
-interface RegisterDataType {
-  username: string;
-  email: string;
-  password: string;
-  passwordConfirm: string;
-}
+const InputBox = ({ isSponsor }: { isSponsor: boolean }) => {
+  const { register, handleSubmit } = useForm<RegisterBodyType>();
 
-const InputBox = ({ isSponsor }: { isSponsor: boolean | undefined }) => {
-  const { register, handleSubmit } = useForm<RegisterDataType>();
-
-  const onSubmit = (data: RegisterDataType) => {
-    console.log({ ...data, isSponsor });
+  const onSubmit = (data: RegisterBodyType) => {
+    postRegister({ ...data, isSponsor });
   };
 
   return (
