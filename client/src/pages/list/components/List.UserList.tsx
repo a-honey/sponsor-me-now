@@ -22,8 +22,6 @@ const UserList = () => {
       <UserItem />
       <UserItem />
       <UserItem />
-      <UserItem />
-      <UserItem />
     </div>
   );
 };
