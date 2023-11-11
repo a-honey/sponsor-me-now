@@ -7,12 +7,14 @@ import Payment from './pages/payment/Payment';
 import Main from './pages/main/Main';
 import Hub from './pages/hub/Hub';
 import List from './pages/list/List';
+import Intro from './pages/intro/Intro';
 
 const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
+          <Route path="" element={<Intro />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/main" element={<Main />} />
