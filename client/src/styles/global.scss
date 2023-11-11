@@ -20,6 +20,11 @@ section {
 article {
   height: 100%;
   padding-top: 40px;
+  > h2 {
+    margin-top: 40px;
+    font-size: 22px;
+    font-weight: 700;
+  }
 }
 
 .registerForm {
