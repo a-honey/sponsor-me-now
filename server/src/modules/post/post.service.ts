@@ -29,11 +29,18 @@ export class PostService {
           increment: 1,
         },
       },
+      include: {
+        _count: {
+          select: { like: true },
+        },
+      },
     });
 
     if (!post) throw new NotFoundException(`Post with ID ${postId} not found`);
 
-    return plainToInstance(PostDto, post);
+    const postDto: PostDto = plainToInstance(PostDto, post);
+    postDto.likeCount = post._count.like;
+    return postDto;
   }
 
   async getAllPosts(

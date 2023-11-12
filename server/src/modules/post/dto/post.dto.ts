@@ -7,4 +7,5 @@ export class PostDto {
   authorId: number;
   viewCount: number;
   postImg: string;
+  likeCount: number;
 }
