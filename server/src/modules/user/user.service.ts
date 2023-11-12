@@ -3,7 +3,7 @@ import { plainToInstance } from "class-transformer";
 import { UserDto } from "./dto/user.dto";
 import { UpdateUserDto } from "./dto/updateUser.dto";
 import { ValidateUserDto } from "../auth/dto/validateUser.dto";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, User } from "@prisma/client";
 import path from "path";
 import fs from "fs";
 
@@ -57,6 +57,88 @@ export class UserService {
 
     return { users: plainToInstance(UserDto, users), totalPage, currentPage: page };
   }
+
+  async getRandomUsers(userId: number): Promise<UserDto[]> {
+    const totalUsers: number = await this.prisma.user.count({
+      where: {
+        AND: [
+          {
+            id: {
+              not: userId,
+            },
+          },
+          {
+            NOT: {
+              sponsor: {
+                some: {
+                  sponsoredId: userId,
+                },
+              },
+            },
+          },
+        ],
+        isSponsor: false,
+      },
+    });
+
+    const randomIndex: number = Math.floor(Math.random() * Math.max(0, totalUsers - 7));
+
+    const users: User[] = await this.prisma.user.findMany({
+      where: {
+        AND: [
+          {
+            id: {
+              not: userId,
+            },
+          },
+          {
+            NOT: {
+              sponsor: {
+                some: {
+                  sponsoredId: userId,
+                },
+              },
+            },
+          },
+        ],
+        isSponsor: false,
+      },
+      skip: randomIndex,
+      take: 7,
+    });
+
+    return users.map((user) => plainToInstance(UserDto, user));
+  }
+
+  async getSponsoredUsers(
+    page: number,
+    limit: number,
+  ): Promise<{
+    totalPage: number;
+    currentPage: number;
+    users: UserDto[];
+  }> {
+    const totalCount: number = await this.prisma.user.count({
+      where: {
+        isSponsor: false,
+      },
+    });
+    const totalPage: number = Math.ceil(totalCount / limit);
+
+    const users = await this.prisma.user.findMany({
+      skip: (page - 1) * limit,
+      take: limit,
+      where: {
+        isSponsor: false,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+    return { users: plainToInstance(UserDto, users), totalPage, currentPage: page };
+  }
+
+  async getMySponsorUsers(page: number, limit: number, userId: number) {}
 
   async deleteUser(userId: number): Promise<UserDto> {
     const serverUrl: string = process.env.SERVER_URL;

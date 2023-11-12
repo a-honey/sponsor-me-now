@@ -9,6 +9,7 @@ import {
   SerializeOptions,
   Query,
   Delete,
+  BadRequestException,
 } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { ApiBody, ApiResponse, ApiTags } from "@nestjs/swagger";
@@ -61,13 +62,39 @@ export class UserController {
   }
 
   @Get("/list")
-  @ApiBody({ description: "유저리스트. 서버사이드 페이지네이션" })
+  @UseGuards(AuthGuard("jwt"))
+  @ApiBody({ description: "쿼리별 유저리스트. 서버사이드 페이지네이션" })
   @ApiResponse({ status: 200, type: UserDto })
   async getUsers(
+    @Request() req: RequestWithUser,
     @Query("page", new ParseIntWithDefaultPipe(1)) page: number,
     @Query("limit", new ParseIntWithDefaultPipe(10)) limit: number,
+    @Query("search") search: string,
   ): Promise<{ totalPage: number; currentPage: number; users: UserDto[] }> {
-    return await this.userService.getUsers(page, limit);
+    const userId: number = Number(req.user.id);
+    let result;
+
+    switch (search) {
+      case "all":
+        result = await this.userService.getUsers(page, limit);
+        break;
+      case "random":
+        result = await this.userService.getRandomUsers(userId);
+        break;
+      case "allSponsored":
+        result = await this.userService.getSponsoredUsers(page, limit);
+        break;
+      case "sponsor":
+        result = await this.userService.getMySponsorUsers(page, limit, userId);
+        break;
+      case "sponsored":
+        result = await this.userService.getMySponsoredUsers(page, limit, userId);
+        break;
+      default:
+        throw new BadRequestException(`잘못된 검색 매개변수: ${search}`);
+    }
+
+    return result;
   }
 
   @UseGuards(AuthGuard("jwt"))
