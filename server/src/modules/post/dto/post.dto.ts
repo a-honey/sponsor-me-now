@@ -8,4 +8,5 @@ export class PostDto {
   viewCount: number;
   postImg: string;
   likeCount: number;
+  _count?: object;
 }

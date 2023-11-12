@@ -66,7 +66,7 @@ export class PostController {
     return await this.postService.getPostAndIncrementView(postId);
   }
 
-  @Delete("/:id")
+  @Delete(":id")
   @UseGuards(AuthGuard("jwt"))
   @ApiBody({
     description: "게시글 삭제",

@@ -1,10 +1,9 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
-import { PrismaClient, User } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { CreatePostDto } from "./dto/createPost.dto";
 import { plainToInstance } from "class-transformer";
 import { PostDto } from "./dto/post.dto";
-import path from "path";
-import fs from "fs";
+
 import { deleteRelativeImage } from "../../utils/deleteRelativeImage";
 
 @Injectable()
@@ -40,6 +39,7 @@ export class PostService {
 
     const postDto: PostDto = plainToInstance(PostDto, post);
     postDto.likeCount = post._count.like;
+    delete postDto._count;
     return postDto;
   }
 
@@ -47,9 +47,6 @@ export class PostService {
     page: number,
     limit: number,
   ): Promise<{ posts: PostDto[]; totalPage: number; currentPage: number }> {
-    const totalCount: number = await this.prisma.post.count();
-    const totalPage: number = Math.ceil(totalCount / limit);
-
     const posts = await this.prisma.post.findMany({
       skip: (page - 1) * limit,
       take: limit,
@@ -57,6 +54,9 @@ export class PostService {
         createdAt: "desc",
       },
     });
+
+    const totalCount: number = posts.length;
+    const totalPage: number = Math.ceil(totalCount / limit);
     return { posts: plainToInstance(PostDto, posts), totalPage, currentPage: page };
   }
 
@@ -71,16 +71,6 @@ export class PostService {
       );
     }
 
-    const totalCount = await this.prisma.post.count({
-      where: {
-        authorId: {
-          in: sponsoredIds,
-        },
-      },
-    });
-
-    const totalPage: number = Math.ceil(totalCount / limit);
-
     const posts = await this.prisma.post.findMany({
       where: {
         authorId: {
@@ -93,19 +83,19 @@ export class PostService {
         createdAt: "desc",
       },
     });
+    const totalCount = posts.length;
+    const totalPage: number = Math.ceil(totalCount / limit);
 
     return { posts: plainToInstance(PostDto, posts), totalPage, currentPage: page };
   }
 
   async deletePost(postId: number, userId: number) {
-    const post = await this.prisma.post.findUnique({
+    const deletedPost = await this.prisma.post.delete({
       where: { id: postId },
     });
-    if (post.authorId !== userId) throw new NotFoundException();
-    if (post.postImg) await deleteRelativeImage(post);
+    if (deletedPost.authorId !== userId) throw new NotFoundException();
+    if (deletedPost.postImg) await deleteRelativeImage(deletedPost);
 
-    return await this.prisma.post.delete({
-      where: { id: postId },
-    });
+    return plainToInstance(PostDto, deletedPost);
   }
 }
