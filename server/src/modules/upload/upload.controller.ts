@@ -42,7 +42,7 @@ export class UploadController {
   }
 
   @Post("/post/:postId")
-  @ApiBody({ description: "[업로드] 프로필 백그라운드" })
+  @ApiBody({ description: "[업로드] 게시글 이미지 " })
   @ApiResponse({ status: 201, type: String })
   @UseGuards(AuthGuard("jwt"))
   @UseInterceptors(FileInterceptor("profileBackgroundImage"))
