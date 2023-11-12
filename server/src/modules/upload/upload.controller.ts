@@ -12,7 +12,7 @@ export class UploadController {
   constructor(private readonly uploadService: UploadService) {}
 
   @Post()
-  @ApiBody({ description: "[업로드]" })
+  @ApiBody({ description: "[업로드] 프로필 이미지" })
   @ApiResponse({ status: 201, type: String })
   @UseGuards(AuthGuard("jwt"))
   @UseInterceptors(FileInterceptor("profileImage"))
@@ -20,5 +20,16 @@ export class UploadController {
     const userId: number = req.user.id;
     const imageUrl: string = path.join("image", file.filename);
     return this.uploadService.uploadProfileImage(userId, imageUrl);
+  }
+
+  @Post()
+  @ApiBody({ description: "[업로드] 프로필 백그라운드" })
+  @ApiResponse({ status: 201, type: String })
+  @UseGuards(AuthGuard("jwt"))
+  @UseInterceptors(FileInterceptor("profileBackgroundImage"))
+  async uploadBackgroundImage(@UploadedFile() file, @Req() req: RequestWithUser): Promise<string> {
+    const userId: number = req.user.id;
+    const imageUrl: string = path.join("image", file.filename);
+    return this.uploadService.uploadBackgroundImage(userId, imageUrl);
   }
 }

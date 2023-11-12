@@ -19,6 +19,7 @@ model User {
   snsId          Int?             @unique
   provider       String?
   profileImg     String?
+  backgroundImg  String?
   field          String?
   description    String?
   isSponsor      Boolean          @default(true)

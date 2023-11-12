@@ -5,7 +5,7 @@ import { diskStorage } from "multer";
 
 export const MulterConfigModule = MulterModule.register({
   storage: diskStorage({
-    destination: path.join(__dirname, "public/image"),
+    destination: path.join(__dirname, "../public/image"),
     filename: (req, file, callback) => {
       const imageFormat: string = file.mimetype.split("/")[1];
       const filename: string = `img_${uuidv4()}.${imageFormat}`;
