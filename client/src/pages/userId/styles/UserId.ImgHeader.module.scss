@@ -1,0 +1,16 @@
+.container {
+  position: relative;
+  height: 400px;
+  background-color: gray;
+  > img {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  }
+  div > img {
+    position: absolute;
+    left: 20px;
+    bottom: -80px;
+    width: 150px;
+  }
+}

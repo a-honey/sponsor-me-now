@@ -2,25 +2,30 @@
   position: absolute;
   top: 0;
   right: 0;
-  width: 170px;
+  width: 200px;
   height: 100%;
   display: flex;
   gap: 50px;
   padding: 30px 10px;
   flex-direction: column;
-  background-color: #ededed;
+  background-color: #cecece;
   border-radius: 5px;
+  z-index: 999;
   .cancel {
     position: absolute;
-    right: 5px;
-    top: 5px;
+    right: 10px;
+    top: 10px;
   }
   .links {
     display: flex;
     flex-direction: column;
     gap: 10px;
     a {
-      font-size: 14px;
+      font-size: 15px;
+      &.active {
+        color: #005a34;
+        border-bottom: 1px solid #005a34;
+      }
     }
   }
   div > button {

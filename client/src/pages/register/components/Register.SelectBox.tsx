@@ -1,5 +1,4 @@
 import styles from '../styles/Register.SelectBox.module.scss';
-import logos from '../assets/logos.png';
 
 const SelectBox = ({
   isSponsor,

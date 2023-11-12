@@ -14,9 +14,6 @@ const Header = () => {
     <>
       <header className={styles.header}>
         <div className={styles.logo}>
-          <div className={styles.imgContainer}>
-            <img src="/logos.png" width={130} alt="로고" />
-          </div>
           <div>Sponsor Me Now</div>
         </div>
         <div className={styles.icons}>

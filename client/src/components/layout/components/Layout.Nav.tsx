@@ -1,7 +1,8 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styles from '../styles/Layout.Nav.module.scss';
 
 const Nav = ({ toggleIsOpenNav }: { toggleIsOpenNav: () => void }) => {
+  const navigator = useNavigate();
   return (
     <nav className={styles.nav}>
       <button className={styles.cancel} onClick={toggleIsOpenNav}>
@@ -14,7 +15,14 @@ const Nav = ({ toggleIsOpenNav }: { toggleIsOpenNav: () => void }) => {
         <Link to="/payment">Payment History</Link>
       </div>
       <div>
-        <button>logout</button>
+        <button
+          onClick={() => {
+            toggleIsOpenNav();
+            navigator('/');
+          }}
+        >
+          logout
+        </button>
       </div>
     </nav>
   );
