@@ -3,6 +3,9 @@ import { PrismaClient, User } from "@prisma/client";
 import { CreatePostDto } from "./dto/createPost.dto";
 import { plainToInstance } from "class-transformer";
 import { PostDto } from "./dto/post.dto";
+import path from "path";
+import fs from "fs";
+import { deleteRelativeImage } from "../../utils/deleteRelativeImage";
 
 @Injectable()
 export class PostService {
@@ -85,5 +88,17 @@ export class PostService {
     });
 
     return { posts: plainToInstance(PostDto, posts), totalPage, currentPage: page };
+  }
+
+  async deletePost(postId: number, userId: number) {
+    const post = await this.prisma.post.findUnique({
+      where: { id: postId },
+    });
+    if (post.authorId !== userId) throw new NotFoundException();
+    if (post.postImg) await deleteRelativeImage(post);
+
+    return await this.prisma.post.delete({
+      where: { id: postId },
+    });
   }
 }

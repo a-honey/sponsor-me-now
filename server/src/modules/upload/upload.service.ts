@@ -3,6 +3,7 @@ import { PrismaClient } from "@prisma/client";
 import * as path from "path";
 import * as fs from "fs";
 import { createUploadUrl } from "../../utils/createUploadUrl";
+import { deleteRelativeImage } from "../../utils/deleteRelativeImage";
 
 @Injectable()
 export class UploadService {
@@ -64,14 +65,8 @@ export class UploadService {
     });
     if (!post) throw new Error("게시글을 찾을 수 없습니다.");
 
-    if (post.postImg) {
-      const serverUrl: string = process.env.SERVER_URL || "http://localhost:3000";
-      const relativeImagePath: string = post.postImg.replace(serverUrl, "").replace(/^\//, "");
-      const absoluteImagePath: string = path.join(__dirname, "..", "public", relativeImagePath);
-      if (fs.existsSync(absoluteImagePath)) {
-        fs.unlinkSync(absoluteImagePath);
-      }
-    }
+    if (post.postImg) await deleteRelativeImage(post);
+
     const finalUrl: string = await createUploadUrl(imageUrl);
     await this.prisma.post.update({
       where: { id: postId },

@@ -1,4 +1,14 @@
-import { Body, Controller, Get, Param, Post, Query, Req, Request, UseGuards } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Query,
+  Request,
+  UseGuards,
+} from "@nestjs/common";
 import { PostService } from "./post.service";
 import { ApiBody, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { CreatePostDto } from "./dto/createPost.dto";
@@ -54,5 +64,18 @@ export class PostController {
   async getPost(@Param("id") id: string): Promise<PostDto> {
     const postId: number = Number(id);
     return await this.postService.getPostAndIncrementView(postId);
+  }
+
+  @Delete("/:id")
+  @UseGuards(AuthGuard("jwt"))
+  @ApiBody({
+    description: "게시글 삭제",
+  })
+  @ApiResponse({ status: 204, type: PostDto })
+  async deletePost(@Request() req: RequestWithUser, @Param("id") id: string) {
+    const userId: number = Number(req.user.id);
+    const postId: number = Number(id);
+
+    return await this.postService.deletePost(postId, userId);
   }
 }
