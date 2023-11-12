@@ -44,9 +44,6 @@ export class UserService {
     page: number,
     limit: number,
   ): Promise<{ totalPage: number; currentPage: number; users: UserDto[] }> {
-    const totalCount: number = await this.prisma.user.count();
-    const totalPage: number = Math.ceil(totalCount / limit);
-
     const users = await this.prisma.user.findMany({
       skip: (page - 1) * limit,
       take: limit,
@@ -54,6 +51,8 @@ export class UserService {
         createdAt: "desc",
       },
     });
+    const totalCount: number = users.length;
+    const totalPage: number = Math.ceil(totalCount / limit);
 
     return { users: plainToInstance(UserDto, users), totalPage, currentPage: page };
   }
@@ -118,13 +117,6 @@ export class UserService {
     currentPage: number;
     users: UserDto[];
   }> {
-    const totalCount: number = await this.prisma.user.count({
-      where: {
-        isSponsor: false,
-      },
-    });
-    const totalPage: number = Math.ceil(totalCount / limit);
-
     const users = await this.prisma.user.findMany({
       skip: (page - 1) * limit,
       take: limit,
@@ -135,10 +127,52 @@ export class UserService {
         createdAt: "desc",
       },
     });
+    const totalCount = users.length;
+    const totalPage: number = Math.ceil(totalCount / limit);
     return { users: plainToInstance(UserDto, users), totalPage, currentPage: page };
   }
 
-  async getMySponsorUsers(page: number, limit: number, userId: number) {}
+  async getMySponsorUsers(page: number, limit: number, userId: number) {
+    const sponsorships = await this.prisma.sponsor.findMany({
+      skip: (page - 1) * limit,
+      take: limit,
+      where: {
+        sponsorId: userId,
+      },
+      select: {
+        sponsored: true,
+      },
+    });
+
+    const users = sponsorships.map((sponsorship) => sponsorship.sponsored);
+
+    const totalCount = users.length;
+    const totalPage: number = Math.ceil(totalCount / limit);
+
+    users.map((user) => plainToInstance(UserDto, user));
+    return { users: users, totalPage, currentPage: page };
+  }
+
+  async getMySponsoredUsers(page: number, limit: number, userId: number) {
+    const sponsorships = await this.prisma.sponsor.findMany({
+      skip: (page - 1) * limit,
+      take: limit,
+      where: {
+        sponsoredId: userId,
+      },
+      select: {
+        sponsor: true,
+      },
+    });
+
+    const users = sponsorships.map((sponsorship) => sponsorship.sponsor);
+
+    const totalCount = users.length;
+    const totalPage: number = Math.ceil(totalCount / limit);
+
+    users.map((user) => plainToInstance(UserDto, user));
+    return { users: users, totalPage, currentPage: page };
+  }
 
   async deleteUser(userId: number): Promise<UserDto> {
     const serverUrl: string = process.env.SERVER_URL;
