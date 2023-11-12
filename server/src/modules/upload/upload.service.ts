@@ -57,4 +57,27 @@ export class UploadService {
 
     return finalUrl;
   }
+
+  async uploadPostImage(postId: number, imageUrl: string): Promise<string> {
+    const post = await this.prisma.post.findUnique({
+      where: { id: postId },
+    });
+    if (!post) throw new Error("게시글을 찾을 수 없습니다.");
+
+    if (post.postImg) {
+      const serverUrl: string = process.env.SERVER_URL || "http://localhost:3000";
+      const relativeImagePath: string = post.postImg.replace(serverUrl, "").replace(/^\//, "");
+      const absoluteImagePath: string = path.join(__dirname, "..", "public", relativeImagePath);
+      if (fs.existsSync(absoluteImagePath)) {
+        fs.unlinkSync(absoluteImagePath);
+      }
+    }
+    const finalUrl: string = await createUploadUrl(imageUrl);
+    await this.prisma.post.update({
+      where: { id: postId },
+      data: { postImg: finalUrl },
+    });
+
+    return finalUrl;
+  }
 }

@@ -1,4 +1,12 @@
-import { Controller, Post, UseGuards, UseInterceptors, UploadedFile, Req } from "@nestjs/common";
+import {
+  Controller,
+  Post,
+  UseGuards,
+  UseInterceptors,
+  UploadedFile,
+  Req,
+  Param,
+} from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { AuthGuard } from "@nestjs/passport";
 import { UploadService } from "./upload.service";
@@ -11,7 +19,7 @@ import { ApiBody, ApiResponse, ApiTags } from "@nestjs/swagger";
 export class UploadController {
   constructor(private readonly uploadService: UploadService) {}
 
-  @Post()
+  @Post("/profile")
   @ApiBody({ description: "[업로드] 프로필 이미지" })
   @ApiResponse({ status: 201, type: String })
   @UseGuards(AuthGuard("jwt"))
@@ -22,7 +30,7 @@ export class UploadController {
     return this.uploadService.uploadProfileImage(userId, imageUrl);
   }
 
-  @Post()
+  @Post("/background")
   @ApiBody({ description: "[업로드] 프로필 백그라운드" })
   @ApiResponse({ status: 201, type: String })
   @UseGuards(AuthGuard("jwt"))
@@ -31,5 +39,20 @@ export class UploadController {
     const userId: number = req.user.id;
     const imageUrl: string = path.join("image", file.filename);
     return this.uploadService.uploadBackgroundImage(userId, imageUrl);
+  }
+
+  @Post("/post/:postId")
+  @ApiBody({ description: "[업로드] 프로필 백그라운드" })
+  @ApiResponse({ status: 201, type: String })
+  @UseGuards(AuthGuard("jwt"))
+  @UseInterceptors(FileInterceptor("profileBackgroundImage"))
+  async uploadPostImage(
+    @UploadedFile() file,
+    @Req() req: RequestWithUser,
+    @Param("id") id: string,
+  ): Promise<string> {
+    const postId: number = Number(id);
+    const imageUrl: string = path.join("image", file.filename);
+    return this.uploadService.uploadPostImage(postId, imageUrl);
   }
 }
