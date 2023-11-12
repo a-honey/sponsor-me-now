@@ -8,11 +8,10 @@ import {
   Body,
   SerializeOptions,
   Query,
-  DefaultValuePipe,
   Delete,
 } from "@nestjs/common";
 import { UserService } from "./user.service";
-import { ApiBody, ApiResponse } from "@nestjs/swagger";
+import { ApiBody, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { GetUserDto } from "./dto/getUser.dto";
 import { UserDto } from "./dto/user.dto";
 import { AuthGuard } from "@nestjs/passport";
@@ -20,6 +19,7 @@ import { UpdateUserDto } from "./dto/updateUser.dto";
 import { RequestWithUser } from "./interface/requestWithUser";
 import { ParseIntWithDefaultPipe } from "../../utils/parseIntWithDefaultPipe";
 
+@ApiTags("User")
 @Controller("user")
 export class UserController {
   constructor(private userService: UserService) {}
@@ -34,8 +34,8 @@ export class UserController {
     return await this.userService.getUserByEmail(email);
   }
 
-  @UseGuards(AuthGuard("jwt"))
   @Put()
+  @UseGuards(AuthGuard("jwt"))
   @ApiBody({ description: "회원 정보 업데이트", type: UpdateUserDto })
   @ApiResponse({ status: 200, type: UserDto })
   @SerializeOptions({ strategy: "exposeAll" })
@@ -47,18 +47,15 @@ export class UserController {
     return await this.userService.editUser(userId, updateUserDto);
   }
 
-  @UseGuards(AuthGuard("jwt"))
   @Get()
+  @UseGuards(AuthGuard("jwt"))
   @ApiBody({ description: "사용자 정보 불러오기. 쿼리 값이 있을 시 해당 유저 조회" })
   @ApiResponse({ status: 200, type: UserDto })
-  async getUser(
-    @Request() req: RequestWithUser,
-    @Query("userId") userId: string,
-  ): Promise<UserDto> {
+  async getUser(@Request() req: RequestWithUser, @Query("id") id: string): Promise<UserDto> {
     const reqUserId: number = Number(req.user.id);
-    const queryUserId: number = Number(userId);
-    if (queryUserId !== 0) {
-      return await this.userService.findUserById(queryUserId);
+    const userId: number = Number(id);
+    if (userId !== 0) {
+      return await this.userService.findUserById(userId);
     }
     return await this.userService.findUserById(reqUserId);
   }
@@ -69,7 +66,7 @@ export class UserController {
   async getUsers(
     @Query("page", new ParseIntWithDefaultPipe(1)) page: number,
     @Query("limit", new ParseIntWithDefaultPipe(10)) limit: number,
-  ): Promise<UserDto[]> {
+  ): Promise<{ totalPage: number; currentPage: number; users: UserDto[] }> {
     return await this.userService.getUsers(page, limit);
   }
 

@@ -38,7 +38,13 @@ export class UserService {
     return plainToInstance(UserDto, user);
   }
 
-  async getUsers(page: number, limit: number): Promise<UserDto[]> {
+  async getUsers(
+    page: number,
+    limit: number,
+  ): Promise<{ totalPage: number; currentPage: number; users: UserDto[] }> {
+    const totalCount: number = await this.prisma.user.count();
+    const totalPage: number = Math.ceil(totalCount / limit);
+
     const users = await this.prisma.user.findMany({
       skip: (page - 1) * limit,
       take: limit,
@@ -47,7 +53,7 @@ export class UserService {
       },
     });
 
-    return plainToInstance(UserDto, users);
+    return { users: plainToInstance(UserDto, users), totalPage, currentPage: page };
   }
 
   async deleteUser(userId: number): Promise<UserDto> {

@@ -4,8 +4,9 @@ import { AuthGuard } from "@nestjs/passport";
 import { UploadService } from "./upload.service";
 import * as path from "path";
 import { RequestWithUser } from "../user/interface/requestWithUser";
-import { ApiBody, ApiResponse } from "@nestjs/swagger";
+import { ApiBody, ApiResponse, ApiTags } from "@nestjs/swagger";
 
+@ApiTags("Upload")
 @Controller("upload")
 export class UploadController {
   constructor(private readonly uploadService: UploadService) {}
