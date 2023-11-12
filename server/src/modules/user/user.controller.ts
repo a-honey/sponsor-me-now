@@ -63,7 +63,15 @@ export class UserController {
 
   @Get("/list")
   @UseGuards(AuthGuard("jwt"))
-  @ApiBody({ description: "쿼리별 유저리스트. 서버사이드 페이지네이션" })
+  @ApiBody({
+    description:
+      "쿼리별 유저리스트. 서버사이드 페이지네이션" +
+      "all : 전체" +
+      "random : 후원중이지 않은 랜덤 7명" +
+      "allSponsored : 후원 대상자 전체" +
+      "sponsor : 내가 후원중인 유저" +
+      "sponsored : 날 후원하는 유저",
+  })
   @ApiResponse({ status: 200, type: UserDto })
   async getUsers(
     @Request() req: RequestWithUser,
