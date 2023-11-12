@@ -4,6 +4,8 @@ import { UserDto } from "./dto/user.dto";
 import { UpdateUserDto } from "./dto/updateUser.dto";
 import { ValidateUserDto } from "../auth/dto/validateUser.dto";
 import { PrismaClient } from "@prisma/client";
+import path from "path";
+import fs from "fs";
 
 @Injectable()
 export class UserService {
@@ -57,11 +59,48 @@ export class UserService {
   }
 
   async deleteUser(userId: number): Promise<UserDto> {
+    const serverUrl: string = process.env.SERVER_URL;
+
+    const posts = await this.prisma.post.findMany({
+      where: { authorId: userId },
+    });
+
+    for (const post of posts) {
+      if (post.postImg) {
+        const relativeImagePath: string = post.postImg.replace(serverUrl, "").replace(/^\//, "");
+        const absoluteImagePath: string = path.join(__dirname, "..", "public", relativeImagePath);
+        if (fs.existsSync(absoluteImagePath)) {
+          fs.unlinkSync(absoluteImagePath);
+        }
+      }
+    }
+
     const deletedUser = await this.prisma.user.delete({
       where: {
         id: userId,
       },
     });
+
+    if (deletedUser.backgroundImg) {
+      const relativeImagePath: string = deletedUser.backgroundImg
+        .replace(serverUrl, "")
+        .replace(/^\//, "");
+      const absoluteImagePath: string = path.join(__dirname, "..", "public", relativeImagePath);
+      if (fs.existsSync(absoluteImagePath)) {
+        fs.unlinkSync(absoluteImagePath);
+      }
+    }
+
+    if (deletedUser.profileImg) {
+      const relativeImagePath: string = deletedUser.profileImg
+        .replace(serverUrl, "")
+        .replace(/^\//, "");
+      const absoluteImagePath: string = path.join(__dirname, "..", "public", relativeImagePath);
+      if (fs.existsSync(absoluteImagePath)) {
+        fs.unlinkSync(absoluteImagePath);
+      }
+    }
+
     return plainToInstance(UserDto, deletedUser);
   }
 }

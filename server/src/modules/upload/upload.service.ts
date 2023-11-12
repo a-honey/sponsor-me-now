@@ -16,7 +16,7 @@ export class UploadService {
     if (!user) throw new Error("유저를 찾을 수 없습니다.");
 
     if (user.profileImg) {
-      const serverUrl: string = process.env.SERVER_URL || "http://localhost:3000";
+      const serverUrl: string = process.env.SERVER_URL;
       const relativeImagePath: string = user.profileImg.replace(serverUrl, "").replace(/^\//, "");
       const absoluteImagePath: string = path.join(__dirname, "..", "public", relativeImagePath);
       console.log(absoluteImagePath);
@@ -41,7 +41,7 @@ export class UploadService {
     if (!user) throw new Error("유저를 찾을 수 없습니다.");
 
     if (user.backgroundImg) {
-      const serverUrl: string = process.env.SERVER_URL || "http://localhost:3000";
+      const serverUrl: string = process.env.SERVER_URL;
       const relativeImagePath: string = user.backgroundImg
         .replace(serverUrl, "")
         .replace(/^\//, "");
