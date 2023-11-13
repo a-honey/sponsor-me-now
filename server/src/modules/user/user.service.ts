@@ -1,13 +1,14 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { plainToInstance } from "class-transformer";
 import { UserDto } from "./dto/user.dto";
-import { UpdateUserDto } from "./dto/updateUser.dto";
+import { UpdateUserDataDto } from "./dto/updateUserData.dto";
 import { ValidateUserDto } from "../auth/dto/validateUser.dto";
 import { PrismaClient, User } from "@prisma/client";
 import path from "path";
 import fs from "fs";
 import { GetUserListDto } from "./dto/getUserList.dto";
-import { UserListResponseDto } from "./dto/userListResponse.dto";
+import { ResponseUserListDto } from "./dto/responseUserList.dto";
+import { UpdatedUserDto } from "./dto/updatedUser.dto";
 
 @Injectable()
 export class UserService {
@@ -23,7 +24,7 @@ export class UserService {
     return plainToInstance(ValidateUserDto, user);
   }
 
-  async editUser(userId: number, updateUserDto: UpdateUserDto): Promise<UserDto> {
+  async editUser(userId: number, updateUserDto: UpdateUserDataDto): Promise<UpdatedUserDto> {
     const updatedUser = await this.prisma.user.update({
       where: {
         id: userId,
@@ -32,7 +33,7 @@ export class UserService {
         ...updateUserDto,
       },
     });
-    return plainToInstance(UserDto, updatedUser);
+    return plainToInstance(UpdatedUserDto, updatedUser);
   }
 
   async findUserById(userId: number): Promise<UserDto> {
@@ -42,7 +43,7 @@ export class UserService {
     return plainToInstance(UserDto, user);
   }
 
-  async getUsers(page: number, limit: number): Promise<UserListResponseDto> {
+  async getUsers(page: number, limit: number): Promise<ResponseUserListDto> {
     const users = await this.prisma.user.findMany({
       skip: (page - 1) * limit,
       take: limit,
@@ -108,7 +109,7 @@ export class UserService {
     return users.map((user) => plainToInstance(GetUserListDto, user));
   }
 
-  async getSponsoredUsers(page: number, limit: number): Promise<UserListResponseDto> {
+  async getSponsoredUsers(page: number, limit: number): Promise<ResponseUserListDto> {
     const users = await this.prisma.user.findMany({
       skip: (page - 1) * limit,
       take: limit,
@@ -128,7 +129,7 @@ export class UserService {
     page: number,
     limit: number,
     userId: number,
-  ): Promise<UserListResponseDto> {
+  ): Promise<ResponseUserListDto> {
     const sponsorships = await this.prisma.sponsor.findMany({
       skip: (page - 1) * limit,
       take: limit,
@@ -153,7 +154,7 @@ export class UserService {
     page: number,
     limit: number,
     userId: number,
-  ): Promise<UserListResponseDto> {
+  ): Promise<ResponseUserListDto> {
     const sponsorships = await this.prisma.sponsor.findMany({
       skip: (page - 1) * limit,
       take: limit,

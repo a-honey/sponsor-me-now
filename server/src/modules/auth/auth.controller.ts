@@ -19,6 +19,7 @@ import { TryLoginDto } from "./dto/tryLogin.dto";
 import { LoginUserDto } from "./dto/loginUser.dto";
 import { AuthGuard } from "@nestjs/passport";
 import { RequestWithUser } from "../user/interface/requestWithUser";
+import { ResponseCreateUserDto } from "./dto/responseCreateUser.dto";
 
 @ApiTags("Auth")
 @Controller("auth")
@@ -30,7 +31,7 @@ export class AuthController {
   }
   @Post()
   @ApiBody({ description: "회원가입", type: SubmitUserDataDto })
-  @ApiResponse({ status: 201, type: AuthDto })
+  @ApiResponse({ status: 201, type: ResponseCreateUserDto })
   @SerializeOptions({ strategy: "exposeAll" })
   @UsePipes(new ValidationPipe())
   async createUser(@Body() submitUserDto: SubmitUserDataDto): Promise<AuthDto> {

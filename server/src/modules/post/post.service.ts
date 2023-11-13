@@ -49,6 +49,7 @@ export class PostService {
       content: comment.content,
       nickname: comment.author.nickname,
     }));
+    delete postDto.comments;
 
     return postDto;
   }

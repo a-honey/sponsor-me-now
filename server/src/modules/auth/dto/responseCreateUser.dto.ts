@@ -1,12 +1,12 @@
 import { ApiProperty } from "@nestjs/swagger";
 
-export class LikeDto {
+export class ResponseCreateUserDto {
   @ApiProperty()
   id: number;
 
   @ApiProperty()
-  postId: number;
+  email: string;
 
   @ApiProperty()
-  userId: number;
+  username: string;
 }

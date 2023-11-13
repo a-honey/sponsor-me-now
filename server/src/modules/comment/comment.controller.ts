@@ -16,7 +16,7 @@ import { AuthGuard } from "@nestjs/passport";
 import { RequestWithUser } from "../user/interface/requestWithUser";
 import { CreateCommentDto } from "./dto/createComment.dto";
 import { CommentDto } from "./dto/comment.dto";
-import { OptionalIntPipe } from "../../utils/optionalIntPipe";
+import { OptionalIntPipe } from "../../pipes/optionalIntPipe";
 
 @ApiTags("Comment")
 @Controller("comment")
