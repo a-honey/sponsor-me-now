@@ -13,7 +13,7 @@ import { Exclude } from "class-transformer";
 import { ApiProperty } from "@nestjs/swagger";
 
 @SerializeOptions({ strategy: "exposeAll" })
-export class UserDto {
+export class GetUserListDto {
   @IsNumber()
   @IsNotEmpty()
   @ApiProperty()

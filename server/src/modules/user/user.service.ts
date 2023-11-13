@@ -6,6 +6,8 @@ import { ValidateUserDto } from "../auth/dto/validateUser.dto";
 import { PrismaClient, User } from "@prisma/client";
 import path from "path";
 import fs from "fs";
+import { GetUserListDto } from "./dto/getUserList.dto";
+import { UserListResponseDto } from "./dto/userListResponse.dto";
 
 @Injectable()
 export class UserService {
@@ -40,10 +42,7 @@ export class UserService {
     return plainToInstance(UserDto, user);
   }
 
-  async getUsers(
-    page: number,
-    limit: number,
-  ): Promise<{ totalPage: number; currentPage: number; users: UserDto[] }> {
+  async getUsers(page: number, limit: number): Promise<UserListResponseDto> {
     const users = await this.prisma.user.findMany({
       skip: (page - 1) * limit,
       take: limit,
@@ -54,10 +53,10 @@ export class UserService {
     const totalCount: number = users.length;
     const totalPage: number = Math.ceil(totalCount / limit);
 
-    return { users: plainToInstance(UserDto, users), totalPage, currentPage: page };
+    return { users: plainToInstance(GetUserListDto, users), totalPage, currentPage: page };
   }
 
-  async getRandomUsers(userId: number): Promise<UserDto[]> {
+  async getRandomUsers(userId: number): Promise<GetUserListDto[]> {
     const totalUsers: number = await this.prisma.user.count({
       where: {
         AND: [
@@ -106,17 +105,10 @@ export class UserService {
       take: 7,
     });
 
-    return users.map((user) => plainToInstance(UserDto, user));
+    return users.map((user) => plainToInstance(GetUserListDto, user));
   }
 
-  async getSponsoredUsers(
-    page: number,
-    limit: number,
-  ): Promise<{
-    totalPage: number;
-    currentPage: number;
-    users: UserDto[];
-  }> {
+  async getSponsoredUsers(page: number, limit: number): Promise<UserListResponseDto> {
     const users = await this.prisma.user.findMany({
       skip: (page - 1) * limit,
       take: limit,
@@ -129,10 +121,14 @@ export class UserService {
     });
     const totalCount = users.length;
     const totalPage: number = Math.ceil(totalCount / limit);
-    return { users: plainToInstance(UserDto, users), totalPage, currentPage: page };
+    return { users: plainToInstance(GetUserListDto, users), totalPage, currentPage: page };
   }
 
-  async getMySponsorUsers(page: number, limit: number, userId: number) {
+  async getMySponsorUsers(
+    page: number,
+    limit: number,
+    userId: number,
+  ): Promise<UserListResponseDto> {
     const sponsorships = await this.prisma.sponsor.findMany({
       skip: (page - 1) * limit,
       take: limit,
@@ -149,11 +145,15 @@ export class UserService {
     const totalCount = users.length;
     const totalPage: number = Math.ceil(totalCount / limit);
 
-    users.map((user) => plainToInstance(UserDto, user));
-    return { users: users, totalPage, currentPage: page };
+    const userList: UserDto[] = users.map((user) => plainToInstance(UserDto, user));
+    return { users: userList, totalPage, currentPage: page };
   }
 
-  async getMySponsoredUsers(page: number, limit: number, userId: number) {
+  async getMySponsoredUsers(
+    page: number,
+    limit: number,
+    userId: number,
+  ): Promise<UserListResponseDto> {
     const sponsorships = await this.prisma.sponsor.findMany({
       skip: (page - 1) * limit,
       take: limit,
@@ -170,8 +170,8 @@ export class UserService {
     const totalCount = users.length;
     const totalPage: number = Math.ceil(totalCount / limit);
 
-    users.map((user) => plainToInstance(UserDto, user));
-    return { users: users, totalPage, currentPage: page };
+    const userList: UserDto[] = users.map((user) => plainToInstance(UserDto, user));
+    return { users: userList, totalPage, currentPage: page };
   }
 
   async deleteUser(userId: number): Promise<UserDto> {

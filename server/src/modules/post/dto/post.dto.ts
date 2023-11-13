@@ -9,4 +9,5 @@ export class PostDto {
   postImg: string;
   likeCount: number;
   _count?: object;
+  comments?: { content: string; nickname: string }[];
 }

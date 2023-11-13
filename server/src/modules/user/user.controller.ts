@@ -20,6 +20,8 @@ import { AuthGuard } from "@nestjs/passport";
 import { UpdateUserDto } from "./dto/updateUser.dto";
 import { RequestWithUser } from "./interface/requestWithUser";
 import { ParseIntWithDefaultPipe } from "../../utils/parseIntWithDefaultPipe";
+import { GetUserListDto } from "./dto/getUserList.dto";
+import { UserListResponseDto } from "./dto/userListResponse.dto";
 
 @ApiTags("User")
 @Controller("user")
@@ -75,13 +77,13 @@ export class UserController {
       `sponsor:내가 후원중인 유저<br />` +
       `sponsored:날 후원하는 유저<br />`,
   })
-  @ApiResponse({ status: 200, type: UserDto })
+  @ApiResponse({ status: 200, type: UserListResponseDto })
   async getUsers(
     @Request() req: RequestWithUser,
     @Query("page", new ParseIntWithDefaultPipe(1)) page: number,
     @Query("limit", new ParseIntWithDefaultPipe(10)) limit: number,
     @Query("search") search: string,
-  ): Promise<{ totalPage: number; currentPage: number; users: UserDto[] }> {
+  ): Promise<UserListResponseDto> {
     const userId: number = Number(req.user.id);
     let result;
 
@@ -111,9 +113,9 @@ export class UserController {
   @UseGuards(AuthGuard("jwt"))
   @Delete()
   @ApiBody({ description: "유저 + 관련 레코드 삭제" })
-  @ApiResponse({ status: 204, type: UserDto })
+  @ApiResponse({ status: 204, type: GetUserListDto })
   @SerializeOptions({ strategy: "exposeAll" })
-  async deleteUser(@Request() req: RequestWithUser): Promise<UserDto> {
+  async deleteUser(@Request() req: RequestWithUser): Promise<GetUserListDto> {
     const userId: number = Number(req.user.id);
     return await this.userService.deleteUser(userId);
   }

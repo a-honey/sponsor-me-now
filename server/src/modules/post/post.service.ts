@@ -31,6 +31,11 @@ export class PostService {
         _count: {
           select: { like: true },
         },
+        comment: {
+          include: {
+            author: true,
+          },
+        },
       },
     });
 
@@ -39,6 +44,12 @@ export class PostService {
     const postDto: PostDto = plainToInstance(PostDto, post);
     postDto.likeCount = post._count.like;
     delete postDto._count;
+
+    postDto.comments = post.comment.map((comment) => ({
+      content: comment.content,
+      nickname: comment.author.nickname,
+    }));
+
     return postDto;
   }
 
