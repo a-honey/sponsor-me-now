@@ -38,8 +38,8 @@ export class AuthController {
     return await this.authService.createUser(createUserDto);
   }
 
-  @UseGuards(AuthGuard("local"))
   @Post("login")
+  @UseGuards(AuthGuard("local"))
   @ApiBody({ description: "로그인", type: TryLoginDto })
   @ApiResponse({ type: LoginUserDto })
   async login(@Request() req: RequestWithUser, @Res() res: Response): Promise<LoginUserDto> {

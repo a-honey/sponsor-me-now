@@ -10,6 +10,7 @@ import {
   Query,
   Delete,
   BadRequestException,
+  ParseIntPipe,
 } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { ApiBody, ApiResponse, ApiTags } from "@nestjs/swagger";
@@ -50,11 +51,13 @@ export class UserController {
 
   @Get()
   @UseGuards(AuthGuard("jwt"))
-  @ApiBody({ description: "사용자 정보 불러오기. 쿼리 값이 있을 시 해당 유저 조회" })
+  @ApiBody({ description: "유저 상세정보 조회. 쿼리 값이 있을 시 해당 유저 조회" })
   @ApiResponse({ status: 200, type: UserDto })
-  async getUser(@Request() req: RequestWithUser, @Query("id") id: string): Promise<UserDto> {
+  async getUser(
+    @Request() req: RequestWithUser,
+    @Query("userId", ParseIntPipe) userId: number,
+  ): Promise<UserDto> {
     const reqUserId: number = Number(req.user.id);
-    const userId: number = Number(id);
     if (userId !== 0) {
       return await this.userService.findUserById(userId);
     }

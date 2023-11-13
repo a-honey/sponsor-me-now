@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Post,
   Query,
   Request,
@@ -61,8 +62,7 @@ export class PostController {
   @UseGuards(AuthGuard("jwt"))
   @ApiBody({ description: "게시글 상세 조회" })
   @ApiResponse({ status: 200, type: PostDto })
-  async getPost(@Param("id") id: string): Promise<PostDto> {
-    const postId: number = Number(id);
+  async getPost(@Param("postId", ParseIntPipe) postId: number): Promise<PostDto> {
     return await this.postService.getPostAndIncrementView(postId);
   }
 
@@ -72,9 +72,11 @@ export class PostController {
     description: "게시글 삭제",
   })
   @ApiResponse({ status: 204, type: PostDto })
-  async deletePost(@Request() req: RequestWithUser, @Param("id") id: string) {
+  async deletePost(
+    @Request() req: RequestWithUser,
+    @Param("postId", ParseIntPipe) postId: number,
+  ): Promise<PostDto> {
     const userId: number = Number(req.user.id);
-    const postId: number = Number(id);
 
     return await this.postService.deletePost(postId, userId);
   }
