@@ -3,7 +3,6 @@ import { PrismaClient } from "@prisma/client";
 import { CreatePostDto } from "./dto/createPost.dto";
 import { plainToInstance } from "class-transformer";
 import { PostDto } from "./dto/post.dto";
-
 import { deleteRelativeImage } from "../../utils/deleteRelativeImage";
 
 @Injectable()
@@ -32,6 +31,11 @@ export class PostService {
         _count: {
           select: { like: true },
         },
+        comment: {
+          include: {
+            author: true,
+          },
+        },
       },
     });
 
@@ -40,6 +44,13 @@ export class PostService {
     const postDto: PostDto = plainToInstance(PostDto, post);
     postDto.likeCount = post._count.like;
     delete postDto._count;
+
+    postDto.comments = post.comment.map((comment) => ({
+      content: comment.content,
+      nickname: comment.author.nickname,
+    }));
+    delete postDto.comments;
+
     return postDto;
   }
 

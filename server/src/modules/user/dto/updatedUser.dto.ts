@@ -8,113 +8,108 @@ import {
   IsArray,
   IsDate,
 } from "class-validator";
-import { SerializeOptions } from "@nestjs/common";
 import { Exclude } from "class-transformer";
 import { ApiProperty } from "@nestjs/swagger";
 
-@SerializeOptions({ strategy: "exposeAll" })
-export class AuthDto {
-  @ApiProperty()
+export class UpdatedUserDto {
   @IsNumber()
   @IsNotEmpty()
+  @ApiProperty()
   id: number;
 
-  @ApiProperty()
   @IsEmail()
   @IsNotEmpty()
+  @ApiProperty()
+  @Exclude()
   email: string;
 
-  @ApiProperty()
   @IsString()
   @IsNotEmpty()
+  @ApiProperty()
   username: string;
 
-  @ApiProperty()
   @IsString()
   @IsOptional()
-  @Exclude()
+  @ApiProperty()
   nickname?: string;
 
-  @ApiProperty()
   @IsString()
   @IsNotEmpty()
+  @ApiProperty()
   @Exclude()
   password: string;
 
-  @ApiProperty()
   @IsOptional()
   @IsNumber()
+  @ApiProperty()
   @Exclude()
   snsId?: number;
 
-  @ApiProperty()
   @IsOptional()
   @IsString()
+  @ApiProperty()
   @Exclude()
   provider?: string;
 
-  @ApiProperty()
   @IsOptional()
-  @Exclude()
+  @ApiProperty()
   profileImg?: string;
 
-  @ApiProperty()
   @IsOptional()
   @IsString()
-  @Exclude()
+  @ApiProperty()
   field?: string;
 
-  @ApiProperty()
   @IsOptional()
   @IsString()
-  @Exclude()
+  @ApiProperty()
   description?: string;
 
-  @ApiProperty()
   @IsNotEmpty()
   @IsBoolean()
+  @ApiProperty()
   @Exclude()
   isSponsor!: boolean;
 
-  @ApiProperty()
   @IsOptional()
   @IsArray()
+  @ApiProperty()
   @Exclude()
   subscribe?: [];
 
-  @ApiProperty()
   @IsOptional()
   @IsArray()
+  @ApiProperty()
   @Exclude()
   paymentHistory?: [];
 
-  @ApiProperty()
   @IsOptional()
   @IsArray()
+  @ApiProperty()
   @Exclude()
   post?: [];
 
-  @ApiProperty()
   @IsOptional()
   @IsArray()
+  @ApiProperty()
   @Exclude()
   comment?: [];
 
-  @ApiProperty()
   @IsNotEmpty()
   @IsBoolean()
+  @ApiProperty()
   @Exclude()
   manager!: boolean;
 
-  @ApiProperty()
   @IsNotEmpty()
   @IsDate()
+  @ApiProperty()
   @Exclude()
   createdAt!: Date;
 
-  @ApiProperty()
   @IsOptional()
   @IsDate()
+  @ApiProperty()
   @Exclude()
   updatedAt?: Date;
 }

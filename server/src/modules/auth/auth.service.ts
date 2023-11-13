@@ -1,5 +1,5 @@
 import { Injectable, Res } from "@nestjs/common";
-import { CreatedUserDto } from "./dto/createdUser.dto";
+import { CreateUserDto } from "./dto/createUser.dto";
 import { AuthDto } from "./dto/auth.dto";
 import { JwtService } from "@nestjs/jwt";
 import { UserService } from "../user/user.service";
@@ -18,7 +18,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async createUser(createUserDto: CreatedUserDto): Promise<AuthDto> {
+  async createUser(createUserDto: CreateUserDto): Promise<AuthDto> {
     createUserDto.password = await bcrypt.hash(createUserDto.password, 10);
     const createUser = await this.prisma.user.create({
       data: createUserDto,
@@ -50,6 +50,7 @@ export class AuthService {
 
     res.cookie("access_token", access_token, { httpOnly: true });
     const loginUser: LoginUserDto = {
+      id: id,
       username: username,
       email: email,
       nickname: nickname,

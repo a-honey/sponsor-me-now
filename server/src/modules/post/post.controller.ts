@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Post,
   Query,
   Request,
@@ -15,7 +16,9 @@ import { CreatePostDto } from "./dto/createPost.dto";
 import { PostDto } from "./dto/post.dto";
 import { RequestWithUser } from "../user/interface/requestWithUser";
 import { AuthGuard } from "@nestjs/passport";
-import { ParseIntWithDefaultPipe } from "../../utils/parseIntWithDefaultPipe";
+import { ParseIntWithDefaultPipe } from "../../pipes/parseIntWithDefaultPipe";
+import { ResponsePostDto } from "./dto/responsePost.dto";
+import { ResponsePostListDto } from "./dto/responsePostList.dto";
 
 @ApiTags("Post")
 @Controller("post")
@@ -28,7 +31,7 @@ export class PostController {
     description: "게시글 작성",
     type: CreatePostDto,
   })
-  @ApiResponse({ status: 201, type: PostDto })
+  @ApiResponse({ status: 201, type: ResponsePostDto })
   async createPost(
     @Request() req: RequestWithUser,
     @Body() createPostDto: CreatePostDto,
@@ -42,7 +45,7 @@ export class PostController {
   @ApiBody({
     description: "게시글 리스트, ?search=all 일시 전체조회, 아닐시 후원자 최신게시글 조회",
   })
-  @ApiResponse({ status: 200, type: PostDto })
+  @ApiResponse({ status: 200, type: ResponsePostListDto })
   async getPosts(
     @Request() req: RequestWithUser,
     @Query("page", new ParseIntWithDefaultPipe(1)) page: number,
@@ -57,12 +60,11 @@ export class PostController {
     }
   }
 
-  @Get(":id")
+  @Get(":postId")
   @UseGuards(AuthGuard("jwt"))
   @ApiBody({ description: "게시글 상세 조회" })
   @ApiResponse({ status: 200, type: PostDto })
-  async getPost(@Param("id") id: string): Promise<PostDto> {
-    const postId: number = Number(id);
+  async getPost(@Param("postId", ParseIntPipe) postId: number): Promise<PostDto> {
     return await this.postService.getPostAndIncrementView(postId);
   }
 
@@ -72,9 +74,11 @@ export class PostController {
     description: "게시글 삭제",
   })
   @ApiResponse({ status: 204, type: PostDto })
-  async deletePost(@Request() req: RequestWithUser, @Param("id") id: string) {
+  async deletePost(
+    @Request() req: RequestWithUser,
+    @Param("postId", ParseIntPipe) postId: number,
+  ): Promise<PostDto> {
     const userId: number = Number(req.user.id);
-    const postId: number = Number(id);
 
     return await this.postService.deletePost(postId, userId);
   }

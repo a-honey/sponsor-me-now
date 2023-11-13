@@ -8,11 +8,9 @@ import {
   IsArray,
   IsDate,
 } from "class-validator";
-import { SerializeOptions } from "@nestjs/common";
 import { Exclude } from "class-transformer";
 import { ApiProperty } from "@nestjs/swagger";
 
-@SerializeOptions({ strategy: "exposeAll" })
 export class UserDto {
   @IsNumber()
   @IsNotEmpty()
@@ -43,11 +41,13 @@ export class UserDto {
   @IsOptional()
   @IsNumber()
   @ApiProperty()
+  @Exclude()
   snsId?: number;
 
   @IsOptional()
   @IsString()
   @ApiProperty()
+  @Exclude()
   provider?: string;
 
   @IsOptional()
@@ -72,35 +72,42 @@ export class UserDto {
   @IsOptional()
   @IsArray()
   @ApiProperty()
+  @Exclude()
   subscribe?: [];
 
   @IsOptional()
   @IsArray()
   @ApiProperty()
+  @Exclude()
   paymentHistory?: [];
 
   @IsOptional()
   @IsArray()
   @ApiProperty()
+  @Exclude()
   post?: [];
 
   @IsOptional()
   @IsArray()
   @ApiProperty()
+  @Exclude()
   comment?: [];
 
   @IsNotEmpty()
   @IsBoolean()
   @ApiProperty()
+  @Exclude()
   manager!: boolean;
 
   @IsNotEmpty()
   @IsDate()
   @ApiProperty()
+  @Exclude()
   createdAt!: Date;
 
   @IsOptional()
   @IsDate()
   @ApiProperty()
+  @Exclude()
   updatedAt?: Date;
 }

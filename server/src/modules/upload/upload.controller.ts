@@ -6,6 +6,7 @@ import {
   UploadedFile,
   Req,
   Param,
+  ParseIntPipe,
 } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { AuthGuard } from "@nestjs/passport";
@@ -49,9 +50,8 @@ export class UploadController {
   async uploadPostImage(
     @UploadedFile() file,
     @Req() req: RequestWithUser,
-    @Param("id") id: string,
+    @Param("postId", ParseIntPipe) postId: number,
   ): Promise<string> {
-    const postId: number = Number(id);
     const imageUrl: string = path.join("image", file.filename);
     return this.uploadService.uploadPostImage(postId, imageUrl);
   }

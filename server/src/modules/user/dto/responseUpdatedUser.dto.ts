@@ -1,9 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 
-export class LoginUserDto {
-  @ApiProperty()
-  id: number;
-
+export class ResponseUpdatedUserDto {
   @ApiProperty()
   username: string;
 
@@ -11,11 +8,11 @@ export class LoginUserDto {
   nickname: string;
 
   @ApiProperty()
-  email: string;
+  profileImg: string;
 
   @ApiProperty()
-  isSponsor: true;
+  field: string;
 
   @ApiProperty()
-  token: string;
+  description: string;
 }
