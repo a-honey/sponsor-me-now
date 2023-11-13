@@ -8,11 +8,9 @@ import {
   IsArray,
   IsDate,
 } from "class-validator";
-import { SerializeOptions } from "@nestjs/common";
 import { Exclude } from "class-transformer";
 import { ApiProperty } from "@nestjs/swagger";
 
-@SerializeOptions({ strategy: "exposeAll" })
 export class GetUserListDto {
   @IsNumber()
   @IsNotEmpty()

@@ -14,10 +14,6 @@ export class CommentService {
     parentId: number,
     createCommentDto: CreateCommentDto,
   ): Promise<{ nickname: string; comment: CommentDto }> {
-    const user = await this.prisma.user.findUnique({
-      where: { id: userId },
-    });
-
     const newComment = await this.prisma.comment.create({
       data: {
         ...createCommentDto,

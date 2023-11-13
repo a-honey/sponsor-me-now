@@ -116,7 +116,6 @@ export class UserController {
   @Delete()
   @ApiBody({ description: "유저 + 관련 레코드 삭제" })
   @ApiResponse({ status: 204, type: ResponseUserDto })
-  @SerializeOptions({ strategy: "exposeAll" })
   async deleteUser(@Request() req: RequestWithUser): Promise<UserDto> {
     const userId: number = Number(req.user.id);
     return await this.userService.deleteUser(userId);

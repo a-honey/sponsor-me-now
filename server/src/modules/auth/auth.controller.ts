@@ -32,7 +32,6 @@ export class AuthController {
   @Post()
   @ApiBody({ description: "회원가입", type: SubmitUserDataDto })
   @ApiResponse({ status: 201, type: ResponseCreateUserDto })
-  @SerializeOptions({ strategy: "exposeAll" })
   @UsePipes(new ValidationPipe())
   async createUser(@Body() submitUserDto: SubmitUserDataDto): Promise<AuthDto> {
     if (!this.isValidPassword(submitUserDto)) {

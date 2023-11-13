@@ -19,7 +19,6 @@ export class UploadService {
       const serverUrl: string = process.env.SERVER_URL;
       const relativeImagePath: string = user.profileImg.replace(serverUrl, "").replace(/^\//, "");
       const absoluteImagePath: string = path.join(__dirname, "..", "public", relativeImagePath);
-      console.log(absoluteImagePath);
       if (fs.existsSync(absoluteImagePath)) {
         fs.unlinkSync(absoluteImagePath);
       }
