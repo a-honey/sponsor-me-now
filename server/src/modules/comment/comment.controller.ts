@@ -1,8 +1,22 @@
 import { ApiBody, ApiResponse, ApiTags } from "@nestjs/swagger";
-import { Controller, ParseIntPipe, Post, Query, Request, UseGuards } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Optional,
+  ParseIntPipe,
+  Post,
+  Query,
+  Request,
+  UseGuards,
+  UsePipes,
+  ValidationPipe,
+} from "@nestjs/common";
 import { CommentService } from "./comment.service";
 import { AuthGuard } from "@nestjs/passport";
 import { RequestWithUser } from "../user/interface/requestWithUser";
+import { CreateCommentDto } from "./dto/createComment.dto";
+import { CommentDto } from "./dto/comment.dto";
+import { OptionalIntPipe } from "../../utils/optionalIntPipe";
 
 @ApiTags("Comment")
 @Controller("comment")
@@ -13,9 +27,14 @@ export class CommentController {
   @ApiBody({ description: "댓글 작성 또는 대댓글 작성", type: CreateCommentDto })
   @ApiResponse({ status: 201, type: CommentDto })
   @UseGuards(AuthGuard("jwt"))
+  @UsePipes(new ValidationPipe())
   async createComment(
     @Request() req: RequestWithUser,
+    @Body() createCommentDto: CreateCommentDto,
     @Query("postId", ParseIntPipe) postId: number,
-    @Query("parentId", ParseIntPipe) parentId: number,
-  ) {}
+    @Optional() @Query("parentId", OptionalIntPipe) parentId?: number,
+  ) {
+    const userId: number = Number(req.user.id);
+    return await this.commentService.createComment(userId, postId, parentId, createCommentDto);
+  }
 }

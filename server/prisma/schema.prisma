@@ -92,5 +92,6 @@ model Comment {
   parentId  Int?
   children  Comment[] @relation("CommentToComment")
 
+  @@unique([authorId, parentId, postId])
   @@index([parentId])
 }
