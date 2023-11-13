@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { instance } from '../instance';
 
 interface LoginBodyType {
   email: string;
@@ -6,7 +6,7 @@ interface LoginBodyType {
 }
 const postLogin = async (userData: LoginBodyType) => {
   try {
-    const response = await axios.post('/auth/login', userData);
+    const response = await instance.post('/auth/login', userData);
     return response.data;
   } catch (error) {
     console.error('로그인 에러:', error);

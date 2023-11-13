@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { instance } from '../instance';
 
 export interface UserPutBodyType {
   username?: string;
@@ -10,7 +10,7 @@ export interface UserPutBodyType {
 
 const putUser = async (userData: UserPutBodyType) => {
   try {
-    const response = await axios.put('/user', userData);
+    const response = await instance.put('/user', userData);
     return response.data;
   } catch (error) {
     console.error('putUser 에러', error);

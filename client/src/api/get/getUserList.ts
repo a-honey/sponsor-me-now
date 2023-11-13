@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { instance } from '../instance';
 
 const getUserList = async ({
   page,
@@ -15,7 +15,7 @@ const getUserList = async ({
       limit: limit.toString(),
       search: search,
     }).toString();
-    const response = await axios.get(`/user?${urlQueryString}`);
+    const response = await instance.get(`/user?${urlQueryString}`);
     return response.data;
   } catch (error) {
     console.error('getUserList 에러', error);
