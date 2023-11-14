@@ -1,5 +1,4 @@
-import axios from 'axios';
-
+import { instance } from '../instance';
 export interface RegisterBodyType {
   username: string;
   password: string;
@@ -10,7 +9,7 @@ export interface RegisterBodyType {
 
 const postRegister = async (userData: RegisterBodyType) => {
   try {
-    const response = await axios.post('/auth', userData);
+    const response = await instance.post('/auth', userData);
     return response.data;
   } catch (error) {
     console.error('회원가입 에러:', error);

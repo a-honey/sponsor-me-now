@@ -1,8 +1,8 @@
-import axios from 'axios';
+import { instance } from '../instance';
 
 const getUserByEmail = async (email: string) => {
   try {
-    const response = await axios.get(`/user/internal?email=${email}`);
+    const response = await instance.get(`/user/internal?email=${email}`);
     return response.data;
   } catch (error) {
     console.error('getUserByEmail 에러', error);
