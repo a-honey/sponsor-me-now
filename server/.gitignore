@@ -4,3 +4,4 @@
 .idea
 /server/public/image/
 /nginx.conf
+/dist/
