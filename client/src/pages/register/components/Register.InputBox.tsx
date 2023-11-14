@@ -8,10 +8,10 @@ import { usePostRegisterData } from '@/hooks/useMutations';
 const InputBox = ({ isSponsor }: { isSponsor: boolean }) => {
   const { register, handleSubmit } = useForm<RegisterBodyType>();
 
-  const postRiestMutation = usePostRegisterData();
+  const postRegisterMutation = usePostRegisterData();
 
   const onSubmit = (data: RegisterBodyType) => {
-    postRiestMutation.mutate({ ...data, isSponsor });
+    postRegisterMutation.mutate({ ...data, isSponsor });
   };
 
   return (

@@ -6,9 +6,17 @@ import { useLoginStore } from '@/store';
 import putUser from '@/api/put/putUser';
 
 export const usePostRegisterData = () => {
+  const navigator = useNavigate();
+  const { setLoginId, setLoginUsername } = useLoginStore();
+
   return useMutation({
     mutationFn: postRegister,
-    onSuccess: () => {},
+    onSuccess: (res) => {
+      setLoginId(res.id);
+      setLoginUsername(res.username);
+      navigator('/main');
+      return;
+    },
   });
 };
 
@@ -19,10 +27,13 @@ export const usePostLoginData = () => {
   return useMutation({
     mutationFn: postLogin,
     onSuccess: (res) => {
-      setLoginId(res.data.id);
-      setLoginUsername(res.data.username);
+      setLoginId(res.id);
+      setLoginUsername(res.username);
       navigator('/main');
       return;
+    },
+    onError: (error) => {
+      alert(error);
     },
   });
 };

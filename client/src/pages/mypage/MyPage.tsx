@@ -1,3 +1,4 @@
+import withLoginTrue from '@/components/withLogin';
 import ImgHeader from './components/MyPage.ImgHeader';
 import UserHeader from './components/MyPage.UserHeader';
 
@@ -10,4 +11,4 @@ const MyPage = () => {
   );
 };
 
-export default MyPage;
+export default withLoginTrue(MyPage);

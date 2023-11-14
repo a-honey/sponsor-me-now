@@ -10,7 +10,7 @@ import { useLoginStore } from '@/store';
 const UserHeader = () => {
   const [isEditing, setIsEditing] = useState(false);
   const { loginId } = useLoginStore();
-  const { data: userData } = useGetUserById({ userId: loginId! });
+  const { data: userData, isFetched } = useGetUserById({ userId: loginId! });
   const putMutation = usePutUserData();
 
   const { register, handleSubmit, setValue } = useForm<{
@@ -30,6 +30,10 @@ const UserHeader = () => {
       setValue('description', userData.description);
     }
   }, [userData, setValue]);
+
+  if (!isFetched) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className={styles.container}>
@@ -61,7 +65,7 @@ const UserHeader = () => {
           {isEditing ? (
             <input type="text" {...register('username')} />
           ) : (
-            <div>username</div>
+            <div>{userData.username}</div>
           )}
         </div>
         <div className={styles.item}>
@@ -69,7 +73,7 @@ const UserHeader = () => {
           {isEditing ? (
             <input type="text" {...register('field')} />
           ) : (
-            <div>username</div>
+            <div>{userData.field}</div>
           )}
         </div>
         <div className={styles.item}>
@@ -77,7 +81,7 @@ const UserHeader = () => {
           {isEditing ? (
             <textarea {...register('description')} />
           ) : (
-            <div>username</div>
+            <div>{userData.description}</div>
           )}
         </div>
       </div>
