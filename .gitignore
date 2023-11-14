@@ -1,5 +1,0 @@
-/server/.env
-/server/dist/
-/server/node_modules/
-.idea
-/server/public/image/

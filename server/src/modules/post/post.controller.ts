@@ -24,7 +24,7 @@ import { ResponsePostDto } from "./dto/responsePost.dto";
 import { ResponsePostListDto } from "./dto/responsePostList.dto";
 
 @ApiTags("Post")
-@Controller("post")
+@Controller("api/post")
 export class PostController {
   constructor(private postService: PostService) {}
 

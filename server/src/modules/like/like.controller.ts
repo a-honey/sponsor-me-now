@@ -6,7 +6,7 @@ import { RequestWithUser } from "../user/interface/requestWithUser";
 import { LikeDto } from "./dto/like.dto";
 
 @ApiTags("Like")
-@Controller("like")
+@Controller("api/like")
 export class LikeController {
   constructor(private likeService: LikeService) {}
 

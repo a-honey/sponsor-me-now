@@ -27,7 +27,7 @@ import { ParseIntWithDefaultPipe } from "../../pipes/parseIntWithDefaultPipe";
 import { ResponseUserDto } from "./dto/responseUser.dto";
 
 @ApiTags("User")
-@Controller("user")
+@Controller("api/user")
 export class UserController {
   constructor(private userService: UserService) {}
 

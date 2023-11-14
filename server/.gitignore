@@ -1,0 +1,6 @@
+/.env
+/server/dist/
+/server/node_modules/
+.idea
+/server/public/image/
+/nginx.conf

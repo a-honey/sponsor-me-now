@@ -22,7 +22,7 @@ import { RequestWithUser } from "../user/interface/requestWithUser";
 import { ResponseCreateUserDto } from "./dto/responseCreateUser.dto";
 
 @ApiTags("Auth")
-@Controller("auth")
+@Controller("api/auth")
 export class AuthController {
   constructor(private authService: AuthService) {}
 
@@ -34,6 +34,7 @@ export class AuthController {
   @ApiResponse({ status: 201, type: ResponseCreateUserDto })
   @UsePipes(new ValidationPipe())
   async createUser(@Body() submitUserDto: SubmitUserDataDto): Promise<AuthDto> {
+    console.log(submitUserDto);
     if (!this.isValidPassword(submitUserDto)) {
       throw new HttpException("Passwords do not match", 400);
     }

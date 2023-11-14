@@ -16,7 +16,7 @@ import { RequestWithUser } from "../user/interface/requestWithUser";
 import { ApiBody, ApiResponse, ApiTags } from "@nestjs/swagger";
 
 @ApiTags("Upload")
-@Controller("upload")
+@Controller("api/upload")
 export class UploadController {
   constructor(private readonly uploadService: UploadService) {}
 

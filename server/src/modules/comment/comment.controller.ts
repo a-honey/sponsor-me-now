@@ -23,7 +23,7 @@ import { OptionalIntPipe } from "../../pipes/optionalIntPipe";
 import { ResponseCommentDto } from "./dto/responseComment.dto";
 
 @ApiTags("Comment")
-@Controller("comment")
+@Controller("api/comment")
 export class CommentController {
   constructor(private commentService: CommentService) {}
 
