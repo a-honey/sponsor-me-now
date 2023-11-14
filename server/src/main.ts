@@ -32,7 +32,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
-  await app.listen(3000);
+  await app.listen(process.env.SERVER_PORT);
   if (module.hot) {
     module.hot.accept();
     module.hot.dispose(() => app.close());
