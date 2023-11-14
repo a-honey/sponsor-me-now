@@ -3,12 +3,23 @@ import { AppModule } from "./app.module";
 import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
 import * as dotenv from "dotenv";
 import { ClassSerializerInterceptor, ValidationPipe } from "@nestjs/common";
+import * as helmet from "helmet";
+import * as rateLimit from "express-rate-limit";
+import { ExpressAdapter } from "@nestjs/platform-express";
 
 declare const module: any;
 dotenv.config();
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, new ExpressAdapter());
+  app.enableCors();
+  app.use(helmet.default());
+  app.use(
+    rateLimit.default({
+      windowMs: 15 * 60 * 1000,
+      limit: 1000,
+    }),
+  );
 
   const config = new DocumentBuilder()
     .setTitle("Sponsor me now API")
