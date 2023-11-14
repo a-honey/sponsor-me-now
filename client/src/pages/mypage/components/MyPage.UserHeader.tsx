@@ -1,15 +1,19 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from '../styles/MyPage.UserHeader.module.scss';
 import { RiEdit2Line, RiSave3Line } from 'react-icons/ri';
 import { useForm } from 'react-hook-form';
 import { usePutUserData } from '@/hooks/useMutations';
 import { UserPutBodyType } from '@/api/put/putUser';
+import { useGetUserById } from '@/hooks/useQueries';
+import { useLoginStore } from '@/store';
 
 const UserHeader = () => {
   const [isEditing, setIsEditing] = useState(false);
+  const { loginId } = useLoginStore();
+  const { data: userData } = useGetUserById({ userId: loginId! });
   const putMutation = usePutUserData();
 
-  const { register, handleSubmit } = useForm<{
+  const { register, handleSubmit, setValue } = useForm<{
     username: string;
     field: string;
     description: string;
@@ -18,6 +22,14 @@ const UserHeader = () => {
   const onClick = (data: UserPutBodyType) => {
     putMutation.mutate(data);
   };
+
+  useEffect(() => {
+    if (userData) {
+      setValue('username', userData.username);
+      setValue('field', userData.field);
+      setValue('description', userData.description);
+    }
+  }, [userData, setValue]);
 
   return (
     <div className={styles.container}>
