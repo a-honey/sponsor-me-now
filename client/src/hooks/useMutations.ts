@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { useLoginStore } from '@/store';
 import putUser from '@/api/put/putUser';
 import { useQueryClient } from '@tanstack/react-query';
+import postUserProfile from '@/api/post/postUserProfile';
+import postUserBackground from '@/api/post/postUserBackground';
 
 export const usePostRegisterData = () => {
   const navigator = useNavigate();
@@ -49,6 +51,34 @@ export const usePutUserData = ({ userId }: { userId: number }) => {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['userId', userId.toString()],
+      });
+    },
+  });
+};
+
+export const usePutUserProfile = () => {
+  const queryClient = useQueryClient();
+  const { loginId } = useLoginStore();
+
+  return useMutation({
+    mutationFn: postUserProfile,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['userId', loginId?.toString()],
+      });
+    },
+  });
+};
+
+export const usePutUserBackground = () => {
+  const queryClient = useQueryClient();
+  const { loginId } = useLoginStore();
+
+  return useMutation({
+    mutationFn: postUserBackground,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['userId', loginId?.toString()],
       });
     },
   });
