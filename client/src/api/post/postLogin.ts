@@ -1,6 +1,6 @@
 import { instance } from '../instance';
 
-interface LoginBodyType {
+export interface LoginBodyType {
   email: string;
   password: string;
 }

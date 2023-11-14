@@ -1,3 +1,4 @@
+import withLoginTrue from '@/components/withLogin';
 import News from './components/Main.News';
 import RecommendUsers from './components/Main.RecommendUsers';
 
@@ -10,4 +11,4 @@ const Main = () => {
   );
 };
 
-export default Main;
+export default withLoginTrue(Main);

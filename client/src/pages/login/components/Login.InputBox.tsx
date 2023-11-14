@@ -1,6 +1,7 @@
 import { useForm } from 'react-hook-form';
 import styles from '../styles/Login.InputBox.module.scss';
 import { Link } from 'react-router-dom';
+import { usePostLoginData } from '@/hooks/useMutations';
 interface LoginDataType {
   email: string;
   password: string;
@@ -8,9 +9,11 @@ interface LoginDataType {
 const InputBox = () => {
   const { register, handleSubmit } = useForm<LoginDataType>();
 
+  const postLoginMutation = usePostLoginData();
   const onSubmit = (data: LoginDataType) => {
-    console.log(data);
+    postLoginMutation.mutate(data);
   };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
       <label>이메일</label>

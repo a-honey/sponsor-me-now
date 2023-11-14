@@ -1,8 +1,8 @@
 import { instance } from '../instance';
 
-const getUserById = async (id: string) => {
+const getUserById = async (id: number) => {
   try {
-    const response = await instance.get(`/user?id=${id}`);
+    const response = await instance.get(`/user?userId=${id}`);
     return response.data;
   } catch (error) {
     console.error('getUserById 에러', error);
