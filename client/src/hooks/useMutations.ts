@@ -4,6 +4,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { useLoginStore } from '@/store';
 import putUser from '@/api/put/putUser';
+import { useQueryClient } from '@tanstack/react-query';
 
 export const usePostRegisterData = () => {
   const navigator = useNavigate();
@@ -40,9 +41,15 @@ export const usePostLoginData = () => {
   });
 };
 
-export const usePutUserData = () => {
+export const usePutUserData = ({ userId }: { userId: number }) => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: putUser,
-    onSuccess: () => {},
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['userId', userId.toString()],
+      });
+    },
   });
 };

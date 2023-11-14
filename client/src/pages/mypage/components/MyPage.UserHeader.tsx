@@ -11,7 +11,7 @@ const UserHeader = () => {
   const [isEditing, setIsEditing] = useState(false);
   const { loginId } = useLoginStore();
   const { data: userData, isFetched } = useGetUserById({ userId: loginId! });
-  const putMutation = usePutUserData();
+  const putMutation = usePutUserData({ userId: loginId! });
 
   const { register, handleSubmit, setValue } = useForm<{
     username: string;
@@ -42,8 +42,10 @@ const UserHeader = () => {
           <div
             className={styles.icon}
             onClick={() => {
-              handleSubmit(onClick);
-              setIsEditing(false);
+              handleSubmit((data) => {
+                onClick(data);
+                setIsEditing(false);
+              })();
             }}
           >
             <RiSave3Line />
