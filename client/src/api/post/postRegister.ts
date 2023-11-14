@@ -1,4 +1,5 @@
 import { instance } from '../instance';
+import postLogin from './postLogin';
 export interface RegisterBodyType {
   username: string;
   password: string;
@@ -10,6 +11,7 @@ export interface RegisterBodyType {
 const postRegister = async (userData: RegisterBodyType) => {
   try {
     const response = await instance.post('/auth', userData);
+    postLogin({ email: userData.email, password: userData.password });
     return response.data;
   } catch (error) {
     console.error('회원가입 에러:', error);
