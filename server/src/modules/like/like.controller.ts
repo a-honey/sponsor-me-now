@@ -10,7 +10,7 @@ import { LikeDto } from "./dto/like.dto";
 export class LikeController {
   constructor(private likeService: LikeService) {}
 
-  @Post(":id")
+  @Post(":postId")
   @UseGuards(AuthGuard("jwt"))
   @ApiBody({
     description: "좋아요. 토글방식",

@@ -66,6 +66,7 @@ model Post {
   comment   Comment[]
   like      Like[]
 
+  @@unique([id, authorId])
   @@index([authorId])
 }
 

@@ -109,4 +109,21 @@ export class PostService {
 
     return plainToInstance(PostDto, deletedPost);
   }
+
+  async updatedPost(
+    userId: number,
+    postId: number,
+    updatedPostData: CreatePostDto,
+  ): Promise<PostDto> {
+    const updatedPost = await this.prisma.post.update({
+      where: {
+        id_authorId: {
+          id: postId,
+          authorId: userId,
+        },
+      },
+      data: { ...updatedPostData },
+    });
+    return plainToInstance(PostDto, updatedPost);
+  }
 }

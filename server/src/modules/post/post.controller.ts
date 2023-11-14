@@ -6,9 +6,12 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Put,
   Query,
   Request,
   UseGuards,
+  UsePipes,
+  ValidationPipe,
 } from "@nestjs/common";
 import { PostService } from "./post.service";
 import { ApiBody, ApiResponse, ApiTags } from "@nestjs/swagger";
@@ -27,6 +30,7 @@ export class PostController {
 
   @Post()
   @UseGuards(AuthGuard("jwt"))
+  @UsePipes(new ValidationPipe())
   @ApiBody({
     description: "게시글 작성",
     type: CreatePostDto,
@@ -68,7 +72,7 @@ export class PostController {
     return await this.postService.getPostAndIncrementView(postId);
   }
 
-  @Delete(":id")
+  @Delete(":postId")
   @UseGuards(AuthGuard("jwt"))
   @ApiBody({
     description: "게시글 삭제",
@@ -81,5 +85,19 @@ export class PostController {
     const userId: number = Number(req.user.id);
 
     return await this.postService.deletePost(postId, userId);
+  }
+
+  @Put(":postId")
+  @UseGuards(AuthGuard("jwt"))
+  @UsePipes(new ValidationPipe())
+  @ApiBody({ description: "게시글 수정", type: CreatePostDto })
+  @ApiResponse({ status: 201, type: ResponsePostDto })
+  async updatePost(
+    @Request() req: RequestWithUser,
+    @Param("postId") postId: number,
+    @Body() updatedPostData: CreatePostDto,
+  ): Promise<PostDto> {
+    const userId: number = Number(req.user.id);
+    return await this.postService.updatedPost(userId, postId, updatedPostData);
   }
 }
