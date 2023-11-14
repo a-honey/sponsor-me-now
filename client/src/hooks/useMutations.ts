@@ -2,23 +2,26 @@ import postLogin from '@/api/post/postLogin';
 import postRegister from '@/api/post/postRegister';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
+import { useLoginStore } from '@/store';
 
 export const usePostRegisterData = () => {
-  const navigator = useNavigate();
   return useMutation({
     mutationFn: postRegister,
-    onSuccess: () => {
-      navigator('/main');
-    },
+    onSuccess: () => {},
   });
 };
 
 export const usePostLoginData = () => {
   const navigator = useNavigate();
+  const { setLoginId, setLoginUsername } = useLoginStore();
+
   return useMutation({
     mutationFn: postLogin,
-    onSuccess: () => {
+    onSuccess: (res) => {
+      setLoginId(res.data.id);
+      setLoginUsername(res.data.username);
       navigator('/main');
+      return;
     },
   });
 };
