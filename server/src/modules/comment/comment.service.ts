@@ -3,6 +3,7 @@ import { Injectable } from "@nestjs/common";
 import { PrismaClient } from "@prisma/client";
 import { plainToInstance } from "class-transformer";
 import { CommentDto } from "./dto/comment.dto";
+import { ResponseCommentDto } from "./dto/responseComment.dto";
 
 @Injectable()
 export class CommentService {
@@ -13,7 +14,7 @@ export class CommentService {
     postId: number,
     parentId: number,
     createCommentDto: CreateCommentDto,
-  ): Promise<{ nickname: string; comment: CommentDto }> {
+  ): Promise<ResponseCommentDto> {
     const newComment = await this.prisma.comment.create({
       data: {
         ...createCommentDto,
@@ -26,6 +27,39 @@ export class CommentService {
       },
     });
     const { author, ...rest } = newComment;
-    return { comment: plainToInstance(CommentDto, rest), nickname: author.nickname };
+    return { ...plainToInstance(CommentDto, rest), nickname: author.nickname };
+  }
+
+  async updateComment(
+    userId: number,
+    commentId: number,
+    updateCommentDto: CreateCommentDto,
+  ): Promise<ResponseCommentDto> {
+    const updatedComment = await this.prisma.comment.update({
+      where: {
+        id_authorId: {
+          id: commentId,
+          authorId: userId,
+        },
+      },
+      data: { ...updateCommentDto },
+      include: {
+        author: true,
+      },
+    });
+    const { author, ...rest } = updatedComment;
+    return { ...plainToInstance(CommentDto, updatedComment), nickname: author.nickname };
+  }
+
+  async deleteComment(userId: number, commentId: number): Promise<CommentDto> {
+    const deleteComment = await this.prisma.comment.delete({
+      where: {
+        id_authorId: {
+          id: commentId,
+          authorId: userId,
+        },
+      },
+    });
+    return plainToInstance(CommentDto, deleteComment);
   }
 }

@@ -66,6 +66,7 @@ model Post {
   comment   Comment[]
   like      Like[]
 
+  @@unique([id, authorId])
   @@index([authorId])
 }
 
@@ -92,6 +93,6 @@ model Comment {
   parentId  Int?
   children  Comment[] @relation("CommentToComment")
 
-  @@unique([authorId, parentId, postId])
+  @@unique([id, authorId])
   @@index([parentId])
 }
