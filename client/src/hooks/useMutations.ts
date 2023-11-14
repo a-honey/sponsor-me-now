@@ -7,13 +7,14 @@ import putUser from '@/api/put/putUser';
 
 export const usePostRegisterData = () => {
   const navigator = useNavigate();
-  const { setLoginId, setLoginUsername } = useLoginStore();
+  const { setLoginId, setLoginUsername, setToken } = useLoginStore();
 
   return useMutation({
     mutationFn: postRegister,
     onSuccess: (res) => {
       setLoginId(res.id);
       setLoginUsername(res.username);
+      setToken(res.token);
       navigator('/main');
       return;
     },
@@ -22,13 +23,14 @@ export const usePostRegisterData = () => {
 
 export const usePostLoginData = () => {
   const navigator = useNavigate();
-  const { setLoginId, setLoginUsername } = useLoginStore();
+  const { setLoginId, setLoginUsername, setToken } = useLoginStore();
 
   return useMutation({
     mutationFn: postLogin,
     onSuccess: (res) => {
       setLoginId(res.id);
       setLoginUsername(res.username);
+      setToken(res.token);
       navigator('/main');
       return;
     },
