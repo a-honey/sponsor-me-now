@@ -2,7 +2,9 @@
 /server/dist/
 /server/node_modules/
 .idea
-/server/public/image/
 /nginx.conf
 /dist/
 /node_modules/
+/node_modules
+/dist
+/public/image/
