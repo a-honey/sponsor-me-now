@@ -7,6 +7,7 @@ import putUser from '@/api/put/putUser';
 import { useQueryClient } from '@tanstack/react-query';
 import postUserProfile from '@/api/post/postUserProfile';
 import postUserBackground from '@/api/post/postUserBackground';
+import postPost from '@/api/post/postPost';
 
 export const usePostRegisterData = () => {
   const navigator = useNavigate();
@@ -81,5 +82,12 @@ export const usePutUserBackground = () => {
         queryKey: ['userId', loginId?.toString()],
       });
     },
+  });
+};
+
+export const usePostPost = () => {
+  return useMutation({
+    mutationFn: postPost,
+    onSuccess: () => {},
   });
 };
