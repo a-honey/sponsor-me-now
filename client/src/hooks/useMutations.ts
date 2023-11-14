@@ -3,6 +3,7 @@ import postRegister from '@/api/post/postRegister';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { useLoginStore } from '@/store';
+import putUser from '@/api/put/putUser';
 
 export const usePostRegisterData = () => {
   return useMutation({
@@ -23,5 +24,12 @@ export const usePostLoginData = () => {
       navigator('/main');
       return;
     },
+  });
+};
+
+export const usePutUserData = () => {
+  return useMutation({
+    mutationFn: putUser,
+    onSuccess: () => {},
   });
 };

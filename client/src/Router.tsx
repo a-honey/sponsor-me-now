@@ -8,6 +8,7 @@ import Main from './pages/main/Main';
 import Hub from './pages/hub/Hub';
 import List from './pages/list/List';
 import Intro from './pages/intro/Intro';
+import MyPage from './pages/mypage/MyPage';
 
 const Router = () => {
   return (
@@ -21,6 +22,7 @@ const Router = () => {
           <Route path="/hub" element={<Hub />} />
           <Route path="/list" element={<List />} />
           <Route path="/payment" element={<Payment />} />
+          <Route path="/mypage" element={<MyPage />} />
           <Route path="/user/:id" element={<UserId />} />
         </Route>
       </Routes>

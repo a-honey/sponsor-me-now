@@ -12,6 +12,7 @@ const Nav = ({ toggleIsOpenNav }: { toggleIsOpenNav: () => void }) => {
         <Link to="/main">Home</Link>
         <Link to="/hub">Hub</Link>
         <Link to="/list">My Sponsor</Link>
+        <Link to="/mypage">My Page</Link>
         <Link to="/payment">Payment History</Link>
       </div>
       <div>
