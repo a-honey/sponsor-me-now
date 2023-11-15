@@ -14,8 +14,12 @@ const PostItemById = ({
 
   return (
     <div className={styles.container}>
-      <Content data={data} />
-      <Comment data={data?.comment} />
+      {data && (
+        <>
+          <Content data={data} />
+          <Comment data={data?.comment} />
+        </>
+      )}
       <button className={styles.gray} type="button" onClick={toggleIsOpenPost}>
         닫기
       </button>
