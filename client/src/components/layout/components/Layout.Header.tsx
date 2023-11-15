@@ -3,6 +3,7 @@ import styles from '../styles/Layout.Header.module.scss';
 import { RxHamburgerMenu, RxBell } from 'react-icons/rx';
 import Nav from './Layout.Nav';
 import { Link, useLocation } from 'react-router-dom';
+import useLogout from '@/hooks/useLogout';
 
 export const PATHNAME_LIST = [
   { to: '/main', name: 'home' },
@@ -13,6 +14,7 @@ export const PATHNAME_LIST = [
 ];
 const Header = () => {
   const [isOpenNav, setIsOpenNav] = useState(false);
+  const handleLogout = useLogout();
   const location = useLocation();
 
   const toggleIsOpenNav = () => {
@@ -40,7 +42,7 @@ const Header = () => {
           <RxHamburgerMenu onClick={toggleIsOpenNav}>목록</RxHamburgerMenu>
         </div>
         <div className={styles.pcIcons}>
-          <div>로그아웃</div>
+          <div onClick={handleLogout}>로그아웃</div>
         </div>
       </header>
       {isOpenNav && <Nav toggleIsOpenNav={toggleIsOpenNav} />}
