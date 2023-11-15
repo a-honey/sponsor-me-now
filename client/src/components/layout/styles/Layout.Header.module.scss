@@ -34,9 +34,21 @@
     display: flex;
     gap: 20px;
     a {
+      position: relative;
       text-transform: uppercase;
       font-weight: 700;
       font-size: 15px;
+      padding: 10px;
+      &.active::after,
+      &:hover::after {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        content: ' ';
+        height: 5px;
+        background-color: #005a34;
+      }
     }
     @media only screen and (max-width: 700px) {
       display: none;

@@ -2,10 +2,18 @@ import { useState } from 'react';
 import styles from '../styles/Layout.Header.module.scss';
 import { RxHamburgerMenu, RxBell } from 'react-icons/rx';
 import Nav from './Layout.Nav';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
+export const PATHNAME_LIST = [
+  { to: '/main', name: 'home' },
+  { to: '/hub', name: 'hub' },
+  { to: '/list', name: 'my sponsor' },
+  { to: '/mypage', name: 'my page' },
+  { to: '/payment', name: 'payment history' },
+];
 const Header = () => {
   const [isOpenNav, setIsOpenNav] = useState(false);
+  const location = useLocation();
 
   const toggleIsOpenNav = () => {
     setIsOpenNav((prev) => !prev);
@@ -18,11 +26,14 @@ const Header = () => {
           <div>Sponsor Me Now</div>
         </div>
         <div className={styles.links}>
-          <Link to="/main">Home</Link>
-          <Link to="/hub">Hub</Link>
-          <Link to="/list">My Sponsor</Link>
-          <Link to="/mypage">My Page</Link>
-          <Link to="/payment">Payment History</Link>
+          {PATHNAME_LIST.map((item) => (
+            <Link
+              to={item.to}
+              className={location.pathname === item.to ? styles.active : ''}
+            >
+              {item.name}
+            </Link>
+          ))}
         </div>
         <div className={styles.icons}>
           <RxBell>알림</RxBell>
