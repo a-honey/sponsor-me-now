@@ -1,12 +1,15 @@
+import { ResponsePostByIdType } from '@/api/get/getPostById';
 import styles from '../PostItem.module.scss';
 
-const Content = () => {
+const Content = ({ data }: { data: ResponsePostByIdType }) => {
+  const { id, title, content, createdAt, likeCount } = data;
   return (
     <div className={styles.contentContainer}>
-      <h2>제목</h2>
-      <h3>날짜</h3>
+      <h2>{title}</h2>
+      <div>{likeCount}</div>
+      <h3>{createdAt}</h3>
       <h3>작성자 정보</h3>
-      <div>내용</div>
+      <div className={styles.content}>{content}</div>
     </div>
   );
 };

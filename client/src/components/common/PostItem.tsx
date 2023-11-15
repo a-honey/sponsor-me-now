@@ -28,7 +28,9 @@ const PostItem = ({
         <div className={styles.title}>{title}</div>
         <div>작성자{authorId}</div>
       </div>
-      {isOpenPost && <PostItemById toggleIsOpenPost={toggleIsOpenPost} />}
+      {isOpenPost && (
+        <PostItemById postId={id} toggleIsOpenPost={toggleIsOpenPost} />
+      )}
     </>
   );
 };

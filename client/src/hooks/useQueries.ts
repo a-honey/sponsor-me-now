@@ -1,3 +1,4 @@
+import getPostById from '@/api/get/getPostById';
 import getPostList from '@/api/get/getPostList';
 import getUserById from '@/api/get/getUserById';
 import getUserList from '@/api/get/getUserList';
@@ -37,5 +38,12 @@ export const useGetPostList = ({
   return useQuery({
     queryKey: ['postList', page.toString(), search],
     queryFn: () => getPostList({ page, limit, search }),
+  });
+};
+
+export const useGetPostById = ({ postId }: { postId: number }) => {
+  return useQuery({
+    queryKey: ['postId', postId.toString()],
+    queryFn: () => getPostById(postId),
   });
 };
