@@ -1,0 +1,21 @@
+.container {
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  position: absolute;
+  height: calc(100vh - 40px);
+  right: 0;
+  left: 0;
+  bottom: 0;
+  gap: 20px;
+  border-radius: 5px;
+  z-index: 99;
+  button {
+    border-radius: 5px;
+    padding: 15px;
+    &.gray {
+      background-color: #ededed;
+    }
+  }
+}
