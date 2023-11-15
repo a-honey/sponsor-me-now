@@ -7,7 +7,11 @@ import { UserPutBodyType } from '@/api/put/putUser';
 import { useGetUserById } from '@/hooks/useQueries';
 import { useLoginStore } from '@/store';
 
-const UserHeader = () => {
+const UserHeader = ({
+  toggleIsWritingPost,
+}: {
+  toggleIsWritingPost: () => void;
+}) => {
   const [isEditing, setIsEditing] = useState(false);
   const { loginId } = useLoginStore();
   const { data: userData, isFetched } = useGetUserById({ userId: loginId! });
@@ -87,6 +91,7 @@ const UserHeader = () => {
           )}
         </div>
       </div>
+      <button onClick={toggleIsWritingPost}>게시글 작성하기</button>
     </div>
   );
 };

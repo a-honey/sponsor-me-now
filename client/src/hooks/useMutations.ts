@@ -88,6 +88,8 @@ export const usePutUserBackground = () => {
 export const usePostPost = () => {
   return useMutation({
     mutationFn: postPost,
-    onSuccess: () => {},
+    onSuccess: (res) => {
+      console.log(res);
+    },
   });
 };

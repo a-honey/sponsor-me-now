@@ -6,10 +6,10 @@ export interface PostBodyType {
 }
 const postPost = async (body: PostBodyType) => {
   try {
-    const response = await instance.post('/user', body);
+    const response = await instance.post('/post', body);
     return response.data;
   } catch (error) {
-    console.error('로그인 에러:', error);
+    console.error('postPost:', error);
     throw error;
   }
 };
