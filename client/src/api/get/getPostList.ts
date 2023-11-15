@@ -3,7 +3,16 @@ import { instance } from '../instance';
 interface ResponseBodyType {
   totalPage: number;
   currentPage: number;
-  posts: [];
+  posts: {
+    id: number;
+    title: string;
+    content: string;
+    createdAt: string;
+    updatedAt: string;
+    authorId: number;
+    viewCount: number;
+    postImg: null | string;
+  }[];
 }
 
 const getPostList = async ({

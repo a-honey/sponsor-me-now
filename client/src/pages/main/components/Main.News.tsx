@@ -3,7 +3,7 @@ import PostItem from '../../../components/common/PostItem';
 import styles from '../styles/Main.News.module.scss';
 
 const News = () => {
-  const { data: postData, isFetched } = useGetPostList({
+  const { data: postData } = useGetPostList({
     page: 1,
     limit: 7,
     search: 'my',
@@ -11,16 +11,9 @@ const News = () => {
 
   return (
     <div className={styles.container}>
-      {postData?.posts.map((item) => (
-        <div>item</div>
+      {postData?.posts?.map((item) => (
+        <PostItem data={item} />
       ))}
-      <PostItem />
-      <PostItem />
-      <PostItem />
-      <PostItem />
-      <PostItem />
-      <PostItem />
-      <PostItem />
     </div>
   );
 };
