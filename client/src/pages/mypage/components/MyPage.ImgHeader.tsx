@@ -7,7 +7,9 @@ const ImgHeader = () => {
   const putMutation = usePutUserBackground();
 
   const handleClick = (img: File) => {
-    putMutation.mutate(img);
+    const body = new FormData();
+    body.append('profileBackgroundImage', img);
+    putMutation.mutate(body);
   };
 
   const { handleImgChange, imgRef } = useImgChange(handleClick);
@@ -27,7 +29,9 @@ const ProfileImg = () => {
   const putMutation = usePutUserProfile();
 
   const handleClick = (img: File) => {
-    putMutation.mutate(img);
+    const body = new FormData();
+    body.append('profileImage', img);
+    putMutation.mutate(body);
   };
 
   const { handleImgChange, imgRef } = useImgChange(handleClick);

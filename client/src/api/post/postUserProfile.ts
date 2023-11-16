@@ -1,8 +1,8 @@
 import { fileInstance } from '../instance';
 
-const postUserProfile = async (img: File) => {
+const postUserProfile = async (body: FormData) => {
   try {
-    const response = await fileInstance.post('/upload/profile', img);
+    const response = await fileInstance.post('/upload/profile', body);
     return response.data;
   } catch (error) {
     console.error('postUserProfile 에러:', error);
