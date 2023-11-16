@@ -1,11 +1,29 @@
 .container {
-  margin-top: 50px;
+  margin-top: 20px;
+  gap: 20px;
   display: flex;
   flex-direction: column;
   .contentContainer {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
+    gap: 10px;
+    .item {
+      display: grid;
+      grid-template-columns: 40px 200px;
+      grid-template-rows: 20px;
+      align-items: center;
+      label {
+        font-weight: 700;
+      }
+      div {
+        font-size: 15px;
+      }
+      input,
+      textarea {
+        border: 1px solid #ededed;
+      }
+    }
   }
   button {
     border-radius: 5px;
