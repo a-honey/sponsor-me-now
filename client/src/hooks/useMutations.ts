@@ -8,6 +8,8 @@ import { useQueryClient } from '@tanstack/react-query';
 import postUserProfile from '@/api/post/postUserProfile';
 import postUserBackground from '@/api/post/postUserBackground';
 import postPost from '@/api/post/postPost';
+import deleteUser from '@/api/delete/deleteUser';
+import useLogout from './useLogout';
 
 export const usePostRegisterData = () => {
   const navigator = useNavigate();
@@ -81,6 +83,16 @@ export const usePutUserBackground = () => {
       queryClient.invalidateQueries({
         queryKey: ['userId', loginId?.toString()],
       });
+    },
+  });
+};
+
+export const useDeleteUser = () => {
+  const handleLogout = useLogout();
+  return useMutation({
+    mutationFn: deleteUser,
+    onSuccess: () => {
+      handleLogout();
     },
   });
 };

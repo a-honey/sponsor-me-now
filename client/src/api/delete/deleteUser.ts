@@ -1,8 +1,8 @@
-import axios from 'axios';
+import { instance } from '../instance';
 
 const deleteUser = async () => {
   try {
-    const response = await axios.delete(`/user`);
+    const response = await instance.delete(`/user`);
     return response.data;
   } catch (error) {
     console.error('deleteUser 에러', error);

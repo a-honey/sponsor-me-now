@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import styles from '../styles/MyPage.UserHeader.module.scss';
 import { RiEdit2Line, RiSave3Line } from 'react-icons/ri';
+import { RxTrash } from 'react-icons/rx';
 import { useForm } from 'react-hook-form';
-import { usePutUserData } from '@/hooks/useMutations';
+import { useDeleteUser, usePutUserData } from '@/hooks/useMutations';
 import { UserPutBodyType } from '@/api/put/putUser';
 import { useGetUserById } from '@/hooks/useQueries';
 import { useLoginStore } from '@/store';
@@ -15,7 +16,9 @@ const UserHeader = ({
   const [isEditing, setIsEditing] = useState(false);
   const { loginId } = useLoginStore();
   const { data: userData, isFetched } = useGetUserById({ userId: loginId! });
+
   const putMutation = usePutUserData({ userId: loginId! });
+  const deleteMutation = useDeleteUser();
 
   const { register, handleSubmit, setValue } = useForm<{
     username: string;
@@ -25,6 +28,13 @@ const UserHeader = ({
 
   const onClick = (data: UserPutBodyType) => {
     putMutation.mutate(data);
+  };
+
+  const handleDeleteBtnClick = () => {
+    const confirmDelete = window.confirm('탈퇴하시겠습니까?');
+    if (confirmDelete) {
+      deleteMutation.mutate();
+    }
   };
 
   useEffect(() => {
@@ -64,6 +74,9 @@ const UserHeader = ({
             <RiEdit2Line />
           </div>
         )}
+        <div className={styles.icon} onClick={handleDeleteBtnClick}>
+          <RxTrash />
+        </div>
       </div>
       <div className={styles.contentContainer}>
         <div className={styles.item}>
