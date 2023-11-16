@@ -4,6 +4,7 @@ import { RxHamburgerMenu, RxBell } from 'react-icons/rx';
 import Nav from './Layout.Nav';
 import { Link, useLocation } from 'react-router-dom';
 import useLogout from '@/hooks/useLogout';
+import { useLoginStore } from '@/store';
 
 export const PATHNAME_LIST = [
   { to: '/main', name: 'home' },
@@ -16,6 +17,7 @@ const Header = () => {
   const [isOpenNav, setIsOpenNav] = useState(false);
   const handleLogout = useLogout();
   const location = useLocation();
+  const { loginId } = useLoginStore();
 
   const toggleIsOpenNav = () => {
     setIsOpenNav((prev) => !prev);
@@ -42,7 +44,14 @@ const Header = () => {
           <RxHamburgerMenu onClick={toggleIsOpenNav}>목록</RxHamburgerMenu>
         </div>
         <div className={styles.pcIcons}>
-          <div onClick={handleLogout}>로그아웃</div>
+          {loginId ? (
+            <div onClick={handleLogout}>로그아웃</div>
+          ) : (
+            <div className={styles.logins}>
+              <Link to="/login">로그인</Link>
+              <Link to="/register">회원가입</Link>
+            </div>
+          )}
         </div>
       </header>
       {isOpenNav && <Nav toggleIsOpenNav={toggleIsOpenNav} />}
