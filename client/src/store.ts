@@ -4,16 +4,17 @@ interface LoginStore {
   loginId: number | null;
   loginUsername: string | null;
   token: string | null;
-  setLoginId: (id: number) => void;
-  setLoginUsername: (username: string) => void;
-  setToken: (token: string) => void;
+  setLoginId: (id: number | null) => void;
+  setLoginUsername: (username: string | null) => void;
+  setToken: (token: string | null) => void;
 }
 
 export const useLoginStore = create<LoginStore>((set) => ({
   loginId: null,
   loginUsername: null,
   token: null,
-  setLoginId: (id: number) => set({ loginId: id }),
-  setLoginUsername: (username: string) => set({ loginUsername: username }),
-  setToken: (token: string) => set({ token }),
+  setLoginId: (id: number | null) => set({ loginId: id }),
+  setLoginUsername: (username: string | null) =>
+    set({ loginUsername: username }),
+  setToken: (token: string | null) => set({ token }),
 }));

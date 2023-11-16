@@ -3,7 +3,16 @@ import { instance } from '../instance';
 interface ResponseBodyType {
   totalPage: number;
   currentPage: number;
-  posts: [];
+  posts: {
+    id: number;
+    title: string;
+    content: string;
+    createdAt: string;
+    updatedAt: string;
+    authorId: number;
+    viewCount: number;
+    postImg: null | string;
+  }[];
 }
 
 const getPostList = async ({
@@ -13,16 +22,11 @@ const getPostList = async ({
 }: {
   page: number;
   limit: number;
-  search: string;
+  search?: string;
 }) => {
   try {
-    const urlQueryString = new URLSearchParams({
-      page: page.toString(),
-      limit: limit.toString(),
-      search: search,
-    }).toString();
     const response = await instance.get<ResponseBodyType>(
-      `/post/list?${urlQueryString}`,
+      `/post/list?page=${page}&limit=${limit}${search && `&search=${search}`}`,
     );
     return response.data;
   } catch (error) {

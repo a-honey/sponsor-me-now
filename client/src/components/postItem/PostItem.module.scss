@@ -10,29 +10,39 @@
   bottom: 0;
   gap: 20px;
   border-radius: 5px;
-  h2 {
-    font-weight: 700;
-  }
-  div {
-    display: grid;
-    grid-template-columns: 50px 1fr;
-    label {
-      font-weight: 700;
-    }
-    input,
-    textarea {
-      border: 1px solid #ededed;
-    }
-  }
+  z-index: 99;
   button {
     border-radius: 5px;
     padding: 15px;
     &.green {
       background-color: #005a34;
-      color: #ffffff;
+      color: white;
     }
     &.gray {
       background-color: #ededed;
     }
   }
+}
+
+.contentContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  h2 {
+    font-weight: 700;
+  }
+  .content {
+    background-color: #ededed;
+    height: 300px;
+    padding: 10px;
+  }
+}
+
+.commentItemContainer {
+}
+
+.commentAddContainer {
+  display: grid;
+  grid-template-columns: 1fr 60px;
+  gap: 10px;
 }

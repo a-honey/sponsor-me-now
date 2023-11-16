@@ -1,6 +1,7 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styles from '../styles/Layout.Nav.module.scss';
 import { useEffect } from 'react';
+import { PATHNAME_LIST } from './Layout.Header';
 
 const Nav = ({ toggleIsOpenNav }: { toggleIsOpenNav: () => void }) => {
   const navigator = useNavigate();
@@ -15,11 +16,14 @@ const Nav = ({ toggleIsOpenNav }: { toggleIsOpenNav: () => void }) => {
         X
       </button>
       <div className={styles.links}>
-        <Link to="/main">Home</Link>
-        <Link to="/hub">Hub</Link>
-        <Link to="/list">My Sponsor</Link>
-        <Link to="/mypage">My Page</Link>
-        <Link to="/payment">Payment History</Link>
+        {PATHNAME_LIST.map((item) => (
+          <Link
+            to={item.to}
+            className={location.pathname === item.to ? styles.active : ''}
+          >
+            {item.name}
+          </Link>
+        ))}
       </div>
       <div>
         <button

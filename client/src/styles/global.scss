@@ -9,15 +9,18 @@ main {
 }
 
 section {
-  width: 400px;
-  height: 900px;
-  padding: 10px;
+  width: 100vw;
+  height: 100vh;
   border-radius: 5px;
-  background-color: #ffffff;
   position: relative;
 }
 
 article {
+  position: relative;
+  padding: 10px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  max-width: 500px;
   height: 100%;
   padding-top: 40px;
   > h2 {

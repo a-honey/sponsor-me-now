@@ -3,11 +3,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 0 10px;
+  padding: 0 10px;
   position: absolute;
   top: 0;
   right: 0;
   left: 0;
+  z-index: 999;
   background-color: white;
   .logo {
     display: flex;
@@ -29,11 +30,43 @@
       }
     }
   }
+  .links {
+    display: flex;
+    gap: 20px;
+    a {
+      position: relative;
+      text-transform: uppercase;
+      font-weight: 700;
+      font-size: 13px;
+      padding: 5px;
+      &.active::after,
+      &:hover::after {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        content: ' ';
+        height: 5px;
+        background-color: #005a34;
+      }
+    }
+    @media only screen and (max-width: 700px) {
+      display: none;
+    }
+  }
   .icons {
     display: flex;
     gap: 10px;
     svg {
       font-size: 22px;
+    }
+    @media only screen and (min-width: 701px) {
+      display: none;
+    }
+  }
+  .pcIcons {
+    @media only screen and (max-width: 700px) {
+      display: none;
     }
   }
 }
