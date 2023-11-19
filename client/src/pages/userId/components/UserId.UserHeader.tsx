@@ -1,12 +1,19 @@
 import React from 'react';
 import styles from '../styles/UserId.UserHeader.module.scss';
+import postPaymentHistory from '@/api/post/postPaymentHistory';
 
 const UserHeader = ({
   data,
 }: {
-  data: { id: number; username: string; description: string; field: string };
+  data: {
+    id: number;
+    username: string;
+    email: string;
+    description: string;
+    field: string;
+  };
 }) => {
-  const { username, description, field } = data;
+  const { id, username, email, description, field } = data;
   return (
     <div className={styles.container}>
       <div className={styles.contentContainer}>
@@ -23,7 +30,7 @@ const UserHeader = ({
           <div>{description}</div>
         </div>
       </div>
-      <RequestPay />
+      <RequestPay email={email} username={username} id={id} />
     </div>
   );
 };
@@ -47,7 +54,14 @@ interface RequestPayParams {
   buyer_postcode: string;
 }
 
-const RequestPay: React.FC = () => {
+const RequestPay = ({
+  email,
+  username,
+}: {
+  email: string;
+  username: string;
+  id: number;
+}) => {
   const code = import.meta.env.VITE_IAMPORT_CODE;
   if (!window.IMP || !code) return;
   const { IMP } = window;
@@ -70,7 +84,7 @@ const RequestPay: React.FC = () => {
         pg: `kakaopay.${import.meta.env.VITE_IAMPORT_KAKAOPAY_ID!}`,
         pay_method: 'card',
         merchant_uid: `IMP_${makeMerchantUid}`,
-        name: `로그인유저의 페이지유저 후원`,
+        name: `로그인유저의 ${username} 후원`,
         amount: 1000,
         buyer_email: 'gildong@gmail.com',
         buyer_name: '홍길동',
@@ -78,11 +92,38 @@ const RequestPay: React.FC = () => {
         buyer_addr: '서울특별시 강남구 신사동',
         buyer_postcode: '01181',
       },
-      (rsp: Response) => {
+      (rsp: any) => {
         if (rsp.success) {
           console.log('결제성공', rsp);
-          // 결제 성공 시 로직
-          // ...
+          postPaymentHistory({
+            applyNum: rsp.apply_num,
+            bankCode: rsp.bank_code,
+            bankName: rsp.bank_name,
+            buyerAddr: rsp.buyer_addr,
+            buyerEmail: rsp.buyer_email,
+            buyerName: rsp.buyer_name,
+            buyerPostcode: rsp.buyer_postcode,
+            buyerTel: rsp.buyer_tel,
+            cardName: rsp.card_name,
+            cardQuota: rsp.card_quota,
+            currency: rsp.currency,
+            customData: rsp.custom_data,
+            escrow: rsp.escrow,
+            failReason: rsp.fail_reason,
+            impUid: rsp.imp_uid,
+            merchantUid: rsp.merchant_uid,
+            name: rsp.name,
+            paidAmount: rsp.paid_amount,
+            paidAt: rsp.paid_at,
+            payMethod: rsp.pay_method,
+            pgId: rsp.pg_id,
+            pgProvider: rsp.pg_provider,
+            pgTid: rsp.pg_tid,
+            receiptUrl: rsp.receipt_url,
+            status: rsp.status,
+            sellerName: username,
+            sellerEmail: email,
+          });
         } else {
           console.log('결제실패', rsp);
           // 결제 실패 시 로직
