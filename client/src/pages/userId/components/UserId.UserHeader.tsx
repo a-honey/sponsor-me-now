@@ -1,13 +1,12 @@
 import React from 'react';
 import styles from '../styles/UserId.UserHeader.module.scss';
-import IMP from 'iamport';
 
 const UserHeader = ({
   data,
 }: {
   data: { id: number; username: string; description: string; field: string };
 }) => {
-  const { id, username, description, field } = data;
+  const { username, description, field } = data;
   return (
     <div className={styles.container}>
       <div className={styles.contentContainer}>
@@ -48,9 +47,18 @@ interface RequestPayParams {
   buyer_postcode: string;
 }
 
-IMP.init('imp73757270');
-
 const RequestPay: React.FC = () => {
+  const code = import.meta.env.VITE_IAMPORT_CODE;
+  if (!window.IMP || !code) return;
+  const { IMP } = window;
+  IMP.init(code);
+
+  const today = new Date();
+  const hours = today.getHours(); // 시
+  const minutes = today.getMinutes(); // 분
+  const seconds = today.getSeconds(); // 초
+  const milliseconds = today.getMilliseconds();
+  const makeMerchantUid = hours + minutes + seconds + milliseconds;
   const requestPay = () => {
     (
       IMP.request_pay as (
@@ -59,11 +67,11 @@ const RequestPay: React.FC = () => {
       ) => void
     )(
       {
-        pg: 'kcp.{상점ID}',
+        pg: `kakaopay.${import.meta.env.VITE_IAMPORT_KAKAOPAY_ID!}`,
         pay_method: 'card',
-        merchant_uid: 'ORD20180131-0000011',
-        name: '노르웨이 회전 의자',
-        amount: 64900,
+        merchant_uid: `IMP_${makeMerchantUid}`,
+        name: `로그인유저의 페이지유저 후원`,
+        amount: 1000,
         buyer_email: 'gildong@gmail.com',
         buyer_name: '홍길동',
         buyer_tel: '010-4242-4242',
@@ -72,9 +80,11 @@ const RequestPay: React.FC = () => {
       },
       (rsp: Response) => {
         if (rsp.success) {
+          console.log('결제성공', rsp);
           // 결제 성공 시 로직
           // ...
         } else {
+          console.log('결제실패', rsp);
           // 결제 실패 시 로직
           // ...
         }

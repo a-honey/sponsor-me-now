@@ -1,5 +1,5 @@
 {
-  "name": "sponsor-me-now-fe",
+  "name": "my-react-ts-app",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -7,14 +7,11 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview",
-    "clear": "vite clear"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.8.3",
     "axios": "^1.6.1",
-    "dotenv": "^16.3.1",
-    "esbuild": "^0.19.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.48.2",
@@ -24,18 +21,17 @@
   },
   "devDependencies": {
     "@types/node-sass": "^4.11.7",
-    "@types/react": "^18.2.15",
-    "@types/react-dom": "^18.2.7",
-    "@typescript-eslint/eslint-plugin": "^6.0.0",
-    "@typescript-eslint/parser": "^6.0.0",
-    "@vitejs/plugin-react-swc": "^3.3.2",
-    "eslint": "^8.45.0",
+    "@types/react": "^18.2.37",
+    "@types/react-dom": "^18.2.15",
+    "@typescript-eslint/eslint-plugin": "^6.10.0",
+    "@typescript-eslint/parser": "^6.10.0",
+    "@vitejs/plugin-react": "^4.2.0",
+    "eslint": "^8.53.0",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-refresh": "^0.4.3",
-    "iamport": "^0.3.4",
+    "eslint-plugin-react-refresh": "^0.4.4",
     "node-sass": "^9.0.0",
     "sass": "^1.69.5",
-    "typescript": "^5.0.2",
+    "typescript": "^5.2.2",
     "vite": "^5.0.0"
   }
 }

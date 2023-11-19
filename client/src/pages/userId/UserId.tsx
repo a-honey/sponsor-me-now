@@ -8,8 +8,11 @@ const UserId = () => {
   const currentPath = location.pathname;
 
   const ownerId = currentPath.trim().split('/')[2];
-  const { data } = useGetUserById({ userId: Number(ownerId) });
-
+  const { data, isLoading } = useGetUserById({ userId: Number(ownerId) });
+  if (isLoading) {
+    // 로딩 중이면 로딩 표시
+    return <div>Loading...</div>;
+  }
   return (
     <article>
       <ImgHeader />
