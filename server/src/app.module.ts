@@ -6,6 +6,7 @@ import { PostModule } from "./modules/post/post.module";
 import { LikeModule } from "./modules/like/like.module";
 import { CommentModule } from "./modules/comment/comment.module";
 import { ServeStaticModule } from "@nestjs/serve-static";
+import { PaymentsModule } from "./modules/payments/payments.module";
 import { join } from "path";
 
 @Module({
@@ -16,6 +17,7 @@ import { join } from "path";
     PostModule,
     LikeModule,
     CommentModule,
+    PaymentsModule,
     ServeStaticModule.forRoot({ rootPath: join(__dirname, "..", "public") }),
   ],
 })
