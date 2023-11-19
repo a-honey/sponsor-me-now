@@ -27,7 +27,7 @@ export class UploadController {
   @UseInterceptors(FileInterceptor("profileImage"))
   async uploadProfileImage(@UploadedFile() file, @Req() req: RequestWithUser): Promise<string> {
     const userId: number = req.user.id;
-    const imageUrl: string = path.join("image", file.filename);
+    const imageUrl: string = path.join("images", file.filename);
     return this.uploadService.uploadProfileImage(userId, imageUrl);
   }
 
@@ -38,7 +38,7 @@ export class UploadController {
   @UseInterceptors(FileInterceptor("profileBackgroundImage"))
   async uploadBackgroundImage(@UploadedFile() file, @Req() req: RequestWithUser): Promise<string> {
     const userId: number = req.user.id;
-    const imageUrl: string = path.join("image", file.filename);
+    const imageUrl: string = path.join("images", file.filename);
     return this.uploadService.uploadBackgroundImage(userId, imageUrl);
   }
 
@@ -46,13 +46,13 @@ export class UploadController {
   @ApiBody({ description: "[업로드] 게시글 이미지 " })
   @ApiResponse({ status: 201, type: String })
   @UseGuards(AuthGuard("jwt"))
-  @UseInterceptors(FileInterceptor("profileBackgroundImage"))
+  @UseInterceptors(FileInterceptor("postImage"))
   async uploadPostImage(
     @UploadedFile() file,
     @Req() req: RequestWithUser,
     @Param("postId", ParseIntPipe) postId: number,
   ): Promise<string> {
-    const imageUrl: string = path.join("image", file.filename);
+    const imageUrl: string = path.join("images", file.filename);
     return this.uploadService.uploadPostImage(postId, imageUrl);
   }
 }

@@ -8,3 +8,5 @@
 /node_modules
 /dist
 /public/image/
+/docker-compose.yml
+/public/images/
