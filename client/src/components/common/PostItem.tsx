@@ -17,7 +17,7 @@ const PostItem = ({
   };
 }) => {
   const [isOpenPost, setIsOpenPost] = useState(false);
-  const { id, title, createdAt, authorId, viewCount } = data;
+  const { id, title, authorId } = data;
 
   const toggleIsOpenPost = () => {
     setIsOpenPost((prev) => !prev);

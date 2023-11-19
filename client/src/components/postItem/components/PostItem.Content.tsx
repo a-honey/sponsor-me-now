@@ -2,7 +2,7 @@ import { ResponsePostByIdType } from '@/api/get/getPostById';
 import styles from '../PostItem.module.scss';
 
 const Content = ({ data }: { data: ResponsePostByIdType }) => {
-  const { id, title, content, createdAt, likeCount } = data;
+  const { title, content, createdAt, likeCount } = data;
   return (
     <div className={styles.contentContainer}>
       <h2>{title}</h2>

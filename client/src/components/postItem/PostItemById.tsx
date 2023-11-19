@@ -17,7 +17,7 @@ const PostItemById = ({
       {data && (
         <>
           <Content data={data} />
-          <Comment data={data?.comment} />
+          <Comment />
         </>
       )}
       <button className={styles.gray} type="button" onClick={toggleIsOpenPost}>
