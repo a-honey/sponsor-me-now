@@ -1,3 +1,4 @@
+import { useLoginStore } from '@/store';
 import styles from '../styles/UserId.UserHeader.module.scss';
 import postPaymentHistory from '@/api/post/postPaymentHistory';
 
@@ -37,6 +38,26 @@ const UserHeader = ({
 export default UserHeader;
 
 interface Response {
+  apply_num?: number;
+  bank_name?: string;
+  buyer_addr?: string;
+  buyer_email?: string;
+  buyer_name?: string;
+  buyer_postcode?: string;
+  buyer_tel?: string;
+  card_name?: string;
+  card_quota?: number;
+  custom_data?: string;
+  imp_uid?: string;
+  merchant_uid?: string;
+  name?: string;
+  paid_amount?: number;
+  paid_at?: string;
+  pay_method?: string;
+  pg_provider?: string;
+  pg_tid?: string;
+  receipt_url?: string;
+  status?: string;
   success: boolean;
 }
 
@@ -62,6 +83,9 @@ const RequestPay = ({
   id: number;
 }) => {
   const code = import.meta.env.VITE_IAMPORT_CODE;
+
+  const { loginUsername, loginEmail } = useLoginStore();
+
   if (!window.IMP || !code) return;
   const { IMP } = window;
   IMP.init(code);
@@ -83,45 +107,40 @@ const RequestPay = ({
         pg: `kakaopay.${import.meta.env.VITE_IAMPORT_KAKAOPAY_ID!}`,
         pay_method: 'card',
         merchant_uid: `IMP_${makeMerchantUid}`,
-        name: `로그인유저의 ${username} 후원`,
+        name: `${loginUsername}의 ${username} 후원`,
         amount: 1000,
-        buyer_email: 'gildong@gmail.com',
-        buyer_name: '홍길동',
+        buyer_email: loginEmail!,
+        buyer_name: loginUsername!,
         buyer_tel: '010-4242-4242',
         buyer_addr: '서울특별시 강남구 신사동',
         buyer_postcode: '01181',
       },
-      (rsp: any) => {
+      (rsp: Response) => {
         if (rsp.success) {
           console.log('결제성공', rsp);
           postPaymentHistory({
             applyNum: rsp.apply_num,
-            bankCode: rsp.bank_code,
             bankName: rsp.bank_name,
             buyerAddr: rsp.buyer_addr,
             buyerEmail: rsp.buyer_email,
             buyerName: rsp.buyer_name,
+            sellerName: username,
+            sellerEmail: email,
             buyerPostcode: rsp.buyer_postcode,
             buyerTel: rsp.buyer_tel,
             cardName: rsp.card_name,
             cardQuota: rsp.card_quota,
-            currency: rsp.currency,
             customData: rsp.custom_data,
-            escrow: rsp.escrow,
-            failReason: rsp.fail_reason,
             impUid: rsp.imp_uid,
             merchantUid: rsp.merchant_uid,
             name: rsp.name,
             paidAmount: rsp.paid_amount,
             paidAt: rsp.paid_at,
             payMethod: rsp.pay_method,
-            pgId: rsp.pg_id,
             pgProvider: rsp.pg_provider,
             pgTid: rsp.pg_tid,
             receiptUrl: rsp.receipt_url,
             status: rsp.status,
-            sellerName: username,
-            sellerEmail: email,
           });
         } else {
           console.log('결제실패', rsp);
