@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from '../styles/UserId.UserHeader.module.scss';
 import postPaymentHistory from '@/api/post/postPaymentHistory';
 
