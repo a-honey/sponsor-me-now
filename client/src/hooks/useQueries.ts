@@ -1,3 +1,4 @@
+import getPaymentHistory from '@/api/get/getPaymentHistory';
 import getPostById from '@/api/get/getPostById';
 import getPostList from '@/api/get/getPostList';
 import getUserById from '@/api/get/getUserById';
@@ -45,5 +46,20 @@ export const useGetPostById = ({ postId }: { postId: number }) => {
   return useQuery({
     queryKey: ['postId', postId.toString()],
     queryFn: () => getPostById(postId),
+  });
+};
+
+export const useGetPaymentHistory = ({
+  page,
+  limit,
+  search,
+}: {
+  page: number;
+  limit: number;
+  search?: string;
+}) => {
+  return useQuery({
+    queryKey: ['paymentHistory', page.toString(), search],
+    queryFn: () => getPaymentHistory({ page, limit, search }),
   });
 };
