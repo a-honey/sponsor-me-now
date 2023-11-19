@@ -50,32 +50,32 @@ model PaymentHistory {
   User   User? @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId Int?  @unique
 
-  applyNum       String? @default("")
-  bankName       String?
-  buyerAddr      String
-  buyerEmail     String
-  buyerUsername  String
-  sellerUsername String
-  sellerEmail    String
-  buyerPostcode  String
-  buyerTel       String
-  cardName       String
-  cardNumber     String  @default("")
-  cardQuota      Int     @default(0)
-  currency       String
-  customData     String?
-  impUid         String  @unique
-  merchantUid    String
-  name           String
-  paidAmount     Int
-  paidAt         Int
-  payMethod      String
-  pgProvider     String
-  pgTid          String
-  pgType         String
-  receiptUrl     String
-  status         String
-  success        Boolean
+  applyNum      String? @default("")
+  bankName      String?
+  buyerAddr     String
+  buyerEmail    String
+  buyerName     String
+  sellerName    String
+  sellerEmail   String
+  buyerPostcode String
+  buyerTel      String
+  cardName      String
+  cardNumber    String  @default("")
+  cardQuota     Int     @default(0)
+  currency      String
+  customData    String?
+  impUid        String  @unique
+  merchantUid   String
+  name          String
+  paidAmount    Int
+  paidAt        Int
+  payMethod     String
+  pgProvider    String
+  pgTid         String
+  pgType        String
+  receiptUrl    String
+  status        String
+  success       Boolean
 }
 
 model Post {

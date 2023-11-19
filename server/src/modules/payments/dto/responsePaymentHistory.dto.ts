@@ -13,7 +13,7 @@ export class ResponsePaymentHistoryDto {
   sellerEmail: String;
 
   @ApiProperty()
-  sellerUsername: String;
+  sellerName: String;
 
   @ApiProperty()
   buyerAddr: String;
@@ -22,7 +22,7 @@ export class ResponsePaymentHistoryDto {
   buyerEmail: String;
 
   @ApiProperty()
-  buyerUsername: String;
+  buyerName: String;
 
   @ApiProperty()
   buyerPostcode: String;

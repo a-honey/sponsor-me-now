@@ -11,7 +11,7 @@ export class CreatePaymentHistoryDto {
   sellerEmail: String;
 
   @ApiProperty()
-  sellerUsername: string;
+  sellerName: string;
 
   @ApiProperty()
   bankName?: String;
@@ -23,7 +23,7 @@ export class CreatePaymentHistoryDto {
   buyerEmail: String;
 
   @ApiProperty()
-  buyerUsername: String;
+  buyerName: String;
 
   @ApiProperty()
   buyerPostcode: String;
