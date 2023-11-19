@@ -1,4 +1,5 @@
-import { useGetPostList } from '@/hooks/useQueries';
+import React from 'react';
+import { useGetPostList } from '../../../hooks/useQueries';
 import PostItem from '../../../components/common/PostItem';
 import styles from '../styles/Main.News.module.scss';
 

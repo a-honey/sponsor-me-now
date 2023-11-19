@@ -1,7 +1,8 @@
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import styles from '../styles/MyPage.PostWrite.module.scss';
-import { PostBodyType } from '@/api/post/postPost';
-import { usePostPost } from '@/hooks/useMutations';
+import { PostBodyType } from '../../../api/post/postPost';
+import { usePostPost } from '../../../hooks/useMutations';
 
 const PostWrite = ({
   toggleIsWritingPost,

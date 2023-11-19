@@ -1,9 +1,10 @@
+import React from 'react';
 import styles from '../styles/Register.InputBox.module.scss';
-import { RegisterBodyType } from '@/api/post/postRegister';
+import { RegisterBodyType } from '../../../api/post/postRegister';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import OauthBox from './Register.OauthBox';
-import { usePostRegisterData } from '@/hooks/useMutations';
+import { usePostRegisterData } from '../../../hooks/useMutations';
 
 const InputBox = ({ isSponsor }: { isSponsor: boolean }) => {
   const { register, handleSubmit } = useForm<RegisterBodyType>();

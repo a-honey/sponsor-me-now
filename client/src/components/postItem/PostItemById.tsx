@@ -1,7 +1,8 @@
-import { useGetPostById } from '@/hooks/useQueries';
+import React from 'react';
 import styles from './PostItem.module.scss';
 import Comment from './components/PostItem.Comment';
 import Content from './components/PostItem.Content';
+import { useGetPostById } from 'hooks/useQueries';
 
 const PostItemById = ({
   postId,
@@ -17,7 +18,7 @@ const PostItemById = ({
       {data && (
         <>
           <Content data={data} />
-          <Comment data={data?.comment} />
+          <Comment />
         </>
       )}
       <button className={styles.gray} type="button" onClick={toggleIsOpenPost}>

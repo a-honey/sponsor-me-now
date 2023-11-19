@@ -1,8 +1,8 @@
-import { useLoginStore } from '@/store';
 import axios from 'axios';
+import { useLoginStore } from '../store';
 
 const base = {
-  baseURL: import.meta.env.VITE_SERVER_URL,
+  baseURL: process.env.VITE_SERVER_URL,
   timeout: 5000,
 };
 

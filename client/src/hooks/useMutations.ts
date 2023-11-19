@@ -1,15 +1,12 @@
-import postLogin from '@/api/post/postLogin';
-import postRegister from '@/api/post/postRegister';
-import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { useLoginStore } from '@/store';
-import putUser from '@/api/put/putUser';
-import { useQueryClient } from '@tanstack/react-query';
-import postUserProfile from '@/api/post/postUserProfile';
-import postUserBackground from '@/api/post/postUserBackground';
-import postPost from '@/api/post/postPost';
-import deleteUser from '@/api/delete/deleteUser';
+
+import postUserBackground from '../api/post/postUserBackground';
+import postPost from '../api/post/postPost';
+import deleteUser from '../api/delete/deleteUser';
 import useLogout from './useLogout';
+import { useLoginStore } from '../store';
+import { useMutation } from '@tanstack/react-query';
+import postRegister from '../api/post/postRegister';
 
 export const usePostRegisterData = () => {
   const navigator = useNavigate();

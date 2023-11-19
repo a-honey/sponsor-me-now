@@ -1,3 +1,4 @@
+import React from 'react';
 import styles from '../styles/Register.StepNav.module.scss';
 
 const StepNav = ({

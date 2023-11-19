@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import styles from '../styles/Layout.Header.module.scss';
 import { RxHamburgerMenu, RxBell } from 'react-icons/rx';
 import Nav from './Layout.Nav';
 import { Link, useLocation } from 'react-router-dom';
-import useLogout from '@/hooks/useLogout';
-import { useLoginStore } from '@/store';
+import useLogout from 'hooks/useLogout';
+import { useLoginStore } from 'store';
 
 export const PATHNAME_LIST = [
   { to: '/main', name: 'home' },

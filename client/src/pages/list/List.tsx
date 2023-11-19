@@ -1,4 +1,5 @@
-import withLoginTrue from '@/components/withLogin';
+import React from 'react';
+import withLoginTrue from '../../components/withLogin';
 import UserList from './components/List.UserList';
 
 const List = () => {

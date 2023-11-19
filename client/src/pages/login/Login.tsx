@@ -1,3 +1,4 @@
+import React from 'react';
 import InputBox from './components/Login.InputBox';
 import OauthBox from './components/Login.OauthBox';
 

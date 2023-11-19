@@ -1,3 +1,4 @@
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import UserImg from '../components/UserImg';
 import styles from './index.module.scss';

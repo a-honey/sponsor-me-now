@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import InputBox from './components/Register.InputBox';
 import SelectBox from './components/Register.SelectBox';
 import MoreBox from './components/Register.MoreBox';

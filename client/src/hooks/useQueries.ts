@@ -1,7 +1,7 @@
-import getPostById from '@/api/get/getPostById';
-import getPostList from '@/api/get/getPostList';
-import getUserById from '@/api/get/getUserById';
-import getUserList from '@/api/get/getUserList';
+import getUserList from '../api/get/getUserList';
+import getUserById from '../api/get/getUserById';
+import getPostList from '../api/get/getPostList';
+import getPostById from '../api/get/getPostById';
 import { useQuery } from '@tanstack/react-query';
 
 export const useGetUserById = ({ userId }: { userId: number }) => {

@@ -1,5 +1,7 @@
-import { ResponsePostByIdType } from '@/api/get/getPostById';
+import React from 'react';
+
 import styles from '../PostItem.module.scss';
+import { ResponsePostByIdType } from 'api/get/getPostById';
 
 const Content = ({ data }: { data: ResponsePostByIdType }) => {
   const { id, title, content, createdAt, likeCount } = data;

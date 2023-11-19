@@ -1,6 +1,6 @@
-import { useLoginStore } from '@/store';
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLoginStore } from 'store';
 
 const withLoginTrue = (InnerComponent: React.FC) => {
   return () => {

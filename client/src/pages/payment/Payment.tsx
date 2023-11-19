@@ -1,3 +1,4 @@
+import React from 'react';
 import History from './components/Payment.History';
 
 const Payment = () => {

@@ -1,7 +1,11 @@
-import useImgChange from '@/hooks/useImgChange';
+import React from 'react';
+import useImgChange from '../../../hooks/useImgChange';
 import styles from '../styles/MyPage.ImgHeader.module.scss';
-import user_none from '@/assets/user_none.png';
-import { usePutUserBackground, usePutUserProfile } from '@/hooks/useMutations';
+import user_none from '../../../assets/user_none.png';
+import {
+  usePutUserBackground,
+  usePutUserProfile,
+} from '../../../hooks/useMutations';
 
 const ImgHeader = () => {
   const putMutation = usePutUserBackground();

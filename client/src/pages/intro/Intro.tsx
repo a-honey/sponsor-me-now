@@ -1,3 +1,4 @@
+import React from 'react';
 import ImgBox from './components/Intro.ImgBox';
 
 const Intro = () => {

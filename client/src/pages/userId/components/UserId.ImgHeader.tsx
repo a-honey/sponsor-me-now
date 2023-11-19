@@ -1,5 +1,6 @@
+import React from 'react';
 import styles from '../styles/UserId.ImgHeader.module.scss';
-import UserImg from '@/components/components/UserImg';
+import UserImg from '../../../components/components/UserImg';
 
 const ImgHeader = () => {
   return (

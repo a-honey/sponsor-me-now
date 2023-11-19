@@ -1,12 +1,12 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from '../styles/MyPage.UserHeader.module.scss';
 import { RiEdit2Line, RiSave3Line } from 'react-icons/ri';
 import { RxTrash } from 'react-icons/rx';
 import { useForm } from 'react-hook-form';
-import { useDeleteUser, usePutUserData } from '@/hooks/useMutations';
-import { UserPutBodyType } from '@/api/put/putUser';
-import { useGetUserById } from '@/hooks/useQueries';
-import { useLoginStore } from '@/store';
+import { useDeleteUser, usePutUserData } from '../../../hooks/useMutations';
+import { UserPutBodyType } from '../../../api/put/putUser';
+import { useGetUserById } from '../../../hooks/useQueries';
+import { useLoginStore } from '../../../store';
 
 const UserHeader = ({
   toggleIsWritingPost,

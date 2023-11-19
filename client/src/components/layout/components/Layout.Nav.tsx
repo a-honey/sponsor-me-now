@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styles from '../styles/Layout.Nav.module.scss';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { PATHNAME_LIST } from './Layout.Header';
 
 const Nav = ({ toggleIsOpenNav }: { toggleIsOpenNav: () => void }) => {

@@ -1,4 +1,4 @@
-import { useLoginStore } from '@/store';
+import { useLoginStore } from 'store';
 import { useNavigate } from 'react-router-dom';
 
 const useLogout = () => {

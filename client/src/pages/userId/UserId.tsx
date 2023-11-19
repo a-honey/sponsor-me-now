@@ -1,7 +1,8 @@
+import React from 'react';
 import { useLocation } from 'react-router-dom';
 import ImgHeader from './components/UserId.ImgHeader';
 import UserHeader from './components/UserId.UserHeader';
-import { useGetUserById } from '@/hooks/useQueries';
+import { useGetUserById } from '../../hooks/useQueries';
 
 const UserId = () => {
   const location = useLocation();

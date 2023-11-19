@@ -1,4 +1,5 @@
-import { useGetUserList } from '@/hooks/useQueries';
+import React from 'react';
+import { useGetUserList } from '../../../hooks/useQueries';
 import UserItem from '../../../components/common/UserItem';
 import styles from '../styles/List.UserList.module.scss';
 

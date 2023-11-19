@@ -1,5 +1,6 @@
-import UserItem from '@/components/common/UserItem';
-import { useGetUserList } from '@/hooks/useQueries';
+import React from 'react';
+import UserItem from '../../components/common/UserItem';
+import { useGetUserList } from '../../hooks/useQueries';
 
 const Hub = () => {
   const { data } = useGetUserList({ page: 1, limit: 10, search: 'all' });
