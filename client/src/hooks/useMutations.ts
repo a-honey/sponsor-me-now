@@ -11,8 +11,7 @@ import postPost from '@/api/post/postPost';
 import deleteUser from '@/api/delete/deleteUser';
 import useLogout from './useLogout';
 
-export const usePostRegisterData = () => {
-  const navigator = useNavigate();
+export const usePostRegisterData = (fn: () => void) => {
   const { setLoginId, setLoginUsername, setToken } = useLoginStore();
 
   return useMutation({
@@ -21,7 +20,7 @@ export const usePostRegisterData = () => {
       setLoginId(res.id);
       setLoginUsername(res.username);
       setToken(res.token);
-      navigator('/main');
+      fn();
       return;
     },
   });

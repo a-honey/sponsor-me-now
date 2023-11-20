@@ -32,6 +32,7 @@ const Header = () => {
         <div className={styles.links}>
           {PATHNAME_LIST.map((item) => (
             <Link
+              key={item.to}
               to={item.to}
               className={location.pathname === item.to ? styles.active : ''}
             >

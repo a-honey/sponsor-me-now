@@ -4,12 +4,12 @@ interface ResponseBodyType {
   totalPage: number;
   currentPage: number;
   datas: {
-    buyerEmail?: string;
-    buyerName?: string;
+    buyerEmail: string;
+    buyerName: string;
     sellerName: string;
     sellerEmail: string;
-    merchantUid?: string;
-    paidAmount?: number;
+    cardName: string;
+    cardNumber: string;
   };
 }
 

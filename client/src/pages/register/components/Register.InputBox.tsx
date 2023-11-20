@@ -5,10 +5,16 @@ import { Link } from 'react-router-dom';
 import OauthBox from './Register.OauthBox';
 import { usePostRegisterData } from '@/hooks/useMutations';
 
-const InputBox = ({ isSponsor }: { isSponsor: boolean }) => {
+const InputBox = ({
+  isSponsor,
+  handleNextRegisterStep,
+}: {
+  isSponsor: boolean;
+  handleNextRegisterStep: () => void;
+}) => {
   const { register, handleSubmit } = useForm<RegisterBodyType>();
 
-  const postRegisterMutation = usePostRegisterData();
+  const postRegisterMutation = usePostRegisterData(handleNextRegisterStep);
 
   const onSubmit = (data: RegisterBodyType) => {
     postRegisterMutation.mutate({ ...data, isSponsor });

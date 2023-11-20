@@ -1,14 +1,47 @@
+import useImgChange from '@/hooks/useImgChange';
+import { usePutUserBackground, usePutUserData } from '@/hooks/useMutations';
+import { useLoginStore } from '@/store';
+import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
+import user_none from '@/assets/user_none.png';
 
 const MoreBox = () => {
+  const { loginId } = useLoginStore();
+
+  const putMutation = usePutUserData({ userId: loginId! });
+  const putImageMutation = usePutUserBackground();
+
+  const { register, handleSubmit } = useForm<{
+    username: string;
+    field: string;
+    description: string;
+  }>();
+
+  const onSubmit = (data: {
+    username?: string;
+    field?: string;
+    description?: string;
+  }) => {
+    putMutation.mutate(data);
+  };
+
+  const handleClick = (img: File) => {
+    const body = new FormData();
+    body.append('profileBackgroundImage', img);
+    putImageMutation.mutate(body);
+  };
+
+  const { handleImgChange, imgRef } = useImgChange(handleClick);
+
   return (
-    <form className="form">
-      <label>분야</label>
-      <input />
-      <label>자기소개 입력</label>
-      <input />
+    <form className="form" onSubmit={handleSubmit(onSubmit)}>
       <label>프로필이미지</label>
-      <input />
+      <img width={200} height={200} ref={imgRef} src={user_none} alt="hi" />
+      <input type="file" onChange={handleImgChange} onDrag={handleImgChange} />
+      <label>분야</label>
+      <input type="text" {...register('field')} />
+      <label>자기소개 입력</label>
+      <input type="text" {...register('description')} />
       <button>정보 저장</button>
       <div className="notice">
         <Link to="/main">건너뛰기</Link>
