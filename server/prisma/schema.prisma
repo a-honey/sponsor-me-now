@@ -2,121 +2,168 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-	provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-	provider = "postgresql"
-	url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
-	id             Int              @id @default(autoincrement())
-	email          String           @unique
-	username       String
-	nickname       String?          @unique
-	password       String
-	snsId          Int?             @unique
-	provider       String?
-	profileImg     String?
-	backgroundImg  String?
-	field          String?
-	description    String?
-	isSponsor      Boolean          @default(true)
-	paymentHistory PaymentHistory[]
-	post           Post[]
-	comment        Comment[]
-	manager        Boolean          @default(false)
-	createdAt      DateTime         @default(now())
-	updatedAt      DateTime         @updatedAt
-	like           Like[]
-	sponsor        Sponsor[]        @relation("SponsorToUser")
-	sponsored      Sponsor[]        @relation("UserToSponsor")
+  id            Int      @id @default(autoincrement())
+  email         String   @unique
+  username      String
+  nickname      String?  @unique
+  password      String
+  snsId         Int?     @unique
+  provider      String?
+  profileImg    String?
+  backgroundImg String?
+  field         String?
+  description   String?
+  isSponsor     Boolean  @default(true)
+  manager       Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  post    Post[]
+  comment Comment[]
+  like    Like[]
+  Payment Payment[]
+
+  sponsor   Sponsor[] @relation("SponsorToUser")
+  sponsored Sponsor[] @relation("UserToSponsor")
 }
 
 model Sponsor {
-	id          Int   @id @default(autoincrement())
-	sponsor     User? @relation("SponsorToUser", fields: [sponsorId], references: [id])
-	sponsorId   Int?
-	sponsored   User? @relation("UserToSponsor", fields: [sponsoredId], references: [id])
-	sponsoredId Int?
+  id          Int  @id @default(autoincrement())
+  sponsorId   Int?
+  sponsoredId Int?
 
-	@@index([sponsorId])
-	@@index([sponsoredId])
+  sponsor   User? @relation("SponsorToUser", fields: [sponsorId], references: [id])
+  sponsored User? @relation("UserToSponsor", fields: [sponsoredId], references: [id])
+
+  @@index([sponsorId])
+  @@index([sponsoredId])
 }
 
-model PaymentHistory {
-	id     Int   @id @default(autoincrement())
-	User   User? @relation(fields: [userId], references: [id], onDelete: Cascade)
-	userId Int
+model Payment {
+  buyer       User?  @relation(fields: [buyerId], references: [id], onDelete: Cascade)
+  buyerId     Int
+  sellerEmail String
+  sellerName  String
 
-	applyNum      String   @default("")
-	bankName      String?
-	buyerAddr     String
-	buyerEmail    String
-	buyerName     String
-	sellerName    String
-	sellerEmail   String
-	buyerPostcode String
-	buyerTel      String
-	cardName      String?  @default("")
-	cardNumber    String?  @default("")
-	cardQuota     Int      @default(0)
-	currency      String
-	customData    String?
-	impUid        String   @unique
-	merchantUid   String
-	name          String
-	paidAmount    Int
-	paidAt        Int
-	payMethod     String
-	pgProvider    String
-	pgTid         String
-	pgType        String?  @default("")
-	receiptUrl    String
-	status        String
-	success       Boolean?
+  id                  Int     @id @default(autoincrement())
+  amount              Int
+  apply_num           String
+  bank_code           String? // '?'는 nullable을 의미합니다.
+  bank_name           String?
+  buyer_addr          String
+  buyer_email         String
+  buyer_name          String
+  buyer_postcode      String
+  buyer_tel           String
+  cancel_amount       Int
+  cancel_reason       String?
+  cancelled_at        Int
+  card_code           String?
+  card_name           String?
+  card_number         String?
+  card_quota          Int
+  card_type           String?
+  cash_receipt_issued Boolean
+  channel             String
+  currency            String
+  custom_data         Json?
+  customer_uid        String?
+  customer_uid_usage  String?
+  emb_pg_provider     String?
+  escrow              Boolean
+  fail_reason         String?
+  failed_at           Int
+  imp_uid             String
+  merchant_uid        String
+  name                String
+  paid_at             Int
+  pay_method          String
+  pg_id               String
+  pg_provider         String
+  pg_tid              String
+  receipt_url         String
+  started_at          Int
+  status              String
+  user_agent          String
+  vbank_code          String?
+  vbank_date          Int
+  vbank_holder        String?
+  vbank_issued_at     Int
+  vbank_name          String?
+  vbank_num           String?
+
+  cancelHistories   CancelHistory[]
+  cancelReceiptUrls CancelReceiptUrl[]
+}
+
+model CancelHistory {
+  id        Int    @id @default(autoincrement())
+  paymentId Int
+  history   String
+
+  payment Payment @relation(fields: [paymentId], references: [id])
+}
+
+model CancelReceiptUrl {
+  id        Int    @id @default(autoincrement())
+  paymentId Int
+  url       String
+
+  payment Payment @relation(fields: [paymentId], references: [id])
 }
 
 model Post {
-	id        Int       @id @default(autoincrement())
-	title     String?
-	content   String?
-	createdAt DateTime  @default(now())
-	updatedAt DateTime  @updatedAt
-	author    User?     @relation(fields: [authorId], references: [id], onDelete: Cascade)
-	authorId  Int?      @unique
-	viewCount Int       @default(0)
-	postImg   String?
-	comment   Comment[]
-	like      Like[]
+  id        Int      @id @default(autoincrement())
+  title     String?
+  content   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  authorId  Int?     @unique
+  viewCount Int      @default(0)
+  postImg   String?
 
-	@@unique([id, authorId])
+  comment Comment[]
+  like    Like[]
+
+  author User? @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@unique([id, authorId])
 }
 
 model Like {
-	id     Int   @id @default(autoincrement())
-	post   Post? @relation(fields: [postId], references: [id], onDelete: Cascade)
-	postId Int?
-	user   User? @relation(fields: [userId], references: [id], onDelete: Cascade)
-	userId Int?
+  id     Int  @id @default(autoincrement())
+  postId Int?
+  userId Int?
 
-	@@unique([postId, userId])
+  post Post? @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([postId, userId])
 }
 
 model Comment {
-	id        Int       @id @default(autoincrement())
-	content   String
-	createdAt DateTime  @default(now())
-	updatedAt DateTime  @updatedAt
-	author    User?     @relation(fields: [authorId], references: [id], onDelete: Cascade)
-	authorId  Int?
-	post      Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
-	postId    Int
-	parent    Comment?  @relation("CommentToComment", fields: [parentId], references: [id], onDelete: Cascade)
-	parentId  Int?
-	children  Comment[] @relation("CommentToComment")
+  id        Int      @id @default(autoincrement())
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  authorId  Int?
+  postId    Int
+  parentId  Int?
 
-	@@unique([id, authorId])
-	@@index([parentId])
+  author   User?     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  post     Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
+  parent   Comment?  @relation("CommentToComment", fields: [parentId], references: [id], onDelete: Cascade)
+  children Comment[] @relation("CommentToComment")
+
+  @@unique([id, authorId])
+  @@index([parentId])
 }
