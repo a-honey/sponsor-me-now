@@ -1,83 +1,154 @@
 import { ApiProperty } from "@nestjs/swagger";
 export class ResponsePaymentHistoryDto {
   @ApiProperty()
-  userId: number;
+  id: number;
+
+  buyerId: number;
 
   @ApiProperty()
-  applyNum?: String;
+  sellerEmail: string;
 
   @ApiProperty()
-  bankName?: String;
+  sellerName: string;
 
   @ApiProperty()
-  sellerEmail: String;
+  amount: number;
 
   @ApiProperty()
-  sellerName: String;
+  applyNum: string;
 
   @ApiProperty()
-  buyerAddr: String;
+  bankCode: string;
 
   @ApiProperty()
-  buyerEmail: String;
+  bankName: string;
 
   @ApiProperty()
-  buyerName: String;
+  buyerAddr: string;
 
   @ApiProperty()
-  buyerPostcode: String;
+  buyerEmail: string;
 
   @ApiProperty()
-  buyerTel: String;
+  buyerName: string;
 
   @ApiProperty()
-  cardName: String;
+  buyerPostcode: string;
 
   @ApiProperty()
-  cardNumber: String;
+  buyerTel: string;
+
+  @ApiProperty()
+  cancelAmount: number;
+
+  @ApiProperty()
+  cancelReason: string;
+
+  @ApiProperty()
+  cancelledAt: number;
+
+  @ApiProperty()
+  cardCode: string;
+
+  @ApiProperty()
+  cardName: string;
+
+  @ApiProperty()
+  cardNumber: string;
 
   @ApiProperty()
   cardQuota: number;
 
   @ApiProperty()
-  currency: String;
+  cardType: string;
 
   @ApiProperty()
-  customData?: String;
+  cashReceiptIssued: boolean;
 
   @ApiProperty()
-  impUid: String;
+  channel: string;
 
   @ApiProperty()
-  merchantUid: String;
+  currency: string;
 
   @ApiProperty()
-  name: String;
+  customData: {};
 
   @ApiProperty()
-  paidAmount: number;
+  customerUid: string;
+
+  @ApiProperty()
+  customerUidUsage: string;
+
+  @ApiProperty()
+  embPgProvider: string;
+
+  @ApiProperty()
+  escrow: boolean;
+
+  @ApiProperty()
+  failReason: string;
+
+  @ApiProperty()
+  failedAt: number;
+
+  @ApiProperty()
+  impUid: string;
+
+  @ApiProperty()
+  merchantUid: string;
+
+  @ApiProperty()
+  name: string;
 
   @ApiProperty()
   paidAt: number;
 
   @ApiProperty()
-  payMethod: String;
+  payMethod: string;
 
   @ApiProperty()
-  pgProvider: String;
+  pgId: string;
 
   @ApiProperty()
-  pgTid: String;
+  pgProvider: string;
 
   @ApiProperty()
-  pgType: String;
+  pgTid: string;
 
   @ApiProperty()
-  receiptUrl: String;
+  receiptUrl: string;
 
   @ApiProperty()
-  status: String;
+  startedAt: number;
 
   @ApiProperty()
-  success: Boolean;
+  status: string;
+
+  @ApiProperty()
+  userAgent: string;
+
+  @ApiProperty()
+  vbankCode: string;
+
+  @ApiProperty()
+  vbankDate: number;
+
+  @ApiProperty()
+  vbankHolder: string;
+
+  @ApiProperty()
+  vbankIssuedAt: number;
+
+  @ApiProperty()
+  vbankName: string;
+
+  @ApiProperty()
+  vbankNum: string;
+
+  @ApiProperty()
+  cancelHistories?: [];
+
+  @ApiProperty()
+  cancelReceiptUrls?: [];
 }

@@ -4,8 +4,8 @@ import { JwtModule } from "@nestjs/jwt";
 import * as process from "process";
 import { PrismaClient } from "@prisma/client";
 import { JwtStrategy } from "../../passport/jwt.strategy";
-import { PaymentsController } from "./PayMents.controller";
-import { PaymentsService } from "./PayMents.service";
+import { PaymentsController } from "./payments.controller";
+import { PaymentsService } from "./payments.service";
 import { AuthService } from "../auth/auth.service";
 import { UserService } from "../user/user.service";
 

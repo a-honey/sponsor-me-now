@@ -2,121 +2,191 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+	provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+	provider = "postgresql"
+	url      = env("DATABASE_URL")
+}
+
+enum TransactionType {
+	DEPOSIT
+	WITHDRAW
 }
 
 model User {
-  id             Int              @id @default(autoincrement())
-  email          String           @unique
-  username       String
-  nickname       String?          @unique
-  password       String
-  snsId          Int?             @unique
-  provider       String?
-  profileImg     String?
-  backgroundImg  String?
-  field          String?
-  description    String?
-  isSponsor      Boolean          @default(true)
-  paymentHistory PaymentHistory[]
-  post           Post[]
-  comment        Comment[]
-  manager        Boolean          @default(false)
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
-  like           Like[]
-  sponsor        Sponsor[]        @relation("SponsorToUser")
-  sponsored      Sponsor[]        @relation("UserToSponsor")
+	id            Int      @id @default(autoincrement())
+	email         String   @unique
+	username      String
+	nickname      String?  @unique
+	password      String
+	snsId         Int?     @unique
+	provider      String?
+	profileImg    String?
+	backgroundImg String?
+	field         String?
+	description   String?
+	isSponsor     Boolean  @default(true)
+	manager       Boolean  @default(false)
+	createdAt     DateTime @default(now())
+	updatedAt     DateTime @updatedAt
+	account       Int      @default(0)
+
+	post    Post[]
+	comment Comment[]
+	like    Like[]
+	payment Payment[]
+
+	sponsor        Sponsor[]        @relation("SponsorToUser")
+	sponsored      Sponsor[]        @relation("UserToSponsor")
+	AccountHistory AccountHistory[]
 }
 
 model Sponsor {
-  id          Int   @id @default(autoincrement())
-  sponsor     User? @relation("SponsorToUser", fields: [sponsorId], references: [id])
-  sponsorId   Int?
-  sponsored   User? @relation("UserToSponsor", fields: [sponsoredId], references: [id])
-  sponsoredId Int?
+	id          Int  @id @default(autoincrement())
+	sponsorId   Int?
+	sponsoredId Int?
 
-  @@index([sponsorId])
-  @@index([sponsoredId])
+	sponsor   User? @relation("SponsorToUser", fields: [sponsorId], references: [id])
+	sponsored User? @relation("UserToSponsor", fields: [sponsoredId], references: [id])
+
+	@@index([sponsorId])
+	@@index([sponsoredId])
 }
 
-model PaymentHistory {
-  id     Int   @id @default(autoincrement())
-  User   User? @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId Int?  @unique
+model Payment {
+	buyerId     Int
+	sellerEmail String
+	sellerName  String
 
-  applyNum      String? @default("")
-  bankName      String?
-  buyerAddr     String
-  buyerEmail    String
-  buyerName     String
-  sellerName    String
-  sellerEmail   String
-  buyerPostcode String
-  buyerTel      String
-  cardName      String
-  cardNumber    String  @default("")
-  cardQuota     Int     @default(0)
-  currency      String
-  customData    String?
-  impUid        String  @unique
-  merchantUid   String
-  name          String
-  paidAmount    Int
-  paidAt        Int
-  payMethod     String
-  pgProvider    String
-  pgTid         String
-  pgType        String
-  receiptUrl    String
-  status        String
-  success       Boolean
+	id                Int     @id @default(autoincrement())
+	amount            Int
+	applyNum          String?
+	bankCode          String?
+	bankName          String?
+	buyerAddr         String
+	buyerEmail        String
+	buyerName         String
+	buyerPostcode     String
+	buyerTel          String
+	cancelAmount      Int
+	cancelReason      String?
+	cancelledAt       Int
+	cardCode          String?
+	cardName          String?
+	cardNumber        String?
+	cardQuota         Int
+	cardType          String?
+	cashReceiptIssued Boolean
+	channel           String
+	currency          String
+	customData        Json?
+	customerUid       String?
+	customerUidUsage  String?
+	embPgProvider     String?
+	escrow            Boolean
+	failReason        String?
+	failedAt          Int
+	impUid            String
+	merchantUid       String
+	name              String
+	paidAt            Int
+	payMethod         String
+	pgId              String
+	pgProvider        String
+	pgTid             String
+	receiptUrl        String
+	startedAt         Int
+	status            String
+	userAgent         String
+	vbankCode         String?
+	vbankDate         Int
+	vbankHolder       String?
+	vbankIssuedAt     Int
+	vbankName         String?
+	vbankNum          String?
+
+	cancelHistories   CancelHistory[]
+	cancelReceiptUrls CancelReceiptUrl[]
+
+	buyer User? @relation(fields: [buyerId], references: [id], onDelete: Cascade)
+}
+
+model CancelHistory {
+	id        Int    @id @default(autoincrement())
+	paymentId Int
+	history   String
+
+	payment Payment @relation(fields: [paymentId], references: [id])
+}
+
+model CancelReceiptUrl {
+	id        Int    @id @default(autoincrement())
+	paymentId Int
+	url       String
+
+	payment Payment @relation(fields: [paymentId], references: [id])
+}
+
+model AccountHistory {
+	id Int @id @default(autoincrement())
+
+	userId          Int
+	withdrawnAmount Int
+	remainingAmount Int
+	bank            String?
+	accountNumber   String?
+	transactionType TransactionType
+
+	date DateTime @default(now())
+
+	user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Post {
-  id        Int       @id @default(autoincrement())
-  title     String?
-  content   String?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  author    User?     @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  authorId  Int?      @unique
-  viewCount Int       @default(0)
-  postImg   String?
-  comment   Comment[]
-  like      Like[]
+	id        Int      @id @default(autoincrement())
+	title     String?
+	content   String?
+	createdAt DateTime @default(now())
+	updatedAt DateTime @updatedAt
+	authorId  Int?     @unique
+	viewCount Int      @default(0)
+	postImg   String?
 
-  @@unique([id, authorId])
+	comment Comment[]
+	like    Like[]
+
+	author User? @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+	@@unique([id, authorId])
 }
 
 model Like {
-  id     Int   @id @default(autoincrement())
-  post   Post? @relation(fields: [postId], references: [id], onDelete: Cascade)
-  postId Int?
-  user   User? @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId Int?
+	id     Int  @id @default(autoincrement())
+	postId Int?
+	userId Int?
 
-  @@unique([postId, userId])
+	post Post? @relation(fields: [postId], references: [id], onDelete: Cascade)
+	user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+	@@unique([postId, userId])
 }
 
 model Comment {
-  id        Int       @id @default(autoincrement())
-  content   String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  author    User?     @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  authorId  Int?
-  post      Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
-  postId    Int
-  parent    Comment?  @relation("CommentToComment", fields: [parentId], references: [id], onDelete: Cascade)
-  parentId  Int?
-  children  Comment[] @relation("CommentToComment")
+	id        Int      @id @default(autoincrement())
+	content   String
+	createdAt DateTime @default(now())
+	updatedAt DateTime @updatedAt
+	authorId  Int?
+	postId    Int
+	parentId  Int?
 
-  @@unique([id, authorId])
-  @@index([parentId])
+	author   User?     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+	post     Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
+	parent   Comment?  @relation("CommentToComment", fields: [parentId], references: [id], onDelete: Cascade)
+	children Comment[] @relation("CommentToComment")
+
+	@@unique([id, authorId])
+	@@index([parentId])
 }
