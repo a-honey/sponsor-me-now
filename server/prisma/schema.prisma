@@ -10,6 +10,11 @@ datasource db {
 	url      = env("DATABASE_URL")
 }
 
+enum TransactionType {
+	DEPOSIT
+	WITHDRAW
+}
+
 model User {
 	id            Int      @id @default(autoincrement())
 	email         String   @unique
@@ -26,7 +31,7 @@ model User {
 	manager       Boolean  @default(false)
 	createdAt     DateTime @default(now())
 	updatedAt     DateTime @updatedAt
-	acount        Int      @default(0)
+	account       Int      @default(0)
 
 	post    Post[]
 	comment Comment[]
@@ -130,8 +135,9 @@ model AccountHistory {
 	userId          Int
 	withdrawnAmount Int
 	remainingAmount Int
-	bank            String
-	accountNumber   Int
+	bank            String?
+	accountNumber   String?
+	transactionType TransactionType
 
 	date DateTime @default(now())
 
