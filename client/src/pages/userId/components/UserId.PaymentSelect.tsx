@@ -207,28 +207,9 @@ const RequestPay = ({
         if (rsp.success) {
           console.log('결제성공', rsp);
           postPaymentHistory({
-            applyNum: rsp.apply_num,
-            bankName: rsp.bank_name,
-            buyerAddr: rsp.buyer_addr,
-            buyerEmail: rsp.buyer_email,
-            buyerName: rsp.buyer_name,
             sellerName: username,
             sellerEmail: email,
-            buyerPostcode: rsp.buyer_postcode,
-            buyerTel: rsp.buyer_tel,
-            cardName: rsp.card_name,
-            cardQuota: rsp.card_quota,
-            customData: rsp.custom_data,
             impUid: rsp.imp_uid,
-            merchantUid: rsp.merchant_uid,
-            name: rsp.name,
-            paidAmount: rsp.paid_amount,
-            paidAt: rsp.paid_at,
-            payMethod: rsp.pay_method,
-            pgProvider: rsp.pg_provider,
-            pgTid: rsp.pg_tid,
-            receiptUrl: rsp.receipt_url,
-            status: rsp.status,
           });
         } else {
           console.log('결제실패', rsp);
