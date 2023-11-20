@@ -13,8 +13,8 @@ import { AuthGuard } from "@nestjs/passport";
 import { RequestWithUser } from "../user/interface/requestWithUser";
 import { CreatePaymentHistoryDto } from "./dto/createPaymentHistory.dto";
 
-@ApiTags("api/payments")
-@Controller()
+@ApiTags("Payments")
+@Controller("api/payments")
 export class PaymentsController {
   constructor(private paymentsService: PaymentsService) {}
 

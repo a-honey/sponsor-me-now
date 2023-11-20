@@ -8,7 +8,7 @@ export class PaymentsService {
 
   async createPaymentsHistory(userId: number, createPaymentsHistoryData: CreatePaymentHistoryDto) {
     return this.prisma.paymentHistory.create({
-      data: { userId: userId, ...createPaymentsHistoryData },
+      data: { ...createPaymentsHistoryData, userId: userId },
     });
   }
 }

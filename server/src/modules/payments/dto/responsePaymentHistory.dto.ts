@@ -70,7 +70,7 @@ export class ResponsePaymentHistoryDto {
   pgTid: String;
 
   @ApiProperty()
-  pgType: String;
+  pgType?: String;
 
   @ApiProperty()
   receiptUrl: String;

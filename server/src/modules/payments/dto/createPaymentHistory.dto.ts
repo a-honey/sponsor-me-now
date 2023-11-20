@@ -2,58 +2,55 @@ import { ApiProperty } from "@nestjs/swagger";
 
 export class CreatePaymentHistoryDto {
   @ApiProperty()
-  userId: number;
+  applyNum?: string;
 
   @ApiProperty()
-  applyNum?: String;
-
-  @ApiProperty()
-  sellerEmail: String;
+  sellerEmail: string;
 
   @ApiProperty()
   sellerName: string;
 
   @ApiProperty()
-  bankName?: String;
+  bankName?: string;
 
   @ApiProperty()
-  buyerAddr: String;
+  buyerAddr: string;
 
   @ApiProperty()
-  buyerEmail: String;
+  buyerEmail: string;
 
   @ApiProperty()
-  buyerName: String;
+  buyerName: string;
 
   @ApiProperty()
-  buyerPostcode: String;
+  buyerPostcode: string;
 
   @ApiProperty()
-  buyerTel: String;
+  buyerTel: string;
 
   @ApiProperty()
-  cardName: String;
+  cardName?: string;
 
   @ApiProperty()
-  cardNumber: String;
+  cardNumber: string;
 
   @ApiProperty()
   cardQuota: number;
 
   @ApiProperty()
-  currency: String;
+  currency: string;
 
   @ApiProperty()
-  customData?: String;
+  customData?: string;
 
   @ApiProperty()
-  impUid: String;
+  impUid: string;
 
   @ApiProperty()
-  merchantUid: String;
+  merchantUid: string;
 
   @ApiProperty()
-  name: String;
+  name: string;
 
   @ApiProperty()
   paidAmount: number;
@@ -62,23 +59,23 @@ export class CreatePaymentHistoryDto {
   paidAt: number;
 
   @ApiProperty()
-  payMethod: String;
+  payMethod: string;
 
   @ApiProperty()
-  pgProvider: String;
+  pgProvider: string;
 
   @ApiProperty()
-  pgTid: String;
+  pgTid: string;
 
   @ApiProperty()
-  pgType: String;
+  pgType?: string;
 
   @ApiProperty()
-  receiptUrl: String;
+  receiptUrl: string;
 
   @ApiProperty()
-  status: String;
+  status: string;
 
   @ApiProperty()
-  success: Boolean;
+  success: boolean;
 }
