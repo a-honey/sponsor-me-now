@@ -5,17 +5,17 @@ import { RxTrash } from 'react-icons/rx';
 import { useForm } from 'react-hook-form';
 import { useDeleteUser, usePutUserData } from '@/hooks/useMutations';
 import { UserPutBodyType } from '@/api/put/putUser';
-import { useGetUserById } from '@/hooks/useQueries';
 import { useLoginStore } from '@/store';
 
 const UserHeader = ({
   toggleIsWritingPost,
+  data,
 }: {
+  data: any;
   toggleIsWritingPost: () => void;
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const { loginId } = useLoginStore();
-  const { data: userData, isFetched } = useGetUserById({ userId: loginId! });
 
   const putMutation = usePutUserData({ userId: loginId! });
   const deleteMutation = useDeleteUser();
@@ -38,16 +38,12 @@ const UserHeader = ({
   };
 
   useEffect(() => {
-    if (userData) {
-      setValue('username', userData.username);
-      setValue('field', userData.field);
-      setValue('description', userData.description);
+    if (data) {
+      setValue('username', data.username);
+      setValue('field', data.field);
+      setValue('description', data.description);
     }
-  }, [userData, setValue]);
-
-  if (!isFetched) {
-    return <div>Loading...</div>;
-  }
+  }, [data, setValue]);
 
   return (
     <div className={styles.container}>
@@ -84,7 +80,7 @@ const UserHeader = ({
           {isEditing ? (
             <input type="text" {...register('username')} />
           ) : (
-            <div>{userData.username}</div>
+            <div>{data?.username}</div>
           )}
         </div>
         <div className={styles.item}>
@@ -92,7 +88,7 @@ const UserHeader = ({
           {isEditing ? (
             <input type="text" {...register('field')} />
           ) : (
-            <div>{userData.field}</div>
+            <div>{data?.field}</div>
           )}
         </div>
         <div className={styles.item}>
@@ -100,7 +96,7 @@ const UserHeader = ({
           {isEditing ? (
             <textarea {...register('description')} />
           ) : (
-            <div>{userData.description}</div>
+            <div>{data?.description}</div>
           )}
         </div>
       </div>

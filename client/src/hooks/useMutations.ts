@@ -29,7 +29,8 @@ export const usePostRegisterData = () => {
 
 export const usePostLoginData = () => {
   const navigator = useNavigate();
-  const { setLoginId, setLoginUsername, setToken } = useLoginStore();
+  const { setLoginId, setLoginUsername, setToken, setLoginEmail } =
+    useLoginStore();
 
   return useMutation({
     mutationFn: postLogin,
@@ -37,6 +38,7 @@ export const usePostLoginData = () => {
       setLoginId(res.id);
       setLoginUsername(res.username);
       setToken(res.token);
+      setLoginEmail(res.email);
       navigator('/main');
       return;
     },
