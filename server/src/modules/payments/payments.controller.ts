@@ -11,8 +11,10 @@ import { ApiBody, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { PaymentsService } from "./payments.service";
 import { AuthGuard } from "@nestjs/passport";
 import { RequestWithUser } from "../user/interface/requestWithUser";
-import { ImpUidDto } from "./dto/ImpUid.dto";
+import { ImpUidDto } from "./dto/impUid.dto";
 import axios from "axios";
+import { ResponsePaymentHistoryDto } from "./dto/responsePaymentHistory.dto";
+import { getIamPortToken } from "../../utils/getIamPortToken";
 
 @ApiTags("Payments")
 @Controller("api/payments")
@@ -23,29 +25,22 @@ export class PaymentsController {
   @UseGuards(AuthGuard("jwt"))
   @UsePipes(new ValidationPipe())
   @ApiBody({ description: "결제 내역 생성", type: ImpUidDto })
-  @ApiResponse({ status: 201, type: "" })
-  async createPaymentsHistory(@Request() req: RequestWithUser, @Body() data: ImpUidDto) {
+  @ApiResponse({ status: 201, type: ResponsePaymentHistoryDto })
+  async createPaymentsHistory(
+    @Request() req: RequestWithUser,
+    @Body() data: ImpUidDto,
+  ): Promise<ResponsePaymentHistoryDto> {
     const userId = Number(req.user.id);
 
-    const getTokenData = await axios({
-      url: "https://api.iamport.kr/users/getToken",
-      method: "post",
-      headers: { "Content-Type": "application/json" },
-      data: {
-        imp_key: process.env.IMP_REST_API_KEY,
-        imp_secret: process.env.IMP_REST_API_SECRET,
-      },
-    });
-
-    const { accessToken } = getTokenData.data.response;
+    const { access_token } = await getIamPortToken();
 
     const getPaymentsData = await axios({
       url: `https://api.iamport.kr/payments/${data.impUid}`,
       method: "get",
-      headers: { Authorization: accessToken },
+      headers: { Authorization: access_token },
     });
     const paymentsData = getPaymentsData.data.response;
 
-    return await this.paymentsService.createPaymentsHistory(userId, data, paymentsData);
+    return await this.paymentsService.createPayments(userId, data, paymentsData);
   }
 }
