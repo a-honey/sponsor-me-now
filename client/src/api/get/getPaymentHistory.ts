@@ -4,10 +4,13 @@ interface ResponseBodyType {
   totalPage: number;
   currentPage: number;
   datas: {
-    buyerEmail: string;
-    buyerName: string;
+    buyerId: number;
     sellerName: string;
     sellerEmail: string;
+    amount: number;
+    buyerEmail: string;
+    buyerName: string;
+    name: string;
     cardName: string;
     cardNumber: string;
   };

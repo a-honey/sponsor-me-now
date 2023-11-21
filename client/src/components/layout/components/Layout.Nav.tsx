@@ -24,6 +24,7 @@ const Nav = ({ toggleIsOpenNav }: { toggleIsOpenNav: () => void }) => {
             {item.name}
           </Link>
         ))}
+        <Link to="/question">Q&A</Link>
       </div>
       <div>
         <button

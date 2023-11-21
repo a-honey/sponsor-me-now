@@ -9,6 +9,7 @@ import Hub from './pages/hub/Hub';
 import List from './pages/list/List';
 import Intro from './pages/intro/Intro';
 import MyPage from './pages/mypage/MyPage';
+import Question from './pages/question/Question';
 
 const Router = () => {
   return (
@@ -23,6 +24,7 @@ const Router = () => {
           <Route path="/list" element={<List />} />
           <Route path="/payment" element={<Payment />} />
           <Route path="/mypage" element={<MyPage />} />
+          <Route path="/question" element={<Question />} />
           <Route path="/user/:id" element={<UserId />} />
         </Route>
       </Routes>

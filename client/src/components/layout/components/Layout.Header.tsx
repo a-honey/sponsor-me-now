@@ -46,7 +46,10 @@ const Header = () => {
         </div>
         <div className={styles.pcIcons}>
           {loginId ? (
-            <div onClick={handleLogout}>로그아웃</div>
+            <div className={styles.logins}>
+              <div onClick={handleLogout}>로그아웃</div>
+              <Link to="/question">Q&A</Link>
+            </div>
           ) : (
             <div className={styles.logins}>
               <Link to="/login">로그인</Link>
