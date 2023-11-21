@@ -60,50 +60,50 @@ model Payment {
 	sellerEmail String
 	sellerName  String
 
-	id                Int     @id @default(autoincrement())
+	id                Int      @id @default(autoincrement())
 	amount            Int
 	applyNum          String?
 	bankCode          String?
 	bankName          String?
-	buyerAddr         String
-	buyerEmail        String
-	buyerName         String
-	buyerPostcode     String
-	buyerTel          String
-	cancelAmount      Int
+	buyerAddr         String?
+	buyerEmail        String?
+	buyerName         String?
+	buyerPostcode     String?
+	buyerTel          String?
+	cancelAmount      Int?
 	cancelReason      String?
-	cancelledAt       Int
+	cancelledAt       Int?
 	cardCode          String?
 	cardName          String?
 	cardNumber        String?
-	cardQuota         Int
+	cardQuota         Int?
 	cardType          String?
-	cashReceiptIssued Boolean
-	channel           String
-	currency          String
+	cashReceiptIssued Boolean?
+	channel           String?
+	currency          String?
 	customData        Json?
 	customerUid       String?
 	customerUidUsage  String?
 	embPgProvider     String?
 	escrow            Boolean
 	failReason        String?
-	failedAt          Int
-	impUid            String
-	merchantUid       String
-	name              String
-	paidAt            Int
-	payMethod         String
-	pgId              String
-	pgProvider        String
-	pgTid             String
-	receiptUrl        String
-	startedAt         Int
-	status            String
-	userAgent         String
+	failedAt          Int?
+	impUid            String?
+	merchantUid       String?
+	name              String?
+	paidAt            Int?
+	payMethod         String?
+	pgId              String?
+	pgProvider        String?
+	pgTid             String?
+	receiptUrl        String?
+	startedAt         Int?
+	status            String?
+	userAgent         String?
 	vbankCode         String?
-	vbankDate         Int
+	vbankDate         Int?
 	vbankHolder       String?
-	vbankIssuedAt     Int
+	vbankIssuedAt     Int?
 	vbankName         String?
 	vbankNum          String?
 
