@@ -12,6 +12,8 @@ import deleteUser from '@/api/delete/deleteUser';
 import useLogout from './useLogout';
 import postPostLike from '@/api/post/postPostLike';
 import postComment from '@/api/post/postComment';
+import putComment from '@/api/put/putComment';
+import deleteComment from '@/api/delete/deleteComment';
 
 export const usePostRegisterData = (fn: () => void) => {
   const { setLoginId, setLoginUsername, setToken } = useLoginStore();
@@ -124,6 +126,30 @@ export const usePostComment = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: postComment,
+    onSuccess: (res) => {
+      queryClient.invalidateQueries({
+        queryKey: ['postId', res.postId.toString()],
+      });
+    },
+  });
+};
+
+export const usePutComment = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: putComment,
+    onSuccess: (res) => {
+      queryClient.invalidateQueries({
+        queryKey: ['postId', res.postId.toString()],
+      });
+    },
+  });
+};
+
+export const useDeleteComment = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: deleteComment,
     onSuccess: (res) => {
       queryClient.invalidateQueries({
         queryKey: ['postId', res.postId.toString()],

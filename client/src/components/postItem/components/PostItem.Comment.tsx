@@ -1,8 +1,14 @@
 import { useState } from 'react';
-import { usePostComment } from '@/hooks/useMutations';
+import {
+  useDeleteComment,
+  usePostComment,
+  usePutComment,
+} from '@/hooks/useMutations';
 import styles from '../PostItem.module.scss';
 import { ResponsePostByIdType } from '@/api/get/getPostById';
 import UserImg from '@/components/components/UserImg';
+import { MdDeleteOutline, MdOutlineAddComment } from 'react-icons/md';
+import { GrEdit } from 'react-icons/gr';
 
 const Comment = ({ data }: { data: ResponsePostByIdType }) => {
   const { id, comment } = data;
@@ -26,18 +32,65 @@ const CommentItem = ({
   data: ResponsePostByIdType['comment'][0];
 }) => {
   const [isOpenCommentAdd, setIsOpenCommentAdd] = useState(false);
+  const [isEditingCommentAdd, setIsEditingCommentAdd] = useState(false);
+
+  const { postId, content, author, profileImg, id } = data;
+
+  const [editContent, setEditContent] = useState(content);
+
+  const putMutation = usePutComment();
+  const deleteMutation = useDeleteComment();
 
   const toggleIsOpenCommentAdd = () => {
     setIsOpenCommentAdd((prev) => !prev);
   };
 
-  const { postId, content, author, profileImg, id } = data;
+  const toggleIsEditingCommentAdd = () => {
+    setIsEditingCommentAdd((prev) => !prev);
+  };
+
+  const handleEditClick = () => {
+    putMutation.mutate({ commentId: id, content: editContent });
+  };
+
+  const handleDeleteClick = () => {
+    const ok = window.confirm('댓글을 삭제하시겠습니까?');
+    if (ok) {
+      deleteMutation.mutate(id);
+    }
+    return;
+  };
+
   return (
     <div className={styles.commentItemContainer}>
       <div className={styles.contentContainer}>
-        <div>
-          {content}
-          <span onClick={toggleIsOpenCommentAdd}>+</span>
+        <div className={styles.commentContent}>
+          {isEditingCommentAdd ? (
+            content
+          ) : (
+            <input
+              value={editContent}
+              onChange={(e) => {
+                setEditContent(e.target.value);
+              }}
+            />
+          )}
+          <div className={styles.icons}>
+            <button className="gray" onClick={toggleIsEditingCommentAdd}>
+              <GrEdit />
+            </button>
+            <button
+              className="green"
+              onClick={
+                isEditingCommentAdd ? handleEditClick : toggleIsOpenCommentAdd
+              }
+            >
+              <MdOutlineAddComment />
+            </button>
+            <button className="red" onClick={handleDeleteClick}>
+              <MdDeleteOutline />
+            </button>
+          </div>
         </div>
         <div className={styles.authorContainer}>
           <UserImg src={profileImg} />
