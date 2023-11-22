@@ -7,7 +7,11 @@ import {
 import styles from '../PostItem.module.scss';
 import { ResponsePostByIdType } from '@/api/get/getPostById';
 import UserImg from '@/components/components/UserImg';
-import { MdDeleteOutline, MdOutlineAddComment } from 'react-icons/md';
+import {
+  MdDeleteOutline,
+  MdOutlineAddComment,
+  MdFileDownloadDone,
+} from 'react-icons/md';
 import { GrEdit } from 'react-icons/gr';
 
 const Comment = ({ data }: { data: ResponsePostByIdType }) => {
@@ -45,12 +49,13 @@ const CommentItem = ({
     setIsOpenCommentAdd((prev) => !prev);
   };
 
-  const toggleIsEditingCommentAdd = () => {
+  const toggleIsEditingComment = () => {
     setIsEditingCommentAdd((prev) => !prev);
   };
 
   const handleEditClick = () => {
     putMutation.mutate({ commentId: id, content: editContent });
+    setIsEditingCommentAdd(false);
   };
 
   const handleDeleteClick = () => {
@@ -66,25 +71,25 @@ const CommentItem = ({
       <div className={styles.contentContainer}>
         <div className={styles.commentContent}>
           {isEditingCommentAdd ? (
-            content
+            <div className={styles.commentContent}>
+              <input
+                value={editContent}
+                onChange={(e) => {
+                  setEditContent(e.target.value);
+                }}
+              />
+              <button className="green" onClick={handleEditClick}>
+                <MdFileDownloadDone />
+              </button>
+            </div>
           ) : (
-            <input
-              value={editContent}
-              onChange={(e) => {
-                setEditContent(e.target.value);
-              }}
-            />
+            content
           )}
           <div className={styles.icons}>
-            <button className="gray" onClick={toggleIsEditingCommentAdd}>
+            <button className="gray" onClick={toggleIsEditingComment}>
               <GrEdit />
             </button>
-            <button
-              className="green"
-              onClick={
-                isEditingCommentAdd ? handleEditClick : toggleIsOpenCommentAdd
-              }
-            >
+            <button className="green" onClick={toggleIsOpenCommentAdd}>
               <MdOutlineAddComment />
             </button>
             <button className="red" onClick={handleDeleteClick}>
@@ -102,6 +107,7 @@ const CommentItem = ({
           postId={postId}
           parentId={id}
           parentUsername={author.username}
+          toggleIsOpenCommentAdd={toggleIsOpenCommentAdd}
         />
       )}
     </div>
@@ -112,13 +118,17 @@ const CommentAdd = ({
   postId,
   parentId,
   parentUsername,
+  toggleIsOpenCommentAdd,
 }: {
   postId: number;
   parentId?: number;
   parentUsername?: string;
+  toggleIsOpenCommentAdd?: () => void;
 }) => {
   const [content, setContent] = useState('');
-  const postMutation = usePostComment();
+  const postMutation = usePostComment(
+    toggleIsOpenCommentAdd ? toggleIsOpenCommentAdd : () => setContent(''),
+  );
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -126,7 +136,6 @@ const CommentAdd = ({
     postMutation.mutate(
       parentId ? { postId, content } : { postId, parentId, content },
     );
-    setContent('');
   };
   return (
     <form

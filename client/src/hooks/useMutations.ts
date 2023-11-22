@@ -122,11 +122,12 @@ export const usePostLike = () => {
   });
 };
 
-export const usePostComment = () => {
+export const usePostComment = (fn: () => void) => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: postComment,
     onSuccess: (res) => {
+      fn();
       queryClient.invalidateQueries({
         queryKey: ['postId', res.postId.toString()],
       });
