@@ -3,7 +3,7 @@ import { instance } from '../instance';
 interface ResponseBodyType {
   totalPage: number;
   currentPage: number;
-  datas: {
+  data: {
     buyerId: number;
     sellerName: string;
     sellerEmail: string;

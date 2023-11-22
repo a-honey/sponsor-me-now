@@ -15,7 +15,7 @@ const UserId = () => {
   }
   return (
     <article>
-      <ImgHeader />
+      <ImgHeader data={data} />
       <UserHeader data={data} />
     </article>
   );

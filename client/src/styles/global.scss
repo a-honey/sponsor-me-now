@@ -42,6 +42,10 @@ article {
   input {
     height: 30px;
   }
+  input,
+  textarea {
+    border: 1px solid #ededed;
+  }
   img {
     margin: 0 auto;
   }

@@ -49,7 +49,6 @@ export const usePostLoginData = () => {
 
 export const usePutUserData = ({ userId }: { userId: number }) => {
   const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: putUser,
     onSuccess: () => {

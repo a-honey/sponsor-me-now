@@ -1,3 +1,4 @@
+import styles from './Hub.module.scss';
 import UserItem from '@/components/common/UserItem';
 import { useGetUserList } from '@/hooks/useQueries';
 
@@ -7,9 +8,11 @@ const Hub = () => {
   return (
     <article>
       <h2>모든 게시글 및 후원대상자 매칭</h2>
-      {data?.users.map((item) => (
-        <UserItem data={item} />
-      ))}
+      <div className={styles.userContainer}>
+        {data?.users.map((item) => (
+          <UserItem data={item} key={item.id} />
+        ))}
+      </div>
     </article>
   );
 };

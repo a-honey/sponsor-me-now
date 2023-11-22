@@ -18,12 +18,21 @@
 }
 
 .profileImgContainer {
-  img {
+  .imgContainer {
     position: absolute;
     left: 20px;
     bottom: -80px;
     width: 150px;
+    height: 150px;
     border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+      width: 110%;
+      height: 110%;
+    }
   }
   input {
     position: absolute;

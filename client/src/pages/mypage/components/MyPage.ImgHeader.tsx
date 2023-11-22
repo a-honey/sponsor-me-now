@@ -2,6 +2,7 @@ import useImgChange from '@/hooks/useImgChange';
 import styles from '../styles/MyPage.ImgHeader.module.scss';
 import user_none from '@/assets/user_none.png';
 import { usePutUserBackground, usePutUserProfile } from '@/hooks/useMutations';
+import handleImgUrl from '@/utils/handleImgUrl';
 
 const ImgHeader = ({
   data,
@@ -23,8 +24,7 @@ const ImgHeader = ({
       <img
         ref={imgRef}
         src={
-          'http://3.35.118.28:5000/images/img_06da1e2c-8310-46d9-a1f9-e165a17e3eca.jpeg' ??
-          '/logos.png'
+          data?.backgroundImg ? handleImgUrl(data.backgroundImg) : '/logos.png'
         }
         alt="hi"
       />
@@ -49,7 +49,9 @@ const ProfileImg = ({ src }: { src: string }) => {
 
   return (
     <div className={styles.profileImgContainer}>
-      <img ref={imgRef} src={src ?? user_none} alt="hi" />
+      <div className={styles.imgContainer}>
+        <img ref={imgRef} src={src ? handleImgUrl(src) : user_none} alt="hi" />
+      </div>
       <input type="file" onChange={handleImgChange} onDrag={handleImgChange} />
     </div>
   );
