@@ -3,7 +3,11 @@ import UserItem from '../../../components/common/UserItem';
 import styles from '../styles/List.UserList.module.scss';
 
 const UserList = () => {
-  const { data } = useGetUserList({ page: 1, limit: 10, search: 'sponsor' });
+  const { data } = useGetUserList({
+    page: 1,
+    limit: 10,
+    search: 'allSponsored',
+  });
 
   return (
     <div className={styles.container}>

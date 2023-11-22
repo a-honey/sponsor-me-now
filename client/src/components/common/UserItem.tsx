@@ -14,7 +14,7 @@ const UserItem = ({
 }) => {
   const navigator = useNavigate();
 
-  const { id, username } = data;
+  const { id, username, profileImg } = data;
   return (
     <div
       className={styles.userItem}
@@ -22,7 +22,7 @@ const UserItem = ({
         navigator(`/user/${id}`);
       }}
     >
-      <UserImg />
+      <UserImg src={profileImg} />
       <div>{username}</div>
     </div>
   );
