@@ -2,6 +2,8 @@ import {
   Body,
   Controller,
   Get,
+  Param,
+  ParseIntPipe,
   Post,
   Query,
   Request,
@@ -19,7 +21,7 @@ import { ResponsePaymentsDto } from "./dto/responsePayments.dto";
 import { getIamPortToken } from "../../utils/getIamPortToken";
 import { ParseIntWithDefaultPipe } from "../../pipes/parseIntWithDefaultPipe";
 import { PaymentsListDto } from "./dto/paymentsList.dto";
-import { ResponsePaymentsListDto } from "./dto/responsePaymentsList.dto";
+import { PaymentsDto } from "./dto/payments.dto";
 
 @ApiTags("Payments")
 @Controller("api/payments")
@@ -53,7 +55,7 @@ export class PaymentsController {
   @UseGuards(AuthGuard("jwt"))
   @UsePipes(new ValidationPipe())
   @ApiBody({ description: "결제 내역 리스트" })
-  @ApiResponse({ status: 200, type: ResponsePaymentsListDto })
+  @ApiResponse({ status: 200, type: [PaymentsListDto] })
   async getPaymentsHistoryList(
     @Request() req: RequestWithUser,
     @Query("page", new ParseIntWithDefaultPipe(1)) page: number,
@@ -62,5 +64,17 @@ export class PaymentsController {
     const userId: number = Number(req.user.id);
 
     return await this.paymentsService.getPaymentsHistoryList(userId, page, limit);
+  }
+
+  @Get(":paymentsId")
+  @UseGuards(AuthGuard("jwt"))
+  @UsePipes(new ValidationPipe())
+  @ApiBody({ description: "단일 결제 상세 내역" })
+  @ApiResponse({ status: 200, type: PaymentsDto })
+  async getPayments(
+    @Request() req: RequestWithUser,
+    @Param("paymentsId", ParseIntPipe) paymentId: number,
+  ): Promise<PaymentsDto> {
+    return await this.paymentsService.getPaymentsDetail(paymentId);
   }
 }

@@ -142,4 +142,12 @@ export class PaymentsService {
       totalPages,
     };
   }
+
+  async getPaymentsDetail(paymentsId: number): Promise<PaymentsDto> {
+    const paymentsDetail = await this.prisma.payment.findUnique({
+      where: { id: paymentsId },
+    });
+
+    return plainToInstance(PaymentsDto, paymentsDetail);
+  }
 }

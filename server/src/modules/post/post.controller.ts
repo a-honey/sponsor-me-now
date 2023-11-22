@@ -49,7 +49,7 @@ export class PostController {
   @ApiBody({
     description: "게시글 리스트, ?search=all 일시 전체조회, 아닐시 후원자 최신게시글 조회",
   })
-  @ApiResponse({ status: 200, type: ResponsePostListDto })
+  @ApiResponse({ status: 200, type: [PostDto] })
   async getPosts(
     @Request() req: RequestWithUser,
     @Query("page", new ParseIntWithDefaultPipe(1)) page: number,
