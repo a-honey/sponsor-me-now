@@ -110,4 +110,7 @@ export class UserDto {
   @ApiProperty()
   @Exclude()
   updatedAt?: Date;
+
+  @ApiProperty()
+  account: number;
 }

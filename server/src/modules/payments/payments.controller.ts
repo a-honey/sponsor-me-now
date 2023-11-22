@@ -51,9 +51,9 @@ export class PaymentsController {
 
   @Get("/list")
   @UseGuards(AuthGuard("jwt"))
+  @UsePipes(new ValidationPipe())
   @ApiBody({ description: "결제 내역 리스트" })
   @ApiResponse({ status: 200, type: ResponsePaymentsListDto })
-  @UsePipes(new ValidationPipe())
   async getPaymentsHistoryList(
     @Request() req: RequestWithUser,
     @Query("page", new ParseIntWithDefaultPipe(1)) page: number,

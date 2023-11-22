@@ -25,6 +25,7 @@ import { UpdatedUserDto } from "./dto/updatedUser.dto";
 import { ParseIntWithDefaultUserPipe } from "../../pipes/parseIntWithDefaultUserPipe";
 import { ParseIntWithDefaultPipe } from "../../pipes/parseIntWithDefaultPipe";
 import { ResponseUserDto } from "./dto/responseUser.dto";
+import { ValidateUserDto } from "../auth/dto/validateUser.dto";
 
 @ApiTags("User")
 @Controller("api/user")
@@ -37,7 +38,7 @@ export class UserController {
     type: GetUserDto,
   })
   @ApiResponse({ status: 200, type: UserDto })
-  async getUserByEmail(@Param("email") email: string): Promise<UserDto> {
+  async getUserByEmail(@Param("email") email: string): Promise<ValidateUserDto> {
     return await this.userService.getUserByEmail(email);
   }
 

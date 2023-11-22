@@ -137,11 +137,12 @@ export class UserService {
         sponsorId: userId,
       },
       select: {
-        sponsored: true,
+        sponsor: true,
       },
     });
 
-    const users = sponsorships.map((sponsorship) => sponsorship.sponsored);
+    console.log(sponsorships);
+    const users = sponsorships.map((sponsorship) => sponsorship.sponsor);
 
     const totalCount = users.length;
     const totalPage: number = Math.ceil(totalCount / limit);
@@ -162,11 +163,11 @@ export class UserService {
         sponsoredId: userId,
       },
       select: {
-        sponsor: true,
+        sponsored: true,
       },
     });
 
-    const users = sponsorships.map((sponsorship) => sponsorship.sponsor);
+    const users = sponsorships.map((sponsorship) => sponsorship.sponsored);
 
     const totalCount = users.length;
     const totalPage: number = Math.ceil(totalCount / limit);

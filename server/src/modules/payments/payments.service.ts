@@ -105,7 +105,7 @@ export class PaymentsService {
     limit: number,
   ): Promise<{ payments: PaymentsListDto[]; totalPages: number; currentPage: number }> {
     const user: UserDto = await this.prisma.user.findUnique({ where: { id: userId } });
-    let payments: PaymentsDto[];
+    let payments: PaymentsListDto[];
     let totalPayments: number;
 
     if (user.isSponsor) {
@@ -113,6 +113,19 @@ export class PaymentsService {
         where: { buyerId: userId },
         skip: (page - 1) * limit,
         take: limit,
+        select: {
+          id: true,
+          buyerId: true,
+          sellerId: true,
+          sellerName: true,
+          sellerEmail: true,
+          amount: true,
+          buyerEmail: true,
+          buyerName: true,
+          name: true,
+          cardName: true,
+          cardNumber: true,
+        },
       });
       totalPayments = await this.prisma.payment.count({ where: { buyerId: userId } });
     } else {
@@ -120,16 +133,31 @@ export class PaymentsService {
         where: { sellerId: userId },
         skip: (page - 1) * limit,
         take: limit,
+        select: {
+          id: true,
+          buyerId: true,
+          sellerId: true,
+          sellerName: true,
+          sellerEmail: true,
+          amount: true,
+          buyerEmail: true,
+          buyerName: true,
+          name: true,
+          cardName: true,
+          cardNumber: true,
+        },
       });
       totalPayments = await this.prisma.payment.count({ where: { sellerId: userId } });
     }
 
     const totalPages = Math.ceil(totalPayments / limit);
-
+    const paymentsList: PaymentsListDto[] = payments.map((payment) =>
+      plainToInstance(PaymentsListDto, payment),
+    );
     return {
-      payments: payments.map((payment) => plainToInstance(PaymentsListDto, payment)),
+      payments: paymentsList,
       currentPage: page,
-      totalPages: totalPages,
+      totalPages,
     };
   }
 }
