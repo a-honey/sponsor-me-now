@@ -24,6 +24,7 @@ const Other = () => {
     );
 
     if (response.status === 200) {
+      alert('감사합니다.');
       setValue('name', data.name);
       setValue('email', data.email);
       setValue('title', data.title);
@@ -32,9 +33,12 @@ const Other = () => {
   };
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
-      <h4>직접 문의하기</h4>
       <label>작성자</label>
-      <input type="text" {...register('name')} />
+      <input
+        placeholder="작성자명을 입력해주세요"
+        type="text"
+        {...register('name')}
+      />
       <label>이메일</label>
       <input
         placeholder="답변받으실 이메일을 입력해주세요"
@@ -42,9 +46,16 @@ const Other = () => {
         {...register('email')}
       />
       <label>문의 제목</label>
-      <input type="text" {...register('title')} />
+      <input
+        placeholder="문의 혹은 피드백의 제목을 입력해주세요"
+        type="text"
+        {...register('title')}
+      />
       <label>문의 내용</label>
-      <input type="text" {...register('message')} />
+      <textarea
+        placeholder="자세한 사항을 입력해주세요"
+        {...register('message')}
+      />
       <button>제출</button>
     </form>
   );

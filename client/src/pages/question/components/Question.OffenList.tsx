@@ -8,7 +8,6 @@ const OffenList = () => {
       <Item />
       <Item />
       <Item />
-      <Item />
     </div>
   );
 };
