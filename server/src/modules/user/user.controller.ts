@@ -113,8 +113,8 @@ export class UserController {
     return result;
   }
 
-  @UseGuards(AuthGuard("jwt"))
   @Delete()
+  @UseGuards(AuthGuard("jwt"))
   @ApiBody({ description: "유저 + 관련 레코드 삭제" })
   @ApiResponse({ status: 204, type: ResponseUserDto })
   async deleteUser(@Request() req: RequestWithUser): Promise<UserDto> {

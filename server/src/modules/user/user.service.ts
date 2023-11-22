@@ -66,15 +66,6 @@ export class UserService {
               not: userId,
             },
           },
-          {
-            NOT: {
-              sponsor: {
-                some: {
-                  sponsoredId: userId,
-                },
-              },
-            },
-          },
         ],
         isSponsor: false,
       },
@@ -88,15 +79,6 @@ export class UserService {
           {
             id: {
               not: userId,
-            },
-          },
-          {
-            NOT: {
-              sponsor: {
-                some: {
-                  sponsoredId: userId,
-                },
-              },
             },
           },
         ],
@@ -130,19 +112,18 @@ export class UserService {
     limit: number,
     userId: number,
   ): Promise<ResponseUserListDto> {
-    const sponsorships = await this.prisma.sponsor.findMany({
+    const sponsorships = await this.prisma.payment.findMany({
       skip: (page - 1) * limit,
       take: limit,
       where: {
-        sponsorId: userId,
+        buyerId: userId,
       },
       select: {
-        sponsor: true,
+        seller: true,
       },
     });
 
-    console.log(sponsorships);
-    const users = sponsorships.map((sponsorship) => sponsorship.sponsor);
+    const users = sponsorships.map((sponsorship) => sponsorship.seller);
 
     const totalCount = users.length;
     const totalPage: number = Math.ceil(totalCount / limit);
@@ -156,23 +137,23 @@ export class UserService {
     limit: number,
     userId: number,
   ): Promise<ResponseUserListDto> {
-    const sponsorships = await this.prisma.sponsor.findMany({
+    const sponsorships = await this.prisma.payment.findMany({
       skip: (page - 1) * limit,
       take: limit,
       where: {
-        sponsoredId: userId,
+        sellerId: userId,
       },
       select: {
-        sponsored: true,
+        buyer: true,
       },
     });
 
-    const users = sponsorships.map((sponsorship) => sponsorship.sponsored);
+    const users = sponsorships.map((sponsorship) => sponsorship.buyer);
 
     const totalCount = users.length;
     const totalPage: number = Math.ceil(totalCount / limit);
 
-    const userList: UserDto[] = users.map((user) => plainToInstance(UserDto, user));
+    const userList: GetUserListDto[] = users.map((user) => plainToInstance(GetUserListDto, user));
     return { users: userList, totalPage, currentPage: page };
   }
 

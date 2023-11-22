@@ -15,19 +15,6 @@ enum TransactionType {
   WITHDRAW
 }
 
-// 삭제예정
-model Sponsor {
-  id          Int  @id @default(autoincrement())
-  sponsorId   Int?
-  sponsoredId Int?
-
-  sponsor   User? @relation("SponsorToUser", fields: [sponsorId], references: [id])
-  sponsored User? @relation("UserToSponsor", fields: [sponsoredId], references: [id])
-
-  @@index([sponsorId])
-  @@index([sponsoredId])
-}
-
 model User {
   id            Int      @id @default(autoincrement())
   email         String   @unique
@@ -53,10 +40,6 @@ model User {
   seller  Payment[] @relation("seller")
 
   AccountHistory AccountHistory[]
-
-  // 삭제예정
-  sponsor   Sponsor[] @relation("SponsorToUser")
-  sponsored Sponsor[] @relation("UserToSponsor")
 }
 
 model Payment {

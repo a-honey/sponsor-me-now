@@ -110,4 +110,8 @@ export class GetUserListDto {
   @ApiProperty()
   @Exclude()
   updatedAt?: Date;
+
+  @ApiProperty()
+  @Exclude()
+  account: number;
 }

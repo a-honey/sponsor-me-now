@@ -76,10 +76,8 @@ export class PostService {
     let sponsoredIds: number[];
 
     if (user.isSponsor) {
-      const sponsorRelations = await this.prisma.sponsor.findMany({ where: { sponsorId: userId } });
-      sponsoredIds = sponsorRelations.map(
-        (relation: { sponsoredId: number }) => relation.sponsoredId,
-      );
+      const sponsorRelations = await this.prisma.payment.findMany({ where: { buyerId: userId } });
+      sponsoredIds = sponsorRelations.map((relation: { sellerId: number }) => relation.sellerId);
     }
 
     const posts = await this.prisma.post.findMany({
