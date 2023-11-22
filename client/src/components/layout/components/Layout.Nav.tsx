@@ -8,7 +8,9 @@ const Nav = ({ toggleIsOpenNav }: { toggleIsOpenNav: () => void }) => {
   const location = useLocation();
 
   useEffect(() => {
-    toggleIsOpenNav();
+    if (location.pathname !== '/main') {
+      toggleIsOpenNav();
+    }
   }, [location.pathname, toggleIsOpenNav]);
   return (
     <nav className={styles.nav}>
