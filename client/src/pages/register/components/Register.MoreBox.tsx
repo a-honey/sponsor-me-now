@@ -2,11 +2,12 @@ import useImgChange from '@/hooks/useImgChange';
 import { usePutUserBackground, usePutUserData } from '@/hooks/useMutations';
 import { useLoginStore } from '@/store';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import user_none from '@/assets/user_none.png';
 
 const MoreBox = () => {
   const { loginId } = useLoginStore();
+  const navigator = useNavigate();
 
   const putMutation = usePutUserData({ userId: loginId! });
   const putImageMutation = usePutUserBackground();
@@ -23,6 +24,7 @@ const MoreBox = () => {
     description?: string;
   }) => {
     putMutation.mutate(data);
+    navigator('/main');
   };
 
   const handleClick = (img: File) => {
