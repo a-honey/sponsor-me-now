@@ -123,7 +123,7 @@ export class UserService {
       },
     });
 
-    const users = sponsorships.map((sponsorship) => sponsorship.seller);
+    const users = Array.from(new Set(sponsorships.map((sponsorship) => sponsorship.seller)));
 
     const totalCount = users.length;
     const totalPage: number = Math.ceil(totalCount / limit);
@@ -148,7 +148,7 @@ export class UserService {
       },
     });
 
-    const users = sponsorships.map((sponsorship) => sponsorship.buyer);
+    const users = Array.from(new Set(sponsorships.map((sponsorship) => sponsorship.buyer)));
 
     const totalCount = users.length;
     const totalPage: number = Math.ceil(totalCount / limit);

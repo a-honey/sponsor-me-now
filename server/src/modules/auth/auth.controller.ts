@@ -13,7 +13,7 @@ import { AuthService } from "./auth.service";
 import { AuthDto } from "./dto/auth.dto";
 import { SubmitUserDataDto } from "./dto/submitUserData.dto";
 import { Response } from "express";
-import { ApiBody, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { TryLoginDto } from "./dto/tryLogin.dto";
 import { LoginUserDto } from "./dto/loginUser.dto";
 import { AuthGuard } from "@nestjs/passport";
@@ -29,7 +29,10 @@ export class AuthController {
     return submitUserDto.password === submitUserDto.passwordConfirm;
   }
   @Post()
-  @ApiBody({ description: "회원가입", type: SubmitUserDataDto })
+  @ApiOperation({
+    summary: "회원가입",
+  })
+  @ApiBody({ type: SubmitUserDataDto })
   @ApiResponse({ status: 201, type: ResponseCreateUserDto })
   @UsePipes(new ValidationPipe())
   async createUser(@Body() submitUserDto: SubmitUserDataDto): Promise<AuthDto> {
@@ -43,7 +46,11 @@ export class AuthController {
 
   @Post("login")
   @UseGuards(AuthGuard("local"))
-  @ApiBody({ description: "로그인", type: TryLoginDto })
+  @ApiOperation({
+    summary: "로그인",
+    description: "성공시 JWT 발급",
+  })
+  @ApiBody({ type: TryLoginDto })
   @ApiResponse({ type: LoginUserDto })
   @UsePipes(new ValidationPipe())
   async login(@Request() req: RequestWithUser, @Res() res: Response): Promise<LoginUserDto> {

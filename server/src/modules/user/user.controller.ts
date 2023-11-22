@@ -12,7 +12,7 @@ import {
   BadRequestException,
 } from "@nestjs/common";
 import { UserService } from "./user.service";
-import { ApiBody, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { GetUserDto } from "./dto/getUser.dto";
 import { UserDto } from "./dto/user.dto";
 import { AuthGuard } from "@nestjs/passport";
@@ -33,8 +33,10 @@ export class UserController {
   constructor(private userService: UserService) {}
 
   @Get("/internal/:email")
+  @ApiOperation({
+    summary: "[서버용] 서버 인증, 인가 로직에 사용",
+  })
   @ApiBody({
-    description: "이메일로 유저 조회, 서비스 로직 내 인증/인가에서 사용하기에 비밀번호 노출",
     type: GetUserDto,
   })
   @ApiResponse({ status: 200, type: UserDto })
@@ -43,8 +45,12 @@ export class UserController {
   }
 
   @Put()
+  @ApiOperation({
+    summary: "회원 정보 수정",
+    description: "요청 받은 필드 수정",
+  })
   @UseGuards(AuthGuard("jwt"))
-  @ApiBody({ description: "회원 정보 업데이트", type: UpdateUserDataDto })
+  @ApiBody({ type: UpdateUserDataDto })
   @ApiResponse({ status: 200, type: ResponseUpdatedUserDto })
   async editUser(
     @Request() req: RequestWithUser,
@@ -55,6 +61,10 @@ export class UserController {
   }
 
   @Get()
+  @ApiOperation({
+    summary: "단일 유저 상세 조회",
+    description: "userId를 쿼리로 받을 시 해당 유저 조회, 없을 시 로그인한 사용자 조회",
+  })
   @UseGuards(AuthGuard("jwt"))
   @ApiBody({ description: "유저 상세정보 조회. 쿼리 값이 있을 시 해당 유저 조회" })
   @ApiResponse({ status: 200, type: ResponseUserDto })
@@ -70,8 +80,8 @@ export class UserController {
   }
 
   @Get("/list")
-  @UseGuards(AuthGuard("jwt"))
-  @ApiBody({
+  @ApiOperation({
+    summary: "유저 리스트",
     description:
       `쿼리별 유저리스트. 서버사이드 페이지네이션<br />` +
       `all:전체<br />` +
@@ -80,6 +90,7 @@ export class UserController {
       `sponsor:내가 후원중인 유저<br />` +
       `sponsored:날 후원하는 유저<br />`,
   })
+  @UseGuards(AuthGuard("jwt"))
   @ApiResponse({ status: 200, type: ResponseUserListDto })
   async getUsers(
     @Request() req: RequestWithUser,
@@ -115,6 +126,10 @@ export class UserController {
 
   @Delete()
   @UseGuards(AuthGuard("jwt"))
+  @ApiOperation({
+    summary: "회원탈퇴",
+    description: "프로필,백그라운드 이미지 + 관련 게시글, 댓글 삭제",
+  })
   @ApiBody({ description: "유저 + 관련 레코드 삭제" })
   @ApiResponse({ status: 204, type: ResponseUserDto })
   async deleteUser(@Request() req: RequestWithUser): Promise<UserDto> {

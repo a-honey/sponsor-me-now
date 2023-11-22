@@ -13,7 +13,7 @@ import { AuthGuard } from "@nestjs/passport";
 import { UploadService } from "./upload.service";
 import * as path from "path";
 import { RequestWithUser } from "../user/interface/requestWithUser";
-import { ApiBody, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 
 @ApiTags("Upload")
 @Controller("api/upload")
@@ -21,7 +21,9 @@ export class UploadController {
   constructor(private readonly uploadService: UploadService) {}
 
   @Post("/profile")
-  @ApiBody({ description: "[업로드] 프로필 이미지" })
+  @ApiOperation({
+    summary: "프로필 이미지 업로드",
+  })
   @ApiResponse({ status: 201, type: String })
   @UseGuards(AuthGuard("jwt"))
   @UseInterceptors(FileInterceptor("profileImage"))
@@ -32,7 +34,9 @@ export class UploadController {
   }
 
   @Post("/background")
-  @ApiBody({ description: "[업로드] 프로필 백그라운드" })
+  @ApiOperation({
+    summary: "백그라운드 이미지 업로드",
+  })
   @ApiResponse({ status: 201, type: String })
   @UseGuards(AuthGuard("jwt"))
   @UseInterceptors(FileInterceptor("profileBackgroundImage"))
@@ -43,7 +47,9 @@ export class UploadController {
   }
 
   @Post("/post/:postId")
-  @ApiBody({ description: "[업로드] 게시글 이미지 " })
+  @ApiOperation({
+    summary: "게시글 이미지 업로드",
+  })
   @ApiResponse({ status: 201, type: String })
   @UseGuards(AuthGuard("jwt"))
   @UseInterceptors(FileInterceptor("postImage"))
