@@ -1,9 +1,13 @@
 import { ApiProperty } from "@nestjs/swagger";
-export class ResponsePaymentHistoryDto {
+export class ResponsePaymentsDto {
   @ApiProperty()
   id: number;
 
+  @ApiProperty()
   buyerId: number;
+
+  @ApiProperty()
+  sellerId: number;
 
   @ApiProperty()
   sellerEmail: string;

@@ -1,7 +1,9 @@
 import {
   Body,
   Controller,
+  Get,
   Post,
+  Query,
   Request,
   UseGuards,
   UsePipes,
@@ -13,8 +15,11 @@ import { AuthGuard } from "@nestjs/passport";
 import { RequestWithUser } from "../user/interface/requestWithUser";
 import { ImpUidDto } from "./dto/impUid.dto";
 import axios from "axios";
-import { ResponsePaymentHistoryDto } from "./dto/responsePaymentHistory.dto";
+import { ResponsePaymentsDto } from "./dto/responsePayments.dto";
 import { getIamPortToken } from "../../utils/getIamPortToken";
+import { ParseIntWithDefaultPipe } from "../../pipes/parseIntWithDefaultPipe";
+import { PaymentsListDto } from "./dto/paymentsList.dto";
+import { ResponsePaymentsListDto } from "./dto/responsePaymentsList.dto";
 
 @ApiTags("Payments")
 @Controller("api/payments")
@@ -25,11 +30,11 @@ export class PaymentsController {
   @UseGuards(AuthGuard("jwt"))
   @UsePipes(new ValidationPipe())
   @ApiBody({ description: "결제 내역 생성", type: ImpUidDto })
-  @ApiResponse({ status: 201, type: ResponsePaymentHistoryDto })
+  @ApiResponse({ status: 201, type: ResponsePaymentsDto })
   async createPaymentsHistory(
     @Request() req: RequestWithUser,
     @Body() data: ImpUidDto,
-  ): Promise<ResponsePaymentHistoryDto> {
+  ): Promise<ResponsePaymentsDto> {
     const userId = Number(req.user.id);
 
     const { access_token } = await getIamPortToken();
@@ -42,5 +47,20 @@ export class PaymentsController {
     const paymentsData = getPaymentsData.data.response;
 
     return await this.paymentsService.createPayments(userId, data, paymentsData);
+  }
+
+  @Get("/list")
+  @UseGuards(AuthGuard("jwt"))
+  @ApiBody({ description: "결제 내역 리스트" })
+  @ApiResponse({ status: 200, type: ResponsePaymentsListDto })
+  @UsePipes(new ValidationPipe())
+  async getPaymentsHistoryList(
+    @Request() req: RequestWithUser,
+    @Query("page", new ParseIntWithDefaultPipe(1)) page: number,
+    @Query("limit", new ParseIntWithDefaultPipe(10)) limit: number,
+  ): Promise<{ payments: PaymentsListDto[]; totalPages: number; currentPage: number }> {
+    const userId: number = Number(req.user.id);
+
+    return await this.paymentsService.getPaymentsHistoryList(userId, page, limit);
   }
 }

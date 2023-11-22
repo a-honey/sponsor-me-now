@@ -36,27 +36,15 @@ model User {
 	post    Post[]
 	comment Comment[]
 	like    Like[]
-	payment Payment[]
+	paid    Payment[] @relation("SponsorToUser")
+	payment Payment[] @relation("UserToSponsor")
 
-	sponsor        Sponsor[]        @relation("SponsorToUser")
-	sponsored      Sponsor[]        @relation("UserToSponsor")
 	AccountHistory AccountHistory[]
-}
-
-model Sponsor {
-	id          Int  @id @default(autoincrement())
-	sponsorId   Int?
-	sponsoredId Int?
-
-	sponsor   User? @relation("SponsorToUser", fields: [sponsorId], references: [id])
-	sponsored User? @relation("UserToSponsor", fields: [sponsoredId], references: [id])
-
-	@@index([sponsorId])
-	@@index([sponsoredId])
 }
 
 model Payment {
 	buyerId     Int
+	sellerId    Int
 	sellerEmail String
 	sellerName  String
 
@@ -110,7 +98,8 @@ model Payment {
 	cancelHistories   CancelHistory[]
 	cancelReceiptUrls CancelReceiptUrl[]
 
-	buyer User? @relation(fields: [buyerId], references: [id], onDelete: Cascade)
+	buyer  User? @relation("SponsorToUser", fields: [buyerId], references: [id], onDelete: Cascade)
+	seller User? @relation("UserToSponsor", fields: [sellerId], references: [id], onDelete: Cascade)
 }
 
 model CancelHistory {

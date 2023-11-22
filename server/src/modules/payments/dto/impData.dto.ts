@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 
-export class PaymentsDataDto {
+export class ImpDataDto {
   @ApiProperty()
   amount: number;
 
@@ -14,19 +14,19 @@ export class PaymentsDataDto {
   bank_name?: string;
 
   @ApiProperty()
-  buyer_addr: string;
+  buyer_addr?: string;
 
   @ApiProperty()
-  buyer_email: string;
+  buyer_email?: string;
 
   @ApiProperty()
-  buyer_name: string;
+  buyer_name?: string;
 
   @ApiProperty()
-  buyer_postcode: string;
+  buyer_postcode?: string;
 
   @ApiProperty()
-  buyer_tel: string;
+  buyer_tel?: string;
 
   @ApiProperty()
   cancel_amount?: number;
@@ -59,13 +59,13 @@ export class PaymentsDataDto {
   card_type?: string;
 
   @ApiProperty()
-  cash_receipt_issued: boolean;
+  cash_receipt_issued?: boolean;
 
   @ApiProperty()
-  channel: string;
+  channel?: string;
 
   @ApiProperty()
-  currency: string;
+  currency?: string;
 
   @ApiProperty()
   custom_data?: string;
@@ -80,7 +80,7 @@ export class PaymentsDataDto {
   emb_pg_provider?: string;
 
   @ApiProperty()
-  escrow: boolean;
+  escrow?: boolean;
 
   @ApiProperty()
   fail_reason?: string;
@@ -89,40 +89,40 @@ export class PaymentsDataDto {
   failed_at?: number;
 
   @ApiProperty()
-  imp_uid: string;
+  imp_uid?: string;
 
   @ApiProperty()
-  merchant_uid: string;
+  merchant_uid?: string;
 
   @ApiProperty()
-  name: string;
+  name?: string;
 
   @ApiProperty()
-  paid_at: number;
+  paid_at?: number;
 
   @ApiProperty()
-  pay_method: string;
+  pay_method?: string;
 
   @ApiProperty()
-  pg_id: string;
+  pg_id?: string;
 
   @ApiProperty()
-  pg_provider: string;
+  pg_provider?: string;
 
   @ApiProperty()
-  pg_tid: string;
+  pg_tid?: string;
 
   @ApiProperty()
-  receipt_url: string;
+  receipt_url?: string;
 
   @ApiProperty()
-  started_at: number;
+  started_at?: number;
 
   @ApiProperty()
-  status: string;
+  status?: string;
 
   @ApiProperty()
-  user_agent: string;
+  user_agent?: string;
 
   @ApiProperty()
   vbank_code?: string;

@@ -8,5 +8,8 @@ export class ImpUidDto {
   sellerName: string;
 
   @ApiProperty()
+  sellerId: number;
+
+  @ApiProperty()
   impUid: string;
 }

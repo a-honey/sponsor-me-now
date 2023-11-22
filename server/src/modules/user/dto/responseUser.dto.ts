@@ -27,4 +27,7 @@ export class ResponseUserDto {
 
   @ApiProperty()
   isSponsor: boolean;
+
+  @ApiProperty()
+  account: number;
 }

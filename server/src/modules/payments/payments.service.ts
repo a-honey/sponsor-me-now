@@ -1,9 +1,12 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaClient } from "@prisma/client";
 import { ImpUidDto } from "./dto/impUid.dto";
-import { PaymentsDataDto } from "./dto/paymentsDataDto";
-import { ResponsePaymentHistoryDto } from "./dto/responsePaymentHistory.dto";
+import { ImpDataDto } from "./dto/impData.dto";
+import { ResponsePaymentsDto } from "./dto/responsePayments.dto";
 import { plainToInstance } from "class-transformer";
+import { UserDto } from "../user/dto/user.dto";
+import { PaymentsListDto } from "./dto/paymentsList.dto";
+import { PaymentsDto } from "./dto/payments.dto";
 
 @Injectable()
 export class PaymentsService {
@@ -12,8 +15,8 @@ export class PaymentsService {
   async createPayments(
     userId: number,
     data: ImpUidDto,
-    paymentsData: PaymentsDataDto,
-  ): Promise<ResponsePaymentHistoryDto> {
+    paymentsData: ImpDataDto,
+  ): Promise<ResponsePaymentsDto> {
     const result = await this.prisma.$transaction(async (prisma) => {
       const updatedUser = await this.prisma.user.update({
         where: { id: userId },
@@ -29,6 +32,7 @@ export class PaymentsService {
           buyerId: userId,
           sellerEmail: data.sellerEmail,
           sellerName: data.sellerName,
+          sellerId: data.sellerId,
           amount: paymentsData.amount,
           applyNum: paymentsData.apply_num,
           bankCode: paymentsData.bank_code,
@@ -92,6 +96,40 @@ export class PaymentsService {
       return createdPayments;
     });
 
-    return plainToInstance(ResponsePaymentHistoryDto, result);
+    return plainToInstance(ResponsePaymentsDto, result);
+  }
+
+  async getPaymentsHistoryList(
+    userId: number,
+    page: number,
+    limit: number,
+  ): Promise<{ payments: PaymentsListDto[]; totalPages: number; currentPage: number }> {
+    const user: UserDto = await this.prisma.user.findUnique({ where: { id: userId } });
+    let payments: PaymentsDto[];
+    let totalPayments: number;
+
+    if (user.isSponsor) {
+      payments = await this.prisma.payment.findMany({
+        where: { buyerId: userId },
+        skip: (page - 1) * limit,
+        take: limit,
+      });
+      totalPayments = await this.prisma.payment.count({ where: { buyerId: userId } });
+    } else {
+      payments = await this.prisma.payment.findMany({
+        where: { sellerId: userId },
+        skip: (page - 1) * limit,
+        take: limit,
+      });
+      totalPayments = await this.prisma.payment.count({ where: { sellerId: userId } });
+    }
+
+    const totalPages = Math.ceil(totalPayments / limit);
+
+    return {
+      payments: payments.map((payment) => plainToInstance(PaymentsListDto, payment)),
+      currentPage: page,
+      totalPages: totalPages,
+    };
   }
 }
