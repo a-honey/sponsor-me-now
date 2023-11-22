@@ -1,5 +1,6 @@
 import styles from './Hub.module.scss';
 import UserItem from '@/components/common/UserItem';
+import withLoginTrue from '@/components/withLogin';
 import { useGetUserList } from '@/hooks/useQueries';
 
 const Hub = () => {
@@ -17,4 +18,4 @@ const Hub = () => {
   );
 };
 
-export default Hub;
+export default withLoginTrue(Hub);

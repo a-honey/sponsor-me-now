@@ -1,3 +1,4 @@
+import withLoginTrue from '@/components/withLogin';
 import History from './components/Payment.History';
 
 const Payment = () => {
@@ -9,4 +10,4 @@ const Payment = () => {
   );
 };
 
-export default Payment;
+export default withLoginTrue(Payment);

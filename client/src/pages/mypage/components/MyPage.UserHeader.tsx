@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { useDeleteUser, usePutUserData } from '@/hooks/useMutations';
 import { UserPutBodyType } from '@/api/put/putUser';
 import { useLoginStore } from '@/store';
+import { useNavigate } from 'react-router-dom';
 
 const UserHeader = ({
   toggleIsWritingPost,
@@ -16,6 +17,7 @@ const UserHeader = ({
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const { loginId } = useLoginStore();
+  const navigator = useNavigate();
 
   const putMutation = usePutUserData({ userId: loginId! });
   const deleteMutation = useDeleteUser();
@@ -101,6 +103,7 @@ const UserHeader = ({
         </div>
       </div>
       <button onClick={toggleIsWritingPost}>게시글 작성하기</button>
+      <button onClick={() => navigator('/calculate')}>정산하기</button>
     </div>
   );
 };

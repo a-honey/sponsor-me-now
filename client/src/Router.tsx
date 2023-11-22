@@ -10,6 +10,7 @@ import List from './pages/list/List';
 import Intro from './pages/intro/Intro';
 import MyPage from './pages/mypage/MyPage';
 import Question from './pages/question/Question';
+import Calculate from './pages/calculate/Calculate';
 
 const Router = () => {
   return (
@@ -24,6 +25,7 @@ const Router = () => {
           <Route path="/list" element={<List />} />
           <Route path="/payment" element={<Payment />} />
           <Route path="/mypage" element={<MyPage />} />
+          <Route path="/calculate" element={<Calculate />} />
           <Route path="/question" element={<Question />} />
           <Route path="/user/:id" element={<UserId />} />
         </Route>
