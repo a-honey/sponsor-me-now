@@ -105,55 +105,37 @@ export class PaymentsService {
     limit: number,
   ): Promise<{ payments: PaymentsListDto[]; totalPages: number; currentPage: number }> {
     const user: UserDto = await this.prisma.user.findUnique({ where: { id: userId } });
-    let payments: PaymentsListDto[];
-    let totalPayments: number;
 
-    if (user.isSponsor) {
-      payments = await this.prisma.payment.findMany({
-        where: { buyerId: userId },
-        skip: (page - 1) * limit,
-        take: limit,
-        select: {
-          id: true,
-          buyerId: true,
-          sellerId: true,
-          sellerName: true,
-          sellerEmail: true,
-          amount: true,
-          buyerEmail: true,
-          buyerName: true,
-          name: true,
-          cardName: true,
-          cardNumber: true,
-        },
-      });
-      totalPayments = await this.prisma.payment.count({ where: { buyerId: userId } });
-    } else {
-      payments = await this.prisma.payment.findMany({
-        where: { sellerId: userId },
-        skip: (page - 1) * limit,
-        take: limit,
-        select: {
-          id: true,
-          buyerId: true,
-          sellerId: true,
-          sellerName: true,
-          sellerEmail: true,
-          amount: true,
-          buyerEmail: true,
-          buyerName: true,
-          name: true,
-          cardName: true,
-          cardNumber: true,
-        },
-      });
-      totalPayments = await this.prisma.payment.count({ where: { sellerId: userId } });
-    }
+    const queryCondition = user.isSponsor ? { buyerId: userId } : { sellerId: userId };
+    const selectOption = {
+      id: true,
+      buyerId: true,
+      sellerId: true,
+      sellerName: true,
+      sellerEmail: true,
+      amount: true,
+      buyerEmail: true,
+      buyerName: true,
+      name: true,
+      cardName: true,
+      cardNumber: true,
+    };
+
+    const payments: PaymentsListDto[] = await this.prisma.payment.findMany({
+      where: queryCondition,
+      skip: (page - 1) * limit,
+      take: limit,
+      select: selectOption,
+    });
+
+    const totalPayments: number = await this.prisma.payment.count({ where: queryCondition });
 
     const totalPages = Math.ceil(totalPayments / limit);
+
     const paymentsList: PaymentsListDto[] = payments.map((payment) =>
       plainToInstance(PaymentsListDto, payment),
     );
+
     return {
       payments: paymentsList,
       currentPage: page,
