@@ -6,7 +6,7 @@ const News = () => {
   const { data: postData } = useGetPostList({
     page: 1,
     limit: 7,
-    search: 'my',
+    search: 'all',
   });
 
   return (
