@@ -10,6 +10,7 @@ import postUserBackground from '@/api/post/postUserBackground';
 import postPost from '@/api/post/postPost';
 import deleteUser from '@/api/delete/deleteUser';
 import useLogout from './useLogout';
+import postPostLike from '@/api/post/postPostLike';
 
 export const usePostRegisterData = (fn: () => void) => {
   const { setLoginId, setLoginUsername, setToken } = useLoginStore();
@@ -102,6 +103,18 @@ export const usePostPost = () => {
     mutationFn: postPost,
     onSuccess: (res) => {
       console.log(res);
+    },
+  });
+};
+
+export const usePostLike = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: postPostLike,
+    onSuccess: (res) => {
+      queryClient.invalidateQueries({
+        queryKey: ['postId', res.id.toString()],
+      });
     },
   });
 };
