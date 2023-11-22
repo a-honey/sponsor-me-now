@@ -14,7 +14,7 @@ import {
   ValidationPipe,
 } from "@nestjs/common";
 import { PostService } from "./post.service";
-import { ApiBody, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { ApiBody, ApiOperation, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { CreatePostDto } from "./dto/createPost.dto";
 import { PostDto } from "./dto/post.dto";
 import { RequestWithUser } from "../user/interface/requestWithUser";
@@ -29,10 +29,12 @@ export class PostController {
   constructor(private postService: PostService) {}
 
   @Post()
+  @ApiOperation({
+    summary: "게시글 작성",
+  })
   @UseGuards(AuthGuard("jwt"))
   @UsePipes(new ValidationPipe())
   @ApiBody({
-    description: "게시글 작성",
     type: CreatePostDto,
   })
   @ApiResponse({ status: 201, type: ResponsePostDto })
@@ -46,8 +48,9 @@ export class PostController {
 
   @Get("/list")
   @UseGuards(AuthGuard("jwt"))
-  @ApiBody({
-    description: "게시글 리스트, ?search=all 일시 전체조회, 아닐시 후원자 최신게시글 조회",
+  @ApiOperation({
+    summary: "게시글 리스트",
+    description: "게시글 리스트, ?search=all 일시 전체조회, 아닐시(없을시) 후원자 최신게시글 조회",
   })
   @ApiResponse({ status: 200, type: [PostDto] })
   async getPosts(
@@ -66,13 +69,19 @@ export class PostController {
 
   @Get(":postId")
   @UseGuards(AuthGuard("jwt"))
-  @ApiBody({ description: "게시글 상세 조회" })
+  @ApiOperation({
+    summary: "단일 게시글 상세 조회",
+  })
   @ApiResponse({ status: 200, type: PostDto })
   async getPost(@Param("postId", ParseIntPipe) postId: number): Promise<PostDto> {
     return await this.postService.getPostAndIncrementView(postId);
   }
 
   @Delete(":postId")
+  @ApiOperation({
+    summary: "게시글 삭제",
+    description: "게시글에 포함된 댓글, 이미지 파일 삭제",
+  })
   @UseGuards(AuthGuard("jwt"))
   @ApiBody({
     description: "게시글 삭제",
@@ -88,9 +97,13 @@ export class PostController {
   }
 
   @Put(":postId")
+  @ApiOperation({
+    summary: "단일 게시글 수정",
+    description: "요청받은 필드 수정",
+  })
   @UseGuards(AuthGuard("jwt"))
   @UsePipes(new ValidationPipe())
-  @ApiBody({ description: "게시글 수정", type: CreatePostDto })
+  @ApiBody({ type: CreatePostDto })
   @ApiResponse({ status: 201, type: ResponsePostDto })
   async updatePost(
     @Request() req: RequestWithUser,

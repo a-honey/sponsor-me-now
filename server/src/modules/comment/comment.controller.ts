@@ -1,4 +1,4 @@
-import { ApiBody, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import {
   Body,
   Controller,
@@ -28,7 +28,11 @@ export class CommentController {
   constructor(private commentService: CommentService) {}
 
   @Post()
-  @ApiBody({ description: "댓글 작성 또는 대댓글 작성", type: CreateCommentDto })
+  @ApiOperation({
+    summary: "댓글 작성",
+    description: "댓글 작성 또는 대댓글 작성",
+  })
+  @ApiBody({ type: CreateCommentDto })
   @ApiResponse({ status: 201, type: ResponseCommentDto })
   @UseGuards(AuthGuard("jwt"))
   @UsePipes(new ValidationPipe())
@@ -43,7 +47,11 @@ export class CommentController {
   }
 
   @Put(":commentId")
-  @ApiBody({ description: "댓글 수정", type: CreateCommentDto })
+  @ApiOperation({
+    summary: "댓글 수정",
+    description: "댓글 작성 또는 대댓글 수정",
+  })
+  @ApiBody({ type: CreateCommentDto })
   @ApiResponse({ status: 201, type: ResponseCommentDto })
   @UseGuards(AuthGuard("jwt"))
   @UsePipes(new ValidationPipe())
@@ -57,7 +65,10 @@ export class CommentController {
   }
 
   @Delete(":commentId")
-  @ApiBody({ description: "댓글 + 자식 댓글 삭제" })
+  @ApiOperation({
+    summary: "댓글 삭제",
+    description: "댓글 + 하위 댓글 삭제",
+  })
   @ApiResponse({ status: 204, type: CommentDto })
   @UseGuards(AuthGuard("jwt"))
   @UsePipes(new ValidationPipe())

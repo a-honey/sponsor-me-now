@@ -11,7 +11,7 @@ import {
   UsePipes,
   ValidationPipe,
 } from "@nestjs/common";
-import { ApiBody, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { PaymentsService } from "./payments.service";
 import { AuthGuard } from "@nestjs/passport";
 import { RequestWithUser } from "../user/interface/requestWithUser";
@@ -29,9 +29,14 @@ export class PaymentsController {
   constructor(private paymentsService: PaymentsService) {}
 
   @Post("/complete")
+  @ApiOperation({
+    summary: "결제 내역 저장",
+    description:
+      "imp uid 와 셀러 정보를 받은 후, iamport server 조회 후 데이터베이스에 저장 + 해당 User record에 account 증감 + AccountHistory 테이블에 account 변경사항 저장",
+  })
   @UseGuards(AuthGuard("jwt"))
   @UsePipes(new ValidationPipe())
-  @ApiBody({ description: "결제 내역 생성", type: ImpUidDto })
+  @ApiBody({ type: ImpUidDto })
   @ApiResponse({ status: 201, type: ResponsePaymentsDto })
   async createPaymentsHistory(
     @Request() req: RequestWithUser,
@@ -52,9 +57,13 @@ export class PaymentsController {
   }
 
   @Get("/list")
+  @ApiOperation({
+    summary: "결제 내역 리스트",
+    description:
+      "사용자 결제 내역 리스트 조회. 사용자가 구매자이면 후원내역, 판매자라면 후원받은 내역을 조회",
+  })
   @UseGuards(AuthGuard("jwt"))
   @UsePipes(new ValidationPipe())
-  @ApiBody({ description: "결제 내역 리스트" })
   @ApiResponse({ status: 200, type: [PaymentsListDto] })
   async getPaymentsHistoryList(
     @Request() req: RequestWithUser,
@@ -67,9 +76,11 @@ export class PaymentsController {
   }
 
   @Get(":paymentsId")
+  @ApiOperation({
+    summary: "단일 결제 상세 내역 조회",
+  })
   @UseGuards(AuthGuard("jwt"))
   @UsePipes(new ValidationPipe())
-  @ApiBody({ description: "단일 결제 상세 내역" })
   @ApiResponse({ status: 200, type: PaymentsDto })
   async getPayments(
     @Request() req: RequestWithUser,
