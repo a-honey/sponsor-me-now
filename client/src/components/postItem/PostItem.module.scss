@@ -44,10 +44,43 @@
 }
 
 .commentItemContainer {
+  .contentContainer {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    div > span {
+      background-color: #005a34;
+      padding: 0 7px;
+      border-radius: 50%;
+      color: white;
+    }
+    .authorContainer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 5px;
+      img {
+        width: 30px;
+      }
+    }
+  }
 }
 
 .commentAddContainer {
   display: grid;
   grid-template-columns: 1fr 60px;
+  gap: 10px;
+}
+
+.commentParentAddContainer {
+  margin-top: 15px;
+  display: grid;
+  grid-template-columns: 10px 1fr 60px;
+  input {
+    height: 40px;
+  }
+  button {
+    padding: 10px;
+  }
   gap: 10px;
 }

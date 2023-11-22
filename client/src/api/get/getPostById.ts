@@ -10,7 +10,13 @@ export interface ResponsePostByIdType {
   viewCount: number;
   postImg: string;
   likeCount: number;
-  comment: { content: string }[];
+  comment: {
+    id: number;
+    content: string;
+    postId: number;
+    profileImg: null | string;
+    author: { username: string };
+  }[];
 }
 
 const getPostById = async (id: number) => {
