@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaClient } from "@prisma/client";
 import { ImpUidDto } from "./dto/impUid.dto";
-import { ImpDataDto } from "./dto/impData.dto";
+import { ImpResponseDataDto } from "./dto/impResponseData.dto";
 import { ResponsePaymentsDto } from "./dto/responsePayments.dto";
 import { plainToInstance } from "class-transformer";
 import { UserDto } from "../user/dto/user.dto";
@@ -15,7 +15,7 @@ export class PaymentsService {
   async createPayments(
     userId: number,
     data: ImpUidDto,
-    paymentsData: ImpDataDto,
+    paymentsData: ImpResponseDataDto,
   ): Promise<ResponsePaymentsDto> {
     const result = await this.prisma.$transaction(async (prisma) => {
       const updatedUser = await this.prisma.user.update({
@@ -149,5 +149,50 @@ export class PaymentsService {
     });
 
     return plainToInstance(PaymentsDto, paymentsDetail);
+  }
+
+  async updatePayments(
+    userId: number,
+    updatePaymentsData: ImpResponseDataDto,
+    id: number,
+  ): Promise<ResponsePaymentsDto> {
+    const result = await this.prisma.$transaction(async (prisma) => {
+      const updatedUser = await this.prisma.user.update({
+        where: { id: userId },
+        data: {
+          account: {
+            decrement: updatePaymentsData.cancel_amount,
+          },
+        },
+      });
+
+      const updatePayments = await this.prisma.payment.update({
+        where: { id: id },
+        data: {
+          cancelAmount: updatePaymentsData.cancel_amount,
+          cancelReason: updatePaymentsData.cancel_reason,
+          cancelledAt: updatePaymentsData.cancelled_at,
+          status: updatePaymentsData.status,
+          cancelHistories: updatePaymentsData.cancel_history,
+          cancelReceiptUrls: updatePaymentsData.cancel_receipt_urls,
+        },
+      });
+
+      await this.prisma.accountHistory.create({
+        data: {
+          withdrawnAmount: updatePaymentsData.cancel_amount,
+          remainingAmount: updatedUser.account,
+          bank: updatePaymentsData.bank_name,
+          accountNumber: updatePaymentsData.vbank_num,
+          transactionType: "WITHDRAW",
+          user: {
+            connect: { id: userId },
+          },
+        },
+      });
+      return updatePayments;
+    });
+
+    return plainToInstance(ResponsePaymentsDto, result);
   }
 }

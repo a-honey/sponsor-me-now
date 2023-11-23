@@ -8,7 +8,6 @@ import {
   IsOptional,
   IsString,
 } from "class-validator";
-import { CancelHistory, CancelReceiptUrl } from "@prisma/client";
 export class ResponsePaymentsDto {
   @ApiProperty()
   @IsNotEmpty()
@@ -389,7 +388,7 @@ export class ResponsePaymentsDto {
   @ApiProperty()
   @IsOptional()
   @IsArray()
-  cancelHistories?: [CancelHistory];
+  cancelHistories?: object;
 
   @ApiProperty()
   @ApiProperty()
@@ -397,5 +396,5 @@ export class ResponsePaymentsDto {
   @ApiProperty()
   @IsOptional()
   @IsArray()
-  cancelReceiptUrls?: [CancelReceiptUrl];
+  cancelReceiptUrls?: object;
 }

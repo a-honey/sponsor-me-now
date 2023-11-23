@@ -22,6 +22,7 @@ import { getIamPortToken } from "../../utils/getIamPortToken";
 import { ParseIntWithDefaultPipe } from "../../pipes/parseIntWithDefaultPipe";
 import { PaymentsListDto } from "./dto/paymentsList.dto";
 import { PaymentsDto } from "./dto/payments.dto";
+import { ClientCancelRequestDataDto } from "./dto/clientCancelRequestDataDto";
 
 @ApiTags("Payments")
 @Controller("api/payments")
@@ -42,7 +43,7 @@ export class PaymentsController {
     @Request() req: RequestWithUser,
     @Body() data: ImpUidDto,
   ): Promise<ResponsePaymentsDto> {
-    const userId = Number(req.user.id);
+    const userId: number = Number(req.user.id);
 
     const { access_token } = await getIamPortToken();
 
@@ -80,14 +81,51 @@ export class PaymentsController {
   })
   @ApiResponse({ status: 200, type: PaymentsDto })
   @UseGuards(AuthGuard("jwt"))
-  async getPayments(@Param("paymentsId", ParseIntPipe) paymentId: number): Promise<PaymentsDto> {
-    return await this.paymentsService.getPaymentsDetail(paymentId);
+  async getPayments(@Param("paymentsId", ParseIntPipe) paymentsId: number): Promise<PaymentsDto> {
+    return await this.paymentsService.getPaymentsDetail(paymentsId);
   }
 
   @Post("/cancel")
   @ApiOperation({ summary: "결제 취소 요청", description: "dd" })
-  @ApiResponse({ status: 201, type: "" })
+  @ApiBody({ type: ClientCancelRequestDataDto })
+  @ApiResponse({ status: 201, type: ResponsePaymentsDto })
   @UseGuards(AuthGuard("jwt"))
   @UsePipes(new ValidationPipe())
-  async cancelPayments() {}
+  async cancelPayments(
+    @Request() req: RequestWithUser,
+    @Body() cancelData: ClientCancelRequestDataDto,
+  ): Promise<ResponsePaymentsDto> {
+    const userId: number = Number(req.user.id);
+
+    const payments = await this.paymentsService.getPaymentsDetail(cancelData.paymentsId);
+
+    const { access_token } = await getIamPortToken();
+
+    const cancelPayments: AxiosResponse<any, any> = await axios({
+      url: `https://api.iamport.kr/payments/cancel`,
+      method: "post",
+      headers: { Authorization: access_token },
+      data: {
+        imp_uid: payments.impUid,
+        merchant_uid: payments.merchantUid,
+        amount: cancelData.cancelRequestAmount,
+        // tax_free: 0,
+        // vat_amount: 0,
+        checksum: null,
+        reason: cancelData.reason,
+        // refund_holder: "",
+        // refund_bank: "",
+        // refund_account: "",
+        // refund_tel: "",
+        // extra: [],
+      },
+    });
+    const updatePaymentsData = cancelPayments.data.response;
+
+    return await this.paymentsService.updatePayments(
+      userId,
+      updatePaymentsData,
+      cancelData.paymentsId,
+    );
+  }
 }

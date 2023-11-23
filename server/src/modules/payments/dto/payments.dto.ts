@@ -36,115 +36,115 @@ export class PaymentsDto {
   @IsOptional()
   @IsString()
   @IsNumber()
-  apply_num?: string;
+  applyNum?: string;
 
   @ApiProperty()
   @ApiProperty()
   @IsOptional()
   @IsString()
-  bank_code?: string;
+  bankCode?: string;
 
   @ApiProperty()
   @ApiProperty()
   @IsOptional()
   @IsString()
-  bank_name?: string;
+  bankName?: string;
 
   @ApiProperty()
   @ApiProperty()
   @IsOptional()
   @IsString()
-  buyer_addr?: string;
+  buyerAddr?: string;
 
   @ApiProperty()
   @ApiProperty()
   @IsOptional()
   @IsString()
-  buyer_email?: string;
+  buyerEmail?: string;
 
   @ApiProperty()
   @ApiProperty()
   @IsOptional()
   @IsString()
-  buyer_name?: string;
+  buyerName?: string;
 
   @ApiProperty()
   @ApiProperty()
   @IsOptional()
   @IsString()
-  buyer_postcode?: string;
+  buyerPostcode?: string;
 
   @ApiProperty()
   @ApiProperty()
   @IsOptional()
   @IsString()
-  buyer_tel?: string;
+  buyerTel?: string;
 
   @ApiProperty()
   @ApiProperty()
   @IsOptional()
   @IsNumber()
-  cancel_amount?: number;
+  cancelAmount?: number;
 
   @ApiProperty()
   @ApiProperty()
   @IsOptional()
   @IsArray()
-  cancel_history?: [];
+  cancelHistory?: [];
 
   @ApiProperty()
   @ApiProperty()
   @IsOptional()
   @IsString()
-  cancel_reason?: string;
+  cancelReason?: string;
 
   @ApiProperty()
   @ApiProperty()
   @IsOptional()
   @IsArray()
-  cancel_receipt_urls?: [];
+  cancelReceipt_urls?: [];
 
   @ApiProperty()
   @ApiProperty()
   @IsOptional()
   @IsNumber()
-  cancelled_at?: number;
+  cancelledAt?: number;
 
   @ApiProperty()
   @ApiProperty()
   @IsOptional()
   @IsString()
-  card_code?: string;
+  cardCode?: string;
 
   @ApiProperty()
   @ApiProperty()
   @IsOptional()
   @IsString()
-  card_name?: string;
+  cardName?: string;
 
   @ApiProperty()
   @ApiProperty()
   @IsOptional()
   @IsString()
-  card_number?: string;
+  cardNumber?: string;
 
   @ApiProperty()
   @ApiProperty()
   @IsOptional()
   @IsNumber()
-  card_quota?: number;
+  cardQuota?: number;
 
   @ApiProperty()
   @ApiProperty()
   @IsOptional()
   @IsString()
-  card_type?: string;
+  cardType?: string;
 
   @ApiProperty()
   @ApiProperty()
   @IsOptional()
   @IsBoolean()
-  cash_receipt_issued?: boolean;
+  cashReceipt_issued?: boolean;
 
   @ApiProperty()
   @ApiProperty()
@@ -162,25 +162,25 @@ export class PaymentsDto {
   @ApiProperty()
   @IsOptional()
   @IsString()
-  custom_data?: string;
+  customData?: string;
 
   @ApiProperty()
   @ApiProperty()
   @IsOptional()
   @IsString()
-  customer_uid?: string;
+  customerUid?: string;
 
   @ApiProperty()
   @ApiProperty()
   @IsOptional()
   @IsString()
-  customer_uid_usage?: string;
+  customerUidUsage?: string;
 
   @ApiProperty()
   @ApiProperty()
   @IsOptional()
   @IsString()
-  emb_pg_provider?: string;
+  embPgProvider?: string;
 
   @ApiProperty()
   @ApiProperty()
@@ -192,25 +192,25 @@ export class PaymentsDto {
   @ApiProperty()
   @IsOptional()
   @IsString()
-  fail_reason?: string;
+  failReason?: string;
 
   @ApiProperty()
   @ApiProperty()
   @IsOptional()
   @IsNumber()
-  failed_at?: number;
+  failedAt?: number;
 
   @ApiProperty()
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  imp_uid!: string;
+  impUid!: string;
 
   @ApiProperty()
   @ApiProperty()
   @IsOptional()
   @IsString()
-  merchant_uid?: string;
+  merchantUid?: string;
 
   @ApiProperty()
   @ApiProperty()
@@ -222,43 +222,43 @@ export class PaymentsDto {
   @ApiProperty()
   @IsOptional()
   @IsNumber()
-  paid_at?: number;
+  paidAt?: number;
 
   @ApiProperty()
   @ApiProperty()
   @IsOptional()
   @IsString()
-  pay_method?: string;
+  payMethod?: string;
 
   @ApiProperty()
   @ApiProperty()
   @IsOptional()
   @IsString()
-  pg_id?: string;
+  pgId?: string;
 
   @ApiProperty()
   @ApiProperty()
   @IsOptional()
   @IsString()
-  pg_provider?: string;
+  pgProvider?: string;
 
   @ApiProperty()
   @ApiProperty()
   @IsOptional()
   @IsString()
-  pg_tid?: string;
+  pgTid?: string;
 
   @ApiProperty()
   @ApiProperty()
   @IsOptional()
   @IsString()
-  receipt_url?: string;
+  receiptUrl?: string;
 
   @ApiProperty()
   @ApiProperty()
   @IsOptional()
   @IsNumber()
-  started_at?: number;
+  startedAt?: number;
 
   @ApiProperty()
   @ApiProperty()
@@ -270,41 +270,41 @@ export class PaymentsDto {
   @ApiProperty()
   @IsOptional()
   @IsString()
-  user_agent?: string;
+  userAgent?: string;
 
   @ApiProperty()
   @ApiProperty()
   @IsOptional()
   @IsString()
-  vbank_code?: string;
+  vbankCode?: string;
 
   @ApiProperty()
   @ApiProperty()
   @IsOptional()
   @IsNumber()
-  vbank_date?: number;
+  vbankDate?: number;
 
   @ApiProperty()
   @ApiProperty()
   @IsOptional()
   @IsString()
-  vbank_holder?: string;
+  vbankHolder?: string;
 
   @ApiProperty()
   @ApiProperty()
   @IsOptional()
   @IsNumber()
-  vbank_issued_at?: number;
+  vbankIssuedAt?: number;
 
   @ApiProperty()
   @ApiProperty()
   @IsOptional()
   @IsString()
-  vbank_name?: string;
+  vbankName?: string;
 
   @ApiProperty()
   @ApiProperty()
   @IsOptional()
   @IsString()
-  vbank_num?: string;
+  vbankNum?: string;
 }

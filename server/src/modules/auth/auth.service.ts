@@ -4,7 +4,6 @@ import { AuthDto } from "./dto/auth.dto";
 import { JwtService } from "@nestjs/jwt";
 import { UserService } from "../user/user.service";
 import { plainToInstance } from "class-transformer";
-import { Response } from "express";
 import * as bcrypt from "bcrypt";
 import { LoginUserDto } from "./dto/loginUser.dto";
 import { ValidateUserDto } from "./dto/validateUser.dto";
@@ -43,12 +42,11 @@ export class AuthService {
     return null;
   }
 
-  async login(user: any, @Res({ passthrough: true }) res: Response): Promise<LoginUserDto> {
+  async login(user: any): Promise<LoginUserDto> {
     const { username, id, isSponsor, email, nickname } = user;
     const payload = { username, id, isSponsor, email, nickname };
     const access_token: string = this.jwtService.sign(payload);
 
-    res.cookie("access_token", access_token, { httpOnly: true });
     const loginUser: LoginUserDto = {
       id: id,
       username: username,
@@ -57,7 +55,7 @@ export class AuthService {
       isSponsor: isSponsor,
       token: access_token,
     };
-    res.json(plainToInstance(LoginUserDto, loginUser));
-    return;
+
+    return plainToInstance(LoginUserDto, loginUser);
   }
 }
