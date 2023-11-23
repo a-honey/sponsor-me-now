@@ -44,6 +44,13 @@
 ![zustand](https://img.shields.io/badge/zustand-FFA500?style=for-the-badge)
 ![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=ffffff)
 
+- **React**: 웹 애플리케이션의 사용자 인터페이스 개발에 사용되었습니다.
+- **TypeScript**: 정적 타입 언어로, 프로젝트의 안정성과 개발 생산성을 향상시키기 위해 사용되었습니다.
+- **Axios**: 네트워크 요청을 처리하는 데 사용되는 HTTP 클라이언트로, 인터셉터를 활용하여 기본 URL 및 헤더를 설정했습니다.
+- **Zustand**: 파일 크기가 작은 Zustand를 사용하여 전역 상태를 효과적으로 관리하였습니다.
+- **React Query**: 데이터 가져오기 및 캐싱을 처리하기 위한 라이브러리로, 데이터 관리를 간편하게 수행하기 위해 사용되었습니다.
+- **Vite**: 빠른 번들링 및 개발 서버를 제공하는 도구로 사용되었습니다.
+
 ### 백엔드
 
 ![Nest.js](https://img.shields.io/badge/Nest.js-E0234E?style=for-the-badge&logo=nestjs&logoColor=ffffff)
@@ -52,6 +59,13 @@
 ![Swagger](https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=000000)
 ![iamport](https://img.shields.io/badge/iamport-00AEEF?style=for-the-badge)
 ![Multer](https://img.shields.io/badge/Multer-FFD700?style=for-the-badge)
+
+- **Nest.js**: 데코레이터와 강력한 추상화로 API 엔드포인트를 정의하고 관리하는 데 용이하며, 모듈 구조와 의존성 주입(DI)을 통해 효율적인 서버 개발을 지원하기 위해 사용되었습니다.
+- **TypeScript**: 정적 타입 언어로, 프로젝트의 안정성과 개발 생산성을 향상시키기 위해 사용되었습니다.
+- **Prisma**: 데이터베이스 쿼리 및 데이터 모델링을 위한 도구로, 간단한 문법으로 통한 데이터베이스와의 상호작용을 위해 사용되었습니다.
+- **Swagger**: 프로젝트의 API 엔드포인트 및 스펙을 문서화하는 API 문서 생성 도구로 사용되었습니다.
+- **iamport**: 결제 관련 서비스로, 온라인 결제 시스템을 쉽게 구축하고 관리하기 위해 사용되었습니다.
+- **Multer**: 파일 업로드를 처리하기 위한 라이브러리로 사용되었습니다.
 
 ### 기획 및 배포
 
