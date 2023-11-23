@@ -27,6 +27,14 @@
 ## **프로젝트 기간**
 - 2023.11.08 ~
 
+## **프로젝트 WIKI**
+- 협업규칙
+- ERD
+- Swagger
+- 와이어프레임
+
+[바로가기](https://github.com/a-honey/sponsor-me-now/wiki)
+
 ## **기술 스택 및 도구**
 ### 프론트엔드
 ![React](https://img.shields.io/badge/React-222222?style=for-the-badge&logo=react&logoColor=ffffff)
