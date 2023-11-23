@@ -5,7 +5,6 @@
 🔗 서비스 링크 : https://showmethemoney.p-e.kr
 
 <img src="https://github.com/a-honey/sponsor-me-now/assets/75254185/8b860bf9-191b-462f-990e-cdfa5b9beb03" width={200} />
-<img src="https://github.com/a-honey/sponsor-me-now/assets/75254185/e24ce94b-66d6-4266-a843-ec3b3fa55c55" width={200} />
 
 ## **주요 기능 및 특징**
 
