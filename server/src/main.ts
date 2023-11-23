@@ -1,8 +1,8 @@
 import { NestFactory, Reflector } from "@nestjs/core";
 import { AppModule } from "./app.module";
-import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
+import { SwaggerModule, DocumentBuilder, OpenAPIObject } from "@nestjs/swagger";
 import * as dotenv from "dotenv";
-import { ClassSerializerInterceptor, ValidationPipe } from "@nestjs/common";
+import { ClassSerializerInterceptor, INestApplication, ValidationPipe } from "@nestjs/common";
 import * as helmet from "helmet";
 import * as rateLimit from "express-rate-limit";
 import { ExpressAdapter } from "@nestjs/platform-express";
@@ -10,8 +10,8 @@ import { ExpressAdapter } from "@nestjs/platform-express";
 declare const module: any;
 dotenv.config();
 
-async function bootstrap() {
-  const app = await NestFactory.create(AppModule, new ExpressAdapter());
+async function bootstrap(): Promise<void> {
+  const app: INestApplication<any> = await NestFactory.create(AppModule, new ExpressAdapter());
   app.enableCors();
   app.use(helmet.default());
   app.use(
@@ -21,12 +21,12 @@ async function bootstrap() {
     }),
   );
 
-  const config = new DocumentBuilder()
+  const config: Omit<OpenAPIObject, "paths"> = new DocumentBuilder()
     .setTitle("Sponsor me now API")
     .setDescription("")
     .setVersion("1.0")
     .build();
-  const document = SwaggerModule.createDocument(app, config);
+  const document: OpenAPIObject = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup("api", app, document);
 
   app.useGlobalPipes(new ValidationPipe());

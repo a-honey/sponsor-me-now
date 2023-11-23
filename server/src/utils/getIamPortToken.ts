@@ -1,11 +1,11 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 
 export const getIamPortToken = async (): Promise<{
   access_token: string;
   now: number;
   expired_at: number;
 }> => {
-  const result = await axios({
+  const result: AxiosResponse<any, any> = await axios({
     url: "https://api.iamport.kr/users/getToken",
     method: "post",
     headers: { "Content-Type": "application/json" },

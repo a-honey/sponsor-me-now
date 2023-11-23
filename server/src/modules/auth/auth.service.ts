@@ -35,7 +35,7 @@ export class AuthService {
     return null;
   }
 
-  async validatePayload(email: string) {
+  async validatePayload(email: string): Promise<ValidateUserDto> {
     const user = await this.userService.getUserByEmail(email);
     if (user) {
       return user;

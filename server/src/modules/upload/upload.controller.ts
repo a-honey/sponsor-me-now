@@ -13,7 +13,8 @@ import { AuthGuard } from "@nestjs/passport";
 import { UploadService } from "./upload.service";
 import * as path from "path";
 import { RequestWithUser } from "../user/interface/requestWithUser";
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { Express } from "express";
 
 @ApiTags("Upload")
 @Controller("api/upload")
@@ -27,7 +28,10 @@ export class UploadController {
   @ApiResponse({ status: 201, type: String })
   @UseGuards(AuthGuard("jwt"))
   @UseInterceptors(FileInterceptor("profileImage"))
-  async uploadProfileImage(@UploadedFile() file, @Req() req: RequestWithUser): Promise<string> {
+  async uploadProfileImage(
+    @UploadedFile() file: Express.Multer.File,
+    @Req() req: RequestWithUser,
+  ): Promise<string> {
     const userId: number = req.user.id;
     const imageUrl: string = path.join("images", file.filename);
     return this.uploadService.uploadProfileImage(userId, imageUrl);
@@ -40,7 +44,10 @@ export class UploadController {
   @ApiResponse({ status: 201, type: String })
   @UseGuards(AuthGuard("jwt"))
   @UseInterceptors(FileInterceptor("profileBackgroundImage"))
-  async uploadBackgroundImage(@UploadedFile() file, @Req() req: RequestWithUser): Promise<string> {
+  async uploadBackgroundImage(
+    @UploadedFile() file: Express.Multer.File,
+    @Req() req: RequestWithUser,
+  ): Promise<string> {
     const userId: number = req.user.id;
     const imageUrl: string = path.join("images", file.filename);
     return this.uploadService.uploadBackgroundImage(userId, imageUrl);
@@ -54,8 +61,7 @@ export class UploadController {
   @UseGuards(AuthGuard("jwt"))
   @UseInterceptors(FileInterceptor("postImage"))
   async uploadPostImage(
-    @UploadedFile() file,
-    @Req() req: RequestWithUser,
+    @UploadedFile() file: Express.Multer.File,
     @Param("postId", ParseIntPipe) postId: number,
   ): Promise<string> {
     const imageUrl: string = path.join("images", file.filename);

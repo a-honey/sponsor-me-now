@@ -71,7 +71,11 @@ export class PostService {
     return { posts: plainToInstance(PostDto, posts), totalPage, currentPage: page };
   }
 
-  async getSponsoredPosts(page: number, limit: number, userId: number) {
+  async getSponsoredPosts(
+    page: number,
+    limit: number,
+    userId: number,
+  ): Promise<{ posts: PostDto[]; totalPage: number; currentPage: number }> {
     const user = await this.prisma.user.findUnique({ where: { id: userId } });
     let sponsoredIds: number[];
 
@@ -98,7 +102,7 @@ export class PostService {
     return { posts: plainToInstance(PostDto, posts), totalPage, currentPage: page };
   }
 
-  async deletePost(postId: number, userId: number) {
+  async deletePost(postId: number, userId: number): Promise<PostDto> {
     const deletedPost = await this.prisma.post.delete({
       where: { id: postId },
     });

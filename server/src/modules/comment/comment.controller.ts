@@ -34,8 +34,8 @@ export class CommentController {
   })
   @ApiBody({ type: CreateCommentDto })
   @ApiResponse({ status: 201, type: ResponseCommentDto })
-  @UseGuards(AuthGuard("jwt"))
   @UsePipes(new ValidationPipe())
+  @UseGuards(AuthGuard("jwt"))
   async createComment(
     @Request() req: RequestWithUser,
     @Body() createCommentDto: CreateCommentDto,
@@ -53,8 +53,8 @@ export class CommentController {
   })
   @ApiBody({ type: CreateCommentDto })
   @ApiResponse({ status: 201, type: ResponseCommentDto })
-  @UseGuards(AuthGuard("jwt"))
   @UsePipes(new ValidationPipe())
+  @UseGuards(AuthGuard("jwt"))
   async updateComment(
     @Request() req: RequestWithUser,
     @Body() updateCommentDto: CreateCommentDto,
@@ -70,8 +70,8 @@ export class CommentController {
     description: "댓글 + 하위 댓글 삭제",
   })
   @ApiResponse({ status: 204, type: CommentDto })
-  @UseGuards(AuthGuard("jwt"))
   @UsePipes(new ValidationPipe())
+  @UseGuards(AuthGuard("jwt"))
   async deleteComment(
     @Request() req: RequestWithUser,
     @Param("commentId", ParseIntPipe) commentId: number,

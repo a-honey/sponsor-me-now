@@ -36,7 +36,6 @@ export class AuthController {
   @ApiResponse({ status: 201, type: ResponseCreateUserDto })
   @UsePipes(new ValidationPipe())
   async createUser(@Body() submitUserDto: SubmitUserDataDto): Promise<AuthDto> {
-    console.log(submitUserDto);
     if (!this.isValidPassword(submitUserDto)) {
       throw new HttpException("Passwords do not match", 400);
     }
@@ -45,7 +44,6 @@ export class AuthController {
   }
 
   @Post("login")
-  @UseGuards(AuthGuard("local"))
   @ApiOperation({
     summary: "로그인",
     description: "성공시 JWT 발급",
@@ -53,6 +51,7 @@ export class AuthController {
   @ApiBody({ type: TryLoginDto })
   @ApiResponse({ type: LoginUserDto })
   @UsePipes(new ValidationPipe())
+  @UseGuards(AuthGuard("local"))
   async login(@Request() req: RequestWithUser, @Res() res: Response): Promise<LoginUserDto> {
     return await this.authService.login(req.user, res);
   }

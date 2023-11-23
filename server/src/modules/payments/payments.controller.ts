@@ -16,7 +16,7 @@ import { PaymentsService } from "./payments.service";
 import { AuthGuard } from "@nestjs/passport";
 import { RequestWithUser } from "../user/interface/requestWithUser";
 import { ImpUidDto } from "./dto/impUid.dto";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { ResponsePaymentsDto } from "./dto/responsePayments.dto";
 import { getIamPortToken } from "../../utils/getIamPortToken";
 import { ParseIntWithDefaultPipe } from "../../pipes/parseIntWithDefaultPipe";
@@ -34,10 +34,10 @@ export class PaymentsController {
     description:
       "imp uid 와 셀러 정보를 받은 후, iamport server 조회 후 데이터베이스에 저장 + 해당 User record에 account 증감 + AccountHistory 테이블에 account 변경사항 저장",
   })
-  @UseGuards(AuthGuard("jwt"))
-  @UsePipes(new ValidationPipe())
   @ApiBody({ type: ImpUidDto })
   @ApiResponse({ status: 201, type: ResponsePaymentsDto })
+  @UsePipes(new ValidationPipe())
+  @UseGuards(AuthGuard("jwt"))
   async createPaymentsHistory(
     @Request() req: RequestWithUser,
     @Body() data: ImpUidDto,
@@ -46,7 +46,7 @@ export class PaymentsController {
 
     const { access_token } = await getIamPortToken();
 
-    const getPaymentsData = await axios({
+    const getPaymentsData: AxiosResponse<any, any> = await axios({
       url: `https://api.iamport.kr/payments/${data.impUid}`,
       method: "get",
       headers: { Authorization: access_token },
@@ -62,9 +62,9 @@ export class PaymentsController {
     description:
       "사용자 결제 내역 리스트 조회. 사용자가 구매자이면 후원내역, 판매자라면 후원받은 내역을 조회",
   })
+  @ApiResponse({ status: 200, type: [PaymentsListDto] })
   @UseGuards(AuthGuard("jwt"))
   @UsePipes(new ValidationPipe())
-  @ApiResponse({ status: 200, type: [PaymentsListDto] })
   async getPaymentsHistoryList(
     @Request() req: RequestWithUser,
     @Query("page", new ParseIntWithDefaultPipe(1)) page: number,
@@ -79,13 +79,16 @@ export class PaymentsController {
   @ApiOperation({
     summary: "단일 결제 상세 내역 조회",
   })
+  @ApiResponse({ status: 200, type: PaymentsDto })
   @UseGuards(AuthGuard("jwt"))
   @UsePipes(new ValidationPipe())
-  @ApiResponse({ status: 200, type: PaymentsDto })
-  async getPayments(
-    @Request() req: RequestWithUser,
-    @Param("paymentsId", ParseIntPipe) paymentId: number,
-  ): Promise<PaymentsDto> {
+  async getPayments(@Param("paymentsId", ParseIntPipe) paymentId: number): Promise<PaymentsDto> {
     return await this.paymentsService.getPaymentsDetail(paymentId);
   }
+
+  @Post("/cancel")
+  @ApiOperation({ summary: "결제 취소 요청", description: "dd" })
+  @ApiResponse({ status: 201, type: "" })
+  @UseGuards(AuthGuard("jwt"))
+  async cancelPayments() {}
 }

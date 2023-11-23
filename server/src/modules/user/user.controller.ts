@@ -6,7 +6,6 @@ import {
   UseGuards,
   Request,
   Body,
-  SerializeOptions,
   Query,
   Delete,
   BadRequestException,
@@ -18,7 +17,6 @@ import { UserDto } from "./dto/user.dto";
 import { AuthGuard } from "@nestjs/passport";
 import { UpdateUserDataDto } from "./dto/updateUserData.dto";
 import { RequestWithUser } from "./interface/requestWithUser";
-import { GetUserListDto } from "./dto/getUserList.dto";
 import { ResponseUserListDto } from "./dto/responseUserList.dto";
 import { ResponseUpdatedUserDto } from "./dto/responseUpdatedUser.dto";
 import { UpdatedUserDto } from "./dto/updatedUser.dto";
@@ -49,9 +47,9 @@ export class UserController {
     summary: "회원 정보 수정",
     description: "요청 받은 필드 수정",
   })
-  @UseGuards(AuthGuard("jwt"))
   @ApiBody({ type: UpdateUserDataDto })
   @ApiResponse({ status: 200, type: ResponseUpdatedUserDto })
+  @UseGuards(AuthGuard("jwt"))
   async editUser(
     @Request() req: RequestWithUser,
     @Body() updateUserDto: UpdateUserDataDto,
@@ -65,9 +63,9 @@ export class UserController {
     summary: "단일 유저 상세 조회",
     description: "userId를 쿼리로 받을 시 해당 유저 조회, 없을 시 로그인한 사용자 조회",
   })
-  @UseGuards(AuthGuard("jwt"))
   @ApiBody({ description: "유저 상세정보 조회. 쿼리 값이 있을 시 해당 유저 조회" })
   @ApiResponse({ status: 200, type: ResponseUserDto })
+  @UseGuards(AuthGuard("jwt"))
   async getUser(
     @Request() req: RequestWithUser,
     @Query("userId", new ParseIntWithDefaultUserPipe()) userId: number,
@@ -90,8 +88,8 @@ export class UserController {
       `sponsor:내가 후원중인 유저<br />` +
       `sponsored:날 후원하는 유저<br />`,
   })
-  @UseGuards(AuthGuard("jwt"))
   @ApiResponse({ status: 200, type: ResponseUserListDto })
+  @UseGuards(AuthGuard("jwt"))
   async getUsers(
     @Request() req: RequestWithUser,
     @Query("page", new ParseIntWithDefaultPipe(1)) page: number,
@@ -125,13 +123,13 @@ export class UserController {
   }
 
   @Delete()
-  @UseGuards(AuthGuard("jwt"))
   @ApiOperation({
     summary: "회원탈퇴",
     description: "프로필,백그라운드 이미지 + 관련 게시글, 댓글 삭제",
   })
   @ApiBody({ description: "유저 + 관련 레코드 삭제" })
   @ApiResponse({ status: 204, type: ResponseUserDto })
+  @UseGuards(AuthGuard("jwt"))
   async deleteUser(@Request() req: RequestWithUser): Promise<UserDto> {
     const userId: number = Number(req.user.id);
     return await this.userService.deleteUser(userId);
