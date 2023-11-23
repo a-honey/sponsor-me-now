@@ -9,6 +9,8 @@ import {
   Query,
   Delete,
   BadRequestException,
+  UsePipes,
+  ValidationPipe,
 } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
@@ -50,6 +52,7 @@ export class UserController {
   @ApiBody({ type: UpdateUserDataDto })
   @ApiResponse({ status: 200, type: ResponseUpdatedUserDto })
   @UseGuards(AuthGuard("jwt"))
+  @UsePipes(new ValidationPipe())
   async editUser(
     @Request() req: RequestWithUser,
     @Body() updateUserDto: UpdateUserDataDto,

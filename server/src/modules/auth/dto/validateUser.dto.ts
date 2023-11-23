@@ -7,83 +7,100 @@ import {
   IsBoolean,
   IsArray,
   IsDate,
+  Length,
 } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
+import { AccountHistory, Like, Payment, Post } from "@prisma/client";
 
 export class ValidateUserDto {
+  @ApiProperty()
   @IsNumber()
   @IsNotEmpty()
-  @ApiProperty()
   id: number;
 
+  @ApiProperty()
   @IsEmail()
   @IsNotEmpty()
-  @ApiProperty()
   email: string;
 
+  @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  @ApiProperty()
+  @Length(1, 20)
   username: string;
 
+  @ApiProperty()
   @IsString()
   @IsOptional()
-  @ApiProperty()
+  @Length(1, 20)
   nickname?: string;
 
+  @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  @ApiProperty()
   password: string;
 
+  @ApiProperty()
   @IsOptional()
   @IsNumber()
-  @ApiProperty()
   snsId?: number;
 
+  @ApiProperty()
   @IsOptional()
   @IsString()
-  @ApiProperty()
   provider?: string;
 
-  @IsOptional()
   @ApiProperty()
+  @IsOptional()
+  @IsString()
   profileImg?: string;
 
+  @ApiProperty()
   @IsOptional()
   @IsString()
-  @ApiProperty()
+  @IsString()
   field?: string;
 
+  @ApiProperty()
   @IsOptional()
   @IsString()
-  @ApiProperty()
+  @Length(1, 500)
   description?: string;
 
+  @ApiProperty()
   @IsNotEmpty()
   @IsBoolean()
-  @ApiProperty()
   isSponsor!: boolean;
 
+  @ApiProperty()
   @IsOptional()
   @IsArray()
-  @ApiProperty()
-  subscribe?: [];
+  AccountHistory?: AccountHistory[];
 
   @IsOptional()
   @IsArray()
   @ApiProperty()
-  paymentHistory?: [];
+  buyer?: Payment[];
 
   @IsOptional()
   @IsArray()
   @ApiProperty()
-  post?: [];
+  seller?: Payment[];
 
   @IsOptional()
   @IsArray()
   @ApiProperty()
-  comment?: [];
+  post?: Post[];
+
+  @IsOptional()
+  @IsArray()
+  @ApiProperty()
+  like?: Like[];
+
+  @IsOptional()
+  @IsArray()
+  @ApiProperty()
+  comment?: Comment[];
 
   @IsNotEmpty()
   @IsBoolean()

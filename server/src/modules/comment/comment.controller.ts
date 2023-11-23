@@ -70,7 +70,6 @@ export class CommentController {
     description: "댓글 + 하위 댓글 삭제",
   })
   @ApiResponse({ status: 204, type: CommentDto })
-  @UsePipes(new ValidationPipe())
   @UseGuards(AuthGuard("jwt"))
   async deleteComment(
     @Request() req: RequestWithUser,

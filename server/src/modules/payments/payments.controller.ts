@@ -64,7 +64,6 @@ export class PaymentsController {
   })
   @ApiResponse({ status: 200, type: [PaymentsListDto] })
   @UseGuards(AuthGuard("jwt"))
-  @UsePipes(new ValidationPipe())
   async getPaymentsHistoryList(
     @Request() req: RequestWithUser,
     @Query("page", new ParseIntWithDefaultPipe(1)) page: number,
@@ -81,7 +80,6 @@ export class PaymentsController {
   })
   @ApiResponse({ status: 200, type: PaymentsDto })
   @UseGuards(AuthGuard("jwt"))
-  @UsePipes(new ValidationPipe())
   async getPayments(@Param("paymentsId", ParseIntPipe) paymentId: number): Promise<PaymentsDto> {
     return await this.paymentsService.getPaymentsDetail(paymentId);
   }
@@ -90,5 +88,6 @@ export class PaymentsController {
   @ApiOperation({ summary: "결제 취소 요청", description: "dd" })
   @ApiResponse({ status: 201, type: "" })
   @UseGuards(AuthGuard("jwt"))
+  @UsePipes(new ValidationPipe())
   async cancelPayments() {}
 }
