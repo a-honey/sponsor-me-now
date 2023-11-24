@@ -43,10 +43,7 @@ const UserHeader = ({
 
   const handleCopyClick = async () => {
     const fullURL =
-      window.location.protocol +
-      '//' +
-      window.location.host +
-      location.pathname;
+      window.location.protocol + '//' + window.location.host + '/' + loginId;
     try {
       await clipboardCopy(fullURL);
       console.log('주소가 성공적으로 복사되었습니다.');
