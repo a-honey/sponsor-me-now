@@ -14,6 +14,7 @@ import postPostLike from '@/api/post/postPostLike';
 import postComment from '@/api/post/postComment';
 import putComment from '@/api/put/putComment';
 import deleteComment from '@/api/delete/deleteComment';
+import postPaymentCancel from '@/api/post/postPaymentCancel';
 
 export const usePostRegisterData = (fn: () => void) => {
   const { setLoginId, setLoginUsername, setToken } = useLoginStore();
@@ -156,5 +157,12 @@ export const useDeleteComment = () => {
         queryKey: ['postId', res.postId.toString()],
       });
     },
+  });
+};
+
+export const usePostPaymentCancel = () => {
+  return useMutation({
+    mutationFn: postPaymentCancel,
+    onSuccess: () => {},
   });
 };
