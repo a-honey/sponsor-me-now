@@ -19,7 +19,6 @@ const DetailModal = ({
     setIsOpenCancelModal((prev) => !prev);
   };
   const { data } = useGetPaymentHistoryById({ paymentId });
-  console.log(data);
 
   const handleRefundClick = () => {
     setIsOpenCancelModal((prev) => !prev);
@@ -52,8 +51,11 @@ const DetailModal = ({
             </li>
           </ul>
         </div>
-        {isOpenCancelModal && (
-          <CancelModal toggleIsOpenCancelModal={toggleIsOpenCancelModal} />
+        {isOpenCancelModal && data?.merchantUid && (
+          <CancelModal
+            merchantUid={data.merchantUid}
+            toggleIsOpenCancelModal={toggleIsOpenCancelModal}
+          />
         )}
         <button type="submit" className="green" onClick={handleRefundClick}>
           환불 요청

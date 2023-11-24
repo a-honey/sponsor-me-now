@@ -3,6 +3,7 @@ import { instance } from '../instance';
 export interface PaymentCancelBodyType {
   reason: string;
   cancelRequestAmount: string;
+  merchantUid?: string;
 }
 const postPaymentCancel = async (body: PaymentCancelBodyType) => {
   try {
