@@ -1,0 +1,36 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  button {
+    padding: 10px;
+    border-radius: 5px;
+  }
+}
+
+.contentContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  h3 {
+    font-size: 20px;
+    font-weight: 700;
+  }
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 20px 0;
+  }
+  li {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+  }
+  .buyerName {
+    text-align: right;
+  }
+  .name {
+    font-weight: 700;
+  }
+}

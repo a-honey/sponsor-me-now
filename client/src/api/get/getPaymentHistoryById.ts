@@ -58,7 +58,7 @@ interface PaymentHistoryByIdType {
 const getPaymentHistoryById = async ({ paymentId }: { paymentId: number }) => {
   try {
     const response = await instance.get<PaymentHistoryByIdType>(
-      `/payments/${paymentId}}`,
+      `/payments/${paymentId}`,
     );
     return response.data;
   } catch (error) {

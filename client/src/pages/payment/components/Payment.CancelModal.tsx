@@ -15,7 +15,7 @@ const CancelModal = ({
     postMutation.mutate(data);
   };
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form className="form" onSubmit={handleSubmit(onSubmit)}>
       <label>결제 취소 금액</label>
       <input {...register('cancelRequestAmount')} />
       <label>결제 취소 사유</label>
