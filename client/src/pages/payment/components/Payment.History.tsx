@@ -1,40 +1,50 @@
 import { useState } from 'react';
 import styles from '../styles/Payment.History.module.scss';
-import CancelModal from './Payment.CancelModal';
+import { useGetPaymentHistory } from '@/hooks/useQueries';
+import { PaymentHistoryBodyType } from '@/api/get/getPaymentHistory';
+import DetailModal from './Payment.DetailModal';
 
 const History = () => {
+  const { data } = useGetPaymentHistory({ page: 1, limit: 10 });
   return (
     <div className={styles.container}>
-      <PaymentItem />
-      <PaymentItem />
-      <PaymentItem />
-      <PaymentItem />
-      <PaymentItem />
-      <PaymentItem />
-      <PaymentItem />
-      <PaymentItem />
+      {data?.payments.map((item) => (
+        <PaymentItem data={item} />
+      ))}
     </div>
   );
 };
 
 export default History;
 
-const PaymentItem = () => {
-  const [isOpenCancelModal, setIsOpenCancelModal] = useState(false);
+const PaymentItem = ({
+  data,
+}: {
+  data: PaymentHistoryBodyType['payments'][0];
+}) => {
+  const [isOpenDetailModal, setIsOpenDetailModal] = useState(false);
 
-  const toggleIsOpenCancelModal = () => {
-    setIsOpenCancelModal((prev) => !prev);
+  const toggleIsOpenDetailModal = () => {
+    setIsOpenDetailModal((prev) => !prev);
   };
   return (
     <>
-      {isOpenCancelModal && (
-        <CancelModal toggleIsOpenCancelModal={toggleIsOpenCancelModal} />
+      {isOpenDetailModal && (
+        <DetailModal
+          toggleIsOpenDetailModal={toggleIsOpenDetailModal}
+          paymentId={data.id}
+        />
       )}
       <div className={styles.item}>
-        <div>결제내역</div>
-        <div>결제날짜</div>
-        <div>결제가격</div>
-        <button onClick={toggleIsOpenCancelModal}>결제 취소</button>
+        <div>
+          {data.buyerName}의 {data.sellerName} 후원내역
+        </div>
+        <div>
+          <span>{data.amount} 원</span> 결제
+        </div>
+        <button className="gray" onClick={toggleIsOpenDetailModal}>
+          상세내역
+        </button>
       </div>
     </>
   );

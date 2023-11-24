@@ -5,6 +5,23 @@
 }
 
 .item {
+  position: relative;
   display: flex;
-  background-color: pink;
+  flex-direction: column;
+  padding: 10px;
+  gap: 10px;
+  background-color: #ededed;
+  border-radius: 5px;
+  span {
+    font-weight: 700;
+  }
+  button {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px 5px;
+  }
 }

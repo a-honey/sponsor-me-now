@@ -1,4 +1,5 @@
 import getPaymentHistory from '@/api/get/getPaymentHistory';
+import getPaymentHistoryById from '@/api/get/getPaymentHistoryById';
 import getPostById from '@/api/get/getPostById';
 import getPostList from '@/api/get/getPostList';
 import getUserById from '@/api/get/getUserById';
@@ -52,14 +53,23 @@ export const useGetPostById = ({ postId }: { postId: number }) => {
 export const useGetPaymentHistory = ({
   page,
   limit,
-  search,
 }: {
   page: number;
   limit: number;
-  search?: string;
 }) => {
   return useQuery({
-    queryKey: ['paymentHistory', page.toString(), search],
-    queryFn: () => getPaymentHistory({ page, limit, search }),
+    queryKey: ['paymentHistory', page.toString()],
+    queryFn: () => getPaymentHistory({ page, limit }),
+  });
+};
+
+export const useGetPaymentHistoryById = ({
+  paymentId,
+}: {
+  paymentId: number;
+}) => {
+  return useQuery({
+    queryKey: ['paymentId', paymentId.toString()],
+    queryFn: () => getPaymentHistoryById({ paymentId }),
   });
 };

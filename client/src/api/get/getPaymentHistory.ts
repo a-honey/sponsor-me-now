@@ -1,10 +1,12 @@
 import { instance } from '../instance';
 
-interface ResponseBodyType {
+export interface PaymentHistoryBodyType {
   totalPage: number;
   currentPage: number;
-  data: {
+  payments: {
+    id: number;
     buyerId: number;
+    sellerId: number;
     sellerName: string;
     sellerEmail: string;
     amount: number;
@@ -13,21 +15,19 @@ interface ResponseBodyType {
     name: string;
     cardName: string;
     cardNumber: string;
-  };
+  }[];
 }
 
 const getPaymentHistory = async ({
   page,
   limit,
-  search,
 }: {
   page: number;
   limit: number;
-  search?: string;
 }) => {
   try {
-    const response = await instance.get<ResponseBodyType>(
-      `/post/list?page=${page}&limit=${limit}${search && `&search=${search}`}`,
+    const response = await instance.get<PaymentHistoryBodyType>(
+      `/payments/list?page=${page}&limit=${limit}}`,
     );
     return response.data;
   } catch (error) {

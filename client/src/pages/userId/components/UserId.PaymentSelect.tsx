@@ -162,6 +162,7 @@ const RequestPay = ({
   email,
   username,
   payAmount,
+  id,
   toggleIsOpenPaymentSelect,
 }: {
   email: string;
@@ -205,11 +206,11 @@ const RequestPay = ({
       },
       (rsp: Response) => {
         if (rsp.success) {
-          console.log('결제성공', rsp);
           postPaymentHistory({
             sellerName: username,
             sellerEmail: email,
             impUid: rsp.imp_uid,
+            sellerId: id,
           });
         } else {
           console.log('결제실패', rsp);

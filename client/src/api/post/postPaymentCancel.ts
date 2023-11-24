@@ -6,7 +6,7 @@ export interface PaymentCancelBodyType {
 }
 const postPaymentCancel = async (body: PaymentCancelBodyType) => {
   try {
-    const response = await instance.post('/payment', body);
+    const response = await instance.post('/payments/cancel', body);
     return response.data;
   } catch (error) {
     console.error('postPaymentCancel 에러:', error);

@@ -3,6 +3,7 @@ import { instance } from '../instance';
 export interface PostPaymentHistoryResponse {
   sellerName: string;
   sellerEmail: string;
+  sellerId: number;
   impUid?: string;
 }
 
