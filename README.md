@@ -43,6 +43,7 @@
 ![Axios](https://img.shields.io/badge/Axios-007ACC?style=for-the-badge&logo=axios&logoColor=ffffff)
 ![zustand](https://img.shields.io/badge/zustand-FFA500?style=for-the-badge)
 ![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=ffffff)
+[![clipboard-copy](https://img.shields.io/badge/clipboard--copy-007ec6?style=for-the-badge&logoColor=white)](https://github.com/lgarron/clipboard-copy)
 
 - **React**: 웹 애플리케이션의 사용자 인터페이스 개발에 사용되었습니다.
 - **TypeScript**: 정적 타입 언어로, 프로젝트의 안정성과 개발 생산성을 향상시키기 위해 사용되었습니다.
@@ -50,6 +51,7 @@
 - **Zustand**: 파일 크기가 작은 Zustand를 사용하여 전역 상태를 효과적으로 관리하였습니다.
 - **React Query**: 데이터 가져오기 및 캐싱을 처리하기 위한 라이브러리로, 데이터 관리를 간편하게 수행하기 위해 사용되었습니다.
 - **Vite**: 빠른 번들링 및 개발 서버를 제공하는 도구로 사용되었습니다.
+- **Clipboard Copy**: 후원을 받기 위한 개인페이지를 편리하게 공유하기 위해 사용되었습니다.
 
 ### 백엔드
 
