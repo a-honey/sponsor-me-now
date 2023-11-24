@@ -12,29 +12,29 @@ import { Exclude } from "class-transformer";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class GetUserListDto {
-  @IsNumber()
-  @IsNotEmpty()
   @ApiProperty()
+  @IsNotEmpty()
+  @IsNumber()
   id: number;
 
-  @IsEmail()
-  @IsNotEmpty()
   @ApiProperty()
+  @IsNotEmpty()
+  @IsEmail()
   email: string;
 
-  @IsString()
-  @IsNotEmpty()
   @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
   username: string;
 
-  @IsString()
-  @IsOptional()
   @ApiProperty()
+  @IsOptional()
+  @IsString()
   nickname?: string;
 
-  @IsString()
-  @IsNotEmpty()
   @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
   @Exclude()
   password: string;
 

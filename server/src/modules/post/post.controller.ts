@@ -102,7 +102,6 @@ export class PostController {
   })
   @ApiBody({ type: CreatePostDto })
   @ApiResponse({ status: 201, type: ResponsePostDto })
-  @UsePipes(new ValidationPipe())
   @UseGuards(AuthGuard("jwt"))
   async updatePost(
     @Request() req: RequestWithUser,

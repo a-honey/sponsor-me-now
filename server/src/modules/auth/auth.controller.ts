@@ -5,14 +5,12 @@ import {
   Request,
   Post,
   UseGuards,
-  Res,
   UsePipes,
   ValidationPipe,
 } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { AuthDto } from "./dto/auth.dto";
 import { SubmitUserDataDto } from "./dto/submitUserData.dto";
-import { Response } from "express";
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { TryLoginDto } from "./dto/tryLogin.dto";
 import { LoginUserDto } from "./dto/loginUser.dto";
@@ -49,10 +47,10 @@ export class AuthController {
     description: "성공시 JWT 발급",
   })
   @ApiBody({ type: TryLoginDto })
-  @ApiResponse({ type: LoginUserDto })
+  @ApiResponse({ status: 201, type: LoginUserDto })
   @UsePipes(new ValidationPipe())
   @UseGuards(AuthGuard("local"))
-  async login(@Request() req: RequestWithUser, @Res() res: Response): Promise<LoginUserDto> {
-    return await this.authService.login(req.user, res);
+  async login(@Request() req: RequestWithUser): Promise<LoginUserDto> {
+    return await this.authService.login(req.user);
   }
 }

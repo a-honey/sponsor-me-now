@@ -1,159 +1,310 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { IsArray, IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class PaymentsDto {
   @ApiProperty()
+  @IsNotEmpty()
+  @IsNumber()
   id: number;
 
   @ApiProperty()
+  @IsNotEmpty()
+  @IsNumber()
   buyerId: number;
 
   @ApiProperty()
+  @IsNotEmpty()
+  @IsNumber()
   sellerId: number;
 
   @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
   sellerEmail: string;
 
   @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
   sellerName: string;
 
   @ApiProperty()
+  @IsNotEmpty()
+  @IsNumber()
   amount: number;
 
   @ApiProperty()
-  apply_num?: string;
+  @IsOptional()
+  @IsString()
+  @IsNumber()
+  applyNum?: string;
 
   @ApiProperty()
-  bank_code?: string;
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  bankCode?: string;
 
   @ApiProperty()
-  bank_name?: string;
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  bankName?: string;
 
   @ApiProperty()
-  buyer_addr?: string;
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  buyerAddr?: string;
 
   @ApiProperty()
-  buyer_email?: string;
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  buyerEmail?: string;
 
   @ApiProperty()
-  buyer_name?: string;
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  buyerName?: string;
 
   @ApiProperty()
-  buyer_postcode?: string;
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  buyerPostcode?: string;
 
   @ApiProperty()
-  buyer_tel?: string;
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  buyerTel?: string;
 
   @ApiProperty()
-  cancel_amount?: number;
+  @ApiProperty()
+  @IsOptional()
+  @IsNumber()
+  cancelAmount?: number;
 
   @ApiProperty()
-  cancel_history?: [];
+  @ApiProperty()
+  @IsOptional()
+  @IsArray()
+  cancelHistory?: [];
 
   @ApiProperty()
-  cancel_reason?: string;
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  cancelReason?: string;
 
   @ApiProperty()
-  cancel_receipt_urls?: [];
+  @ApiProperty()
+  @IsOptional()
+  @IsArray()
+  cancelReceipt_urls?: [];
 
   @ApiProperty()
-  cancelled_at?: number;
+  @ApiProperty()
+  @IsOptional()
+  @IsNumber()
+  cancelledAt?: number;
 
   @ApiProperty()
-  card_code?: string;
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  cardCode?: string;
 
   @ApiProperty()
-  card_name?: string;
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  cardName?: string;
 
   @ApiProperty()
-  card_number?: string;
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  cardNumber?: string;
 
   @ApiProperty()
-  card_quota?: number;
+  @ApiProperty()
+  @IsOptional()
+  @IsNumber()
+  cardQuota?: number;
 
   @ApiProperty()
-  card_type?: string;
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  cardType?: string;
 
   @ApiProperty()
-  cash_receipt_issued?: boolean;
+  @ApiProperty()
+  @IsOptional()
+  @IsBoolean()
+  cashReceipt_issued?: boolean;
 
   @ApiProperty()
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
   channel?: string;
 
   @ApiProperty()
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
   currency?: string;
 
   @ApiProperty()
-  custom_data?: string;
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  customData?: string;
 
   @ApiProperty()
-  customer_uid?: string;
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  customerUid?: string;
 
   @ApiProperty()
-  customer_uid_usage?: string;
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  customerUidUsage?: string;
 
   @ApiProperty()
-  emb_pg_provider?: string;
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  embPgProvider?: string;
 
   @ApiProperty()
+  @ApiProperty()
+  @IsOptional()
+  @IsBoolean()
   escrow?: boolean;
 
   @ApiProperty()
-  fail_reason?: string;
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  failReason?: string;
 
   @ApiProperty()
-  failed_at?: number;
+  @ApiProperty()
+  @IsOptional()
+  @IsNumber()
+  failedAt?: number;
 
   @ApiProperty()
-  imp_uid?: string;
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  impUid!: string;
 
   @ApiProperty()
-  merchant_uid?: string;
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  merchantUid?: string;
 
   @ApiProperty()
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
   name?: string;
 
   @ApiProperty()
-  paid_at?: number;
+  @ApiProperty()
+  @IsOptional()
+  @IsNumber()
+  paidAt?: number;
 
   @ApiProperty()
-  pay_method?: string;
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  payMethod?: string;
 
   @ApiProperty()
-  pg_id?: string;
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  pgId?: string;
 
   @ApiProperty()
-  pg_provider?: string;
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  pgProvider?: string;
 
   @ApiProperty()
-  pg_tid?: string;
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  pgTid?: string;
 
   @ApiProperty()
-  receipt_url?: string;
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  receiptUrl?: string;
 
   @ApiProperty()
-  started_at?: number;
+  @ApiProperty()
+  @IsOptional()
+  @IsNumber()
+  startedAt?: number;
 
   @ApiProperty()
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
   status?: string;
 
   @ApiProperty()
-  user_agent?: string;
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  userAgent?: string;
 
   @ApiProperty()
-  vbank_code?: string;
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  vbankCode?: string;
 
   @ApiProperty()
-  vbank_date?: number;
+  @ApiProperty()
+  @IsOptional()
+  @IsNumber()
+  vbankDate?: number;
 
   @ApiProperty()
-  vbank_holder?: string;
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  vbankHolder?: string;
 
   @ApiProperty()
-  vbank_issued_at?: number;
+  @ApiProperty()
+  @IsOptional()
+  @IsNumber()
+  vbankIssuedAt?: number;
 
   @ApiProperty()
-  vbank_name?: string;
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  vbankName?: string;
 
   @ApiProperty()
-  vbank_num?: string;
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  vbankNum?: string;
 }

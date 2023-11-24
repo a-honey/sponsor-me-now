@@ -7,6 +7,7 @@ import {
   IsBoolean,
   IsArray,
   IsDate,
+  Length,
 } from "class-validator";
 import { Exclude } from "class-transformer";
 import { ApiProperty } from "@nestjs/swagger";
@@ -26,11 +27,13 @@ export class UpdatedUserDto {
   @IsString()
   @IsNotEmpty()
   @ApiProperty()
+  @Length(1, 20)
   username: string;
 
   @IsString()
   @IsOptional()
   @ApiProperty()
+  @Length(1, 20)
   nickname?: string;
 
   @IsString()
