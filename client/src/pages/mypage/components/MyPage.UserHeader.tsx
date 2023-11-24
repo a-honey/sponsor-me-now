@@ -6,7 +6,8 @@ import { useForm } from 'react-hook-form';
 import { useDeleteUser, usePutUserData } from '@/hooks/useMutations';
 import { UserPutBodyType } from '@/api/put/putUser';
 import { useLoginStore } from '@/store';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import clipboardCopy from 'clipboard-copy';
 
 const UserHeader = ({
   toggleIsWritingPost,
@@ -15,6 +16,7 @@ const UserHeader = ({
   data: any;
   toggleIsWritingPost: () => void;
 }) => {
+  const location = useLocation();
   const [isEditing, setIsEditing] = useState(false);
   const { loginId } = useLoginStore();
   const navigator = useNavigate();
@@ -36,6 +38,20 @@ const UserHeader = ({
     const confirmDelete = window.confirm('탈퇴하시겠습니까?');
     if (confirmDelete) {
       deleteMutation.mutate();
+    }
+  };
+
+  const handleCopyClick = async () => {
+    const fullURL =
+      window.location.protocol +
+      '//' +
+      window.location.host +
+      location.pathname;
+    try {
+      await clipboardCopy(fullURL);
+      console.log('주소가 성공적으로 복사되었습니다.');
+    } catch (err) {
+      console.error('복사 중 오류가 발생했습니다:', err);
     }
   };
 
@@ -103,6 +119,7 @@ const UserHeader = ({
         </div>
       </div>
       <button onClick={toggleIsWritingPost}>게시글 작성하기</button>
+      <button onClick={handleCopyClick}>페이지 공유하기</button>
       <button onClick={() => navigator('/calculate')}>정산하기</button>
     </div>
   );
