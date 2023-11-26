@@ -23,16 +23,11 @@ export class LoggingInterceptor implements NestInterceptor {
     const userAgent = request.get("User-Agent") || "";
     const { statusCode } = response;
     const contentLength = response.get("Content-Length");
-    const message = `${method} ${url} ${statusCode} ${contentLength} - ${userAgent} ${ip} \n ${JSON.stringify(
+    const message = `${method} ${url} ${statusCode} ${contentLength} - ${userAgent} ${ip}\nRequest: \n${JSON.stringify(
       body,
       null,
       2,
-    )}`;
-
+    )}\nResponse: \n${JSON.stringify(data, null, 2)}`;
     this.logger.log(`${message}`);
-
-    // todo 프로덕트 환경에선 응답값까지 로깅해야될거같긴 한데 지금 당장은 너무 더럽기도하고 t2.micro가 죽을수도 있으니..
-    // const responseData = JSON.stringify(data);
-    // this.logger.log(`${message} \n 🔙Response: ${responseData}`);
   }
 }

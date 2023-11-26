@@ -17,19 +17,19 @@ export class HttpExceptionFilter implements ExceptionFilter {
 
     if (status >= 500) {
       this.logger.error(
-        `${message} \n Request: \n${JSON.stringify(
+        `${message}\nRequest: \n${JSON.stringify(
           request.body,
           null,
           2,
-        )} \n Response: \n ${JSON.stringify(error, null, 2)}`,
+        )} \nResponse: \n${JSON.stringify(error, null, 2)}`,
       );
     } else if (status >= 400) {
       this.logger.warn(
-        `${message} \n Request: \n${JSON.stringify(
+        `${message}\nRequest: \n${JSON.stringify(
           request.body,
           null,
           2,
-        )} \n Response: \n ${JSON.stringify(error, null, 2)}`,
+        )} \nResponse: \n${JSON.stringify(error, null, 2)}`,
       );
     }
 
