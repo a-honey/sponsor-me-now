@@ -15,9 +15,11 @@ import * as path from "path";
 import { RequestWithUser } from "../user/interface/requestWithUser";
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { Express } from "express";
+import { LoggingInterceptor } from "../../interceptors/logging.interceptor";
 
 @ApiTags("Upload")
 @Controller("api/upload")
+@UseInterceptors(LoggingInterceptor)
 export class UploadController {
   constructor(private readonly uploadService: UploadService) {}
 

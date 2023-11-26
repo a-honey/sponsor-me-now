@@ -10,6 +10,7 @@ import {
   Query,
   Request,
   UseGuards,
+  UseInterceptors,
   UsePipes,
   ValidationPipe,
 } from "@nestjs/common";
@@ -21,9 +22,11 @@ import { RequestWithUser } from "../user/interface/requestWithUser";
 import { AuthGuard } from "@nestjs/passport";
 import { ParseIntWithDefaultPipe } from "../../pipes/parseIntWithDefaultPipe";
 import { ResponsePostDto } from "./dto/responsePost.dto";
+import { LoggingInterceptor } from "../../interceptors/logging.interceptor";
 
 @ApiTags("Post")
 @Controller("api/post")
+@UseInterceptors(LoggingInterceptor)
 export class PostController {
   constructor(private postService: PostService) {}
 
