@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { Logger, MiddlewareConsumer, Module } from "@nestjs/common";
 import { AuthModule } from "./modules/auth/auth.module";
 import { UserModule } from "./modules/user/user.module";
 import { UploadModule } from "./modules/upload/upload.module";
@@ -20,5 +20,6 @@ import { join } from "path";
     PaymentsModule,
     ServeStaticModule.forRoot({ rootPath: join(__dirname, "..", "public") }),
   ],
+  providers: [Logger],
 })
 export class AppModule {}
