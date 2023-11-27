@@ -5,8 +5,10 @@ import { useForm } from 'react-hook-form';
 const CancelModal = ({
   toggleIsOpenCancelModal,
   merchantUid,
+  paymentsId,
 }: {
   merchantUid: string;
+  paymentsId: number;
   toggleIsOpenCancelModal: () => void;
 }) => {
   const { register, handleSubmit } = useForm<PaymentCancelBodyType>();
@@ -14,8 +16,9 @@ const CancelModal = ({
   const postMutation = usePostPaymentCancel();
 
   const onSubmit = (data: PaymentCancelBodyType) => {
-    postMutation.mutate({ ...data, merchantUid });
+    postMutation.mutate({ ...data, merchantUid, paymentsId });
   };
+
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
       <label>결제 취소 금액</label>

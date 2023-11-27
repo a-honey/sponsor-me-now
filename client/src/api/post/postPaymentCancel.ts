@@ -4,7 +4,9 @@ export interface PaymentCancelBodyType {
   reason: string;
   cancelRequestAmount: string;
   merchantUid?: string;
+  paymentsId: number;
 }
+
 const postPaymentCancel = async (body: PaymentCancelBodyType) => {
   try {
     const response = await instance.post('/payments/cancel', body);

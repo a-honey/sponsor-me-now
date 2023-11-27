@@ -41,7 +41,7 @@ const DetailModal = ({
             </li>
             <li key="pg">
               <div className={styles.name}>결제처 :</div>
-              <div>{data?.pgProvider} 원</div>
+              <div>{data?.pgProvider}</div>
             </li>
             <li key="card">
               <div className={styles.name}>카드정보</div>
@@ -53,6 +53,7 @@ const DetailModal = ({
         </div>
         {isOpenCancelModal && data?.merchantUid && (
           <CancelModal
+            paymentsId={data.id}
             merchantUid={data.merchantUid}
             toggleIsOpenCancelModal={toggleIsOpenCancelModal}
           />
