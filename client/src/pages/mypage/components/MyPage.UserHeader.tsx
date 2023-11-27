@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import { useDeleteUser, usePutUserData } from '@/hooks/useMutations';
 import { UserPutBodyType } from '@/api/put/putUser';
 import { useLoginStore } from '@/store';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import clipboardCopy from 'clipboard-copy';
 
 const UserHeader = ({
@@ -16,7 +16,6 @@ const UserHeader = ({
   data: any;
   toggleIsWritingPost: () => void;
 }) => {
-  const location = useLocation();
   const [isEditing, setIsEditing] = useState(false);
   const { loginId } = useLoginStore();
   const navigator = useNavigate();
