@@ -1,12 +1,22 @@
-import { Controller, Param, ParseIntPipe, Post, Request, UseGuards } from "@nestjs/common";
+import {
+  Controller,
+  Param,
+  ParseIntPipe,
+  Post,
+  Request,
+  UseGuards,
+  UseInterceptors,
+} from "@nestjs/common";
 import { LikeService } from "./like.service";
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { AuthGuard } from "@nestjs/passport";
 import { RequestWithUser } from "../user/interface/requestWithUser";
 import { LikeDto } from "./dto/like.dto";
+import { LoggingInterceptor } from "../../interceptors/logging.interceptor";
 
 @ApiTags("Like")
 @Controller("api/like")
+@UseInterceptors(LoggingInterceptor)
 export class LikeController {
   constructor(private likeService: LikeService) {}
 

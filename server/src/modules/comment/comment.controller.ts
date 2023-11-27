@@ -11,6 +11,7 @@ import {
   Query,
   Request,
   UseGuards,
+  UseInterceptors,
   UsePipes,
   ValidationPipe,
 } from "@nestjs/common";
@@ -21,9 +22,11 @@ import { CreateCommentDto } from "./dto/createComment.dto";
 import { CommentDto } from "./dto/comment.dto";
 import { OptionalIntPipe } from "../../pipes/optionalIntPipe";
 import { ResponseCommentDto } from "./dto/responseComment.dto";
+import { LoggingInterceptor } from "../../interceptors/logging.interceptor";
 
 @ApiTags("Comment")
 @Controller("api/comment")
+@UseInterceptors(LoggingInterceptor)
 export class CommentController {
   constructor(private commentService: CommentService) {}
 

@@ -8,6 +8,7 @@ import {
   Query,
   Request,
   UseGuards,
+  UseInterceptors,
   UsePipes,
   ValidationPipe,
 } from "@nestjs/common";
@@ -23,9 +24,11 @@ import { ParseIntWithDefaultPipe } from "../../pipes/parseIntWithDefaultPipe";
 import { PaymentsListDto } from "./dto/paymentsList.dto";
 import { PaymentsDto } from "./dto/payments.dto";
 import { ClientCancelRequestDataDto } from "./dto/clientCancelRequestDataDto";
+import { LoggingInterceptor } from "../../interceptors/logging.interceptor";
 
 @ApiTags("Payments")
 @Controller("api/payments")
+@UseInterceptors(LoggingInterceptor)
 export class PaymentsController {
   constructor(private paymentsService: PaymentsService) {}
 

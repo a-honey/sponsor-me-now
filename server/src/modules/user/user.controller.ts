@@ -11,6 +11,7 @@ import {
   BadRequestException,
   UsePipes,
   ValidationPipe,
+  UseInterceptors,
 } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
@@ -26,9 +27,11 @@ import { ParseIntWithDefaultUserPipe } from "../../pipes/parseIntWithDefaultUser
 import { ParseIntWithDefaultPipe } from "../../pipes/parseIntWithDefaultPipe";
 import { ResponseUserDto } from "./dto/responseUser.dto";
 import { ValidateUserDto } from "../auth/dto/validateUser.dto";
+import { LoggingInterceptor } from "../../interceptors/logging.interceptor";
 
 @ApiTags("User")
 @Controller("api/user")
+@UseInterceptors(LoggingInterceptor)
 export class UserController {
   constructor(private userService: UserService) {}
 

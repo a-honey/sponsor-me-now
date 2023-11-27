@@ -7,6 +7,7 @@ import {
   UseGuards,
   UsePipes,
   ValidationPipe,
+  UseInterceptors,
 } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { AuthDto } from "./dto/auth.dto";
@@ -17,9 +18,11 @@ import { LoginUserDto } from "./dto/loginUser.dto";
 import { AuthGuard } from "@nestjs/passport";
 import { RequestWithUser } from "../user/interface/requestWithUser";
 import { ResponseCreateUserDto } from "./dto/responseCreateUser.dto";
+import { LoggingInterceptor } from "../../interceptors/logging.interceptor";
 
 @ApiTags("Auth")
 @Controller("api/auth")
+@UseInterceptors(LoggingInterceptor)
 export class AuthController {
   constructor(private authService: AuthService) {}
 
