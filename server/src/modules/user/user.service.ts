@@ -19,7 +19,7 @@ export class UserService {
       where: { email },
     });
     if (!user) {
-      throw new NotFoundException("User not found");
+      throw new NotFoundException("UserEntity not found");
     }
     return plainToInstance(ValidateUserDto, user);
   }

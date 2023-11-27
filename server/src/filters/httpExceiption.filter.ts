@@ -12,7 +12,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const error = exception.getResponse();
 
     const { ip, method, originalUrl: url } = request;
-    const userAgent = request.get("User-Agent") || "";
+    const userAgent = request.get("UserEntity-Agent") || "";
     const message = `${method} ${url} ${status} - ${userAgent} ${ip}`;
 
     if (status >= 500) {

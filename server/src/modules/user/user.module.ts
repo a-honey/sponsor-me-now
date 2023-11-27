@@ -7,6 +7,8 @@ import { JwtModule } from "@nestjs/jwt";
 import { JwtStrategy } from "../../passport/jwt.strategy";
 import { AuthService } from "../auth/auth.service";
 import { PrismaClient } from "@prisma/client";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { UserEntity } from "../../entities/user.entity";
 
 @Module({
   imports: [
@@ -15,6 +17,7 @@ import { PrismaClient } from "@prisma/client";
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: "24h" },
     }),
+    TypeOrmModule.forFeature([UserEntity]),
   ],
   controllers: [UserController],
   providers: [UserService, AuthService, PrismaClient, JwtStrategy],

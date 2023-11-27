@@ -20,7 +20,7 @@ export class LoggingInterceptor implements NestInterceptor {
   }
   private log(request: Request, response: Response, data: any) {
     const { ip, method, originalUrl: url, body, headers } = request;
-    const userAgent = request.get("User-Agent") || "";
+    const userAgent = request.get("UserEntity-Agent") || "";
     const { statusCode } = response;
     const contentLength = response.get("Content-Length");
     const message = `${method} ${url} ${statusCode} ${contentLength} - ${userAgent} ${ip}\nRequest: \n${JSON.stringify(

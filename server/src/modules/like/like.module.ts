@@ -9,6 +9,10 @@ import { LikeService } from "./like.service";
 import { AuthService } from "../auth/auth.service";
 import { UserService } from "../user/user.service";
 import { PostService } from "../post/post.service";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { PostEntity } from "../../entities/post.entity";
+import { LikeEntity } from "../../entities/like.entity";
+import { UserEntity } from "../../entities/user.entity";
 
 @Module({
   imports: [
@@ -17,6 +21,7 @@ import { PostService } from "../post/post.service";
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: "24h" },
     }),
+    TypeOrmModule.forFeature([PostEntity, LikeEntity, UserEntity]),
   ],
   controllers: [LikeController],
   providers: [PostService, AuthService, UserService, LikeService, PrismaClient, JwtStrategy],
