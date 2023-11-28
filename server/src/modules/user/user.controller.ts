@@ -66,7 +66,7 @@ export class UserController {
 
   @Get()
   @ApiOperation({
-    summary: "단일 유저 상세 조회",
+    summary: "[비인가]단일 유저 상세 조회",
     description: "쿼리로 받은 userId에 해당하는 유저 조회",
   })
   @ApiResponse({ status: 200, type: ResponseUserDto })
@@ -87,12 +87,23 @@ export class UserController {
     return await this.userService.findUserById(userId);
   }
 
+  @Get("/list-all")
+  @ApiOperation({
+    summary: "[비인가]모든 유저 리스트",
+  })
+  @ApiResponse({ status: 200, type: ResponseUserListDto })
+  async getAllUsers(
+    @Query("page", new ParseIntWithDefaultPipe(1)) page: number,
+    @Query("limit", new ParseIntWithDefaultPipe(10)) limit: number,
+  ): Promise<ResponseUserListDto> {
+    return await this.userService.getUsers(page, limit);
+  }
+
   @Get("/list")
   @ApiOperation({
-    summary: "유저 리스트",
+    summary: "조건부 유저 리스트",
     description:
       `쿼리별 유저리스트. 서버사이드 페이지네이션<br />` +
-      `all:전체<br />` +
       `random:후원중이지 않은 랜덤 7명<br />` +
       `allSponsored : 후원 대상자 전체<br />` +
       `sponsor:내가 후원중인 유저<br />` +
@@ -110,9 +121,6 @@ export class UserController {
     let result;
 
     switch (search) {
-      case "all":
-        result = await this.userService.getUsers(page, limit);
-        break;
       case "random":
         result = await this.userService.getRandomUsers(userId);
         break;
