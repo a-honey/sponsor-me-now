@@ -8,6 +8,9 @@ import * as bcrypt from "bcrypt";
 import { LoginUserDto } from "./dto/loginUser.dto";
 import { ValidateUserDto } from "./dto/validateUser.dto";
 import { PrismaClient } from "@prisma/client";
+import { Repository } from "typeorm";
+import { UserEntity } from "../../entities/user.entity";
+import { InjectRepository } from "@nestjs/typeorm";
 
 @Injectable()
 export class AuthService {
@@ -15,13 +18,13 @@ export class AuthService {
     private userService: UserService,
     private prisma: PrismaClient,
     private jwtService: JwtService,
+    @InjectRepository(UserEntity)
+    private userRepository: Repository<UserEntity>,
   ) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<AuthDto> {
     createUserDto.password = await bcrypt.hash(createUserDto.password, 10);
-    const createUser = await this.prisma.user.create({
-      data: createUserDto,
-    });
+    const createUser = await this.userRepository.save(createUserDto);
     return plainToInstance(AuthDto, createUser);
   }
 

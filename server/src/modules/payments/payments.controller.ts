@@ -36,7 +36,7 @@ export class PaymentsController {
   @ApiOperation({
     summary: "결제 내역 저장",
     description:
-      "imp uid 와 셀러 정보를 받은 후, iamport server 조회 후 데이터베이스에 저장 + 해당 User record에 account 증감 + AccountHistory 테이블에 account 변경사항 저장",
+      "imp uid 와 셀러 정보를 받은 후, iamport server 조회 후 데이터베이스에 저장 + 해당 UserEntity record에 account 증감 + AccountHistoryEntity 테이블에 account 변경사항 저장",
   })
   @ApiBody({ type: ImpUidDto })
   @ApiResponse({ status: 201, type: ResponsePaymentsDto })
