@@ -23,6 +23,7 @@ import { AuthGuard } from "@nestjs/passport";
 import { ParseIntWithDefaultPipe } from "../../pipes/parseIntWithDefaultPipe";
 import { ResponsePostDto } from "./dto/responsePost.dto";
 import { LoggingInterceptor } from "../../interceptors/logging.interceptor";
+import { ResponsePostTitlesDto } from "./dto/ResponsePostTitles.dto";
 
 @ApiTags("Post")
 @Controller("api/post")
@@ -67,6 +68,20 @@ export class PostController {
     } else {
       return await this.postService.getSponsoredPosts(page, limit, userId);
     }
+  }
+
+  @Get("/list-title")
+  @ApiOperation({
+    summary: "[비인가]게시글 제목 리스트",
+    description: "userId에 해당하는 유저 게시글 제목 리스트 조회",
+  })
+  @ApiResponse({ status: 200, type: ResponsePostTitlesDto })
+  async getPostTitles(
+    @Query("page", new ParseIntWithDefaultPipe(1)) page: number,
+    @Query("limit", new ParseIntWithDefaultPipe(10)) limit: number,
+    @Query("userId", ParseIntPipe) userId: number,
+  ): Promise<ResponsePostTitlesDto> {
+    return await this.postService.getPostTitles(page, limit, userId);
   }
 
   @Get(":postId")

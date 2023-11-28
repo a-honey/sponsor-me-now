@@ -4,6 +4,8 @@ import { CreatePostDto } from "./dto/createPost.dto";
 import { plainToInstance } from "class-transformer";
 import { PostDto } from "./dto/post.dto";
 import { deleteRelativeImage } from "../../utils/deleteRelativeImage";
+import { PostTitlesDto } from "./dto/postTitles.dto";
+import { ResponsePostTitlesDto } from "./dto/ResponsePostTitles.dto";
 
 @Injectable()
 export class PostService {
@@ -17,6 +19,22 @@ export class PostService {
       },
     });
     return plainToInstance(PostDto, createdPost);
+  }
+
+  async getPostTitles(page: number, limit: number, userId: number): Promise<ResponsePostTitlesDto> {
+    const posts = await this.prisma.post.findMany({
+      where: { authorId: userId },
+      skip: (page - 1) * limit,
+      take: limit,
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+    const totalCount: number = posts.length;
+    const totalPage: number = Math.ceil(totalCount / limit);
+    const onlyTitles = posts.map((post) => post.title);
+
+    return { posts: plainToInstance(PostTitlesDto, onlyTitles), currentPage: page, totalPage };
   }
 
   async getPostAndIncrementView(postId: number): Promise<PostDto> {
