@@ -39,7 +39,7 @@ model User {
 	buyer   Payment[] @relation("buyer")
 	seller  Payment[] @relation("seller")
 
-	AccountHistoryEntity AccountHistory[]
+	AccountHistory AccountHistory[]
 }
 
 model Payment {

@@ -159,11 +159,11 @@ export class PaymentsEntity {
   @Column({ type: "json", nullable: true })
   cancelReceiptUrls: any;
 
-  @ManyToOne(() => UserEntity, (user) => user.buyerPayments)
+  @ManyToOne(() => UserEntity, (user) => user.buyer)
   @JoinColumn({ name: "buyerId" })
   buyer: UserEntity;
 
-  @ManyToOne(() => UserEntity, (user) => user.sellerPayments)
+  @ManyToOne(() => UserEntity, (user) => user.seller)
   @JoinColumn({ name: "sellerId" })
   seller: UserEntity;
 }
