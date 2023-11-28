@@ -1,5 +1,5 @@
 import useImgChange from '@/hooks/useImgChange';
-import { usePutUserBackground, usePutUserData } from '@/hooks/useMutations';
+import { usePutUserData, usePutUserProfile } from '@/hooks/useMutations';
 import { useLoginStore } from '@/store';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
@@ -10,7 +10,7 @@ const MoreBox = () => {
   const navigator = useNavigate();
 
   const putMutation = usePutUserData({ userId: loginId! });
-  const putImageMutation = usePutUserBackground();
+  const putImageMutation = usePutUserProfile();
 
   const { register, handleSubmit } = useForm<{
     username: string;
@@ -29,7 +29,7 @@ const MoreBox = () => {
 
   const handleClick = (img: File) => {
     const body = new FormData();
-    body.append('profileBackgroundImage', img);
+    body.append('profileImage', img);
     putImageMutation.mutate(body);
   };
 
