@@ -62,7 +62,6 @@ export class UserEntity {
   @Column({ default: 0 })
   account: number;
 
-  // Relationships
   @OneToMany(() => PostEntity, (post) => post.author)
   post: PostEntity[];
 

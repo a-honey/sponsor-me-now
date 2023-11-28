@@ -32,17 +32,6 @@ export class CommentService {
       postId: postId,
       parentId: parentId,
     });
-    // const newComment = await this.prisma.comment.create({
-    //   data: {
-    //     ...createCommentDto,
-    //     authorId: userId,
-    //     postId: postId,
-    //     parentId: parentId,
-    //   },
-    //   include: {
-    //     author: true,
-    //   },
-    // });
     const { author, ...rest } = newComment;
     return { ...plainToInstance(CommentDto, rest), nickname: author.nickname };
   }
@@ -52,18 +41,6 @@ export class CommentService {
     commentId: number,
     updateCommentDto: CreateCommentDto,
   ): Promise<ResponseCommentDto> {
-    // const updatedComment = await this.prisma.comment.update({
-    //   where: {
-    //     id_authorId: {
-    //       id: commentId,
-    //       authorId: userId,
-    //     },
-    //   },
-    //   data: { ...updateCommentDto },
-    //   include: {
-    //     author: true,
-    //   },
-    // });
     await this.commentRepository.update(
       { id: commentId, authorId: userId },
       { ...updateCommentDto },
@@ -78,14 +55,6 @@ export class CommentService {
   }
 
   async deleteComment(userId: number, commentId: number): Promise<CommentDto> {
-    // const deleteComment = await this.prisma.comment.delete({
-    //   where: {
-    //     id_authorId: {
-    //       id: commentId,
-    //       authorId: userId,
-    //     },
-    //   },
-    // });
     const comment = await this.commentRepository.findOne({
       where: { id: commentId, authorId: userId },
     });

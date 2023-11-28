@@ -40,7 +40,6 @@ export class PostEntity {
   @Column({ nullable: true })
   postImg: string;
 
-  // Relationships
   @OneToMany(() => CommentEntity, (comment) => comment.post)
   comment: CommentEntity[];
 

@@ -38,7 +38,6 @@ export class CommentEntity {
   @Column({ nullable: true })
   parentId: number;
 
-  // Relationships
   @ManyToOne(() => UserEntity, (user) => user.comment, { onDelete: "CASCADE" })
   @JoinColumn({ name: "authorId" })
   author: UserEntity;
