@@ -39,15 +39,15 @@ export class CommentEntity {
   parentId: number;
 
   // Relationships
-  @ManyToOne(() => UserEntity, (user) => user.comment)
+  @ManyToOne(() => UserEntity, (user) => user.comment, { onDelete: "CASCADE" })
   @JoinColumn({ name: "authorId" })
   author: UserEntity;
 
-  @ManyToOne(() => PostEntity, (post) => post.comment)
+  @ManyToOne(() => PostEntity, (post) => post.comment, { onDelete: "CASCADE" })
   @JoinColumn({ name: "postId" })
   post: PostEntity;
 
-  @ManyToOne(() => CommentEntity, (comment) => comment.children)
+  @ManyToOne(() => CommentEntity, (comment) => comment.children, { onDelete: "CASCADE" })
   @JoinColumn({ name: "parentId" })
   parent: CommentEntity;
 

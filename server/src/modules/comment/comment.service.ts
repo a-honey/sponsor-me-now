@@ -1,5 +1,5 @@
 import { CreateCommentDto } from "./dto/createComment.dto";
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { PrismaClient } from "@prisma/client";
 import { plainToInstance } from "class-transformer";
 import { CommentDto } from "./dto/comment.dto";
@@ -78,14 +78,21 @@ export class CommentService {
   }
 
   async deleteComment(userId: number, commentId: number): Promise<CommentDto> {
-    const deleteComment = await this.prisma.comment.delete({
-      where: {
-        id_authorId: {
-          id: commentId,
-          authorId: userId,
-        },
-      },
+    // const deleteComment = await this.prisma.comment.delete({
+    //   where: {
+    //     id_authorId: {
+    //       id: commentId,
+    //       authorId: userId,
+    //     },
+    //   },
+    // });
+    const comment = await this.commentRepository.findOne({
+      where: { id: commentId, authorId: userId },
     });
-    return plainToInstance(CommentDto, deleteComment);
+    if (!comment) {
+      throw new NotFoundException("댓글을 찾을 수 없습니다.");
+    }
+    await this.commentRepository.remove(comment);
+    return plainToInstance(CommentDto, comment);
   }
 }
