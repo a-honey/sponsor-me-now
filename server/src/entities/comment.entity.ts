@@ -39,11 +39,11 @@ export class CommentEntity {
   parentId: number;
 
   // Relationships
-  @ManyToOne(() => UserEntity, (user) => user.comments)
+  @ManyToOne(() => UserEntity, (user) => user.comment)
   @JoinColumn({ name: "authorId" })
   author: UserEntity;
 
-  @ManyToOne(() => PostEntity, (post) => post.comments)
+  @ManyToOne(() => PostEntity, (post) => post.comment)
   @JoinColumn({ name: "postId" })
   post: PostEntity;
 

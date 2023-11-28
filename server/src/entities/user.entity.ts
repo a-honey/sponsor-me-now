@@ -2,7 +2,6 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  Unique,
   OneToMany,
   CreateDateColumn,
   UpdateDateColumn,
@@ -14,24 +13,23 @@ import { PaymentsEntity } from "./payments.entity";
 import { AccountHistoryEntity } from "./accountHistory.entity";
 
 @Entity("User")
-@Unique(["nickname", "snsId"])
 export class UserEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   @Column()
   username: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, unique: true })
   nickname: string;
 
   @Column()
   password: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, unique: true })
   snsId: number;
 
   @Column({ nullable: true })
@@ -66,20 +64,20 @@ export class UserEntity {
 
   // Relationships
   @OneToMany(() => PostEntity, (post) => post.author)
-  posts: PostEntity[];
+  post: PostEntity[];
 
   @OneToMany(() => CommentEntity, (comment) => comment.author)
-  comments: CommentEntity[];
+  comment: CommentEntity[];
 
   @OneToMany(() => LikeEntity, (like) => like.user)
-  likes: LikeEntity[];
+  like: LikeEntity[];
 
   @OneToMany(() => PaymentsEntity, (Payments) => Payments.buyer)
-  buyerPayments: PaymentsEntity[];
+  buyer: PaymentsEntity[];
 
   @OneToMany(() => PaymentsEntity, (Payments) => Payments.seller)
-  sellerPayments: PaymentsEntity[];
+  seller: PaymentsEntity[];
 
   @OneToMany(() => AccountHistoryEntity, (accountHistory) => accountHistory.user)
-  accountHistories: AccountHistoryEntity[];
+  accountHistory: AccountHistoryEntity[];
 }

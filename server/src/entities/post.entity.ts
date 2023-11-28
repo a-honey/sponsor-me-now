@@ -42,12 +42,12 @@ export class PostEntity {
 
   // Relationships
   @OneToMany(() => CommentEntity, (comment) => comment.post)
-  comments: CommentEntity[];
+  comment: CommentEntity[];
 
   @OneToMany(() => LikeEntity, (like) => like.post)
-  likes: LikeEntity[];
+  like: LikeEntity[];
 
-  @ManyToOne(() => UserEntity, (user) => user.posts)
+  @ManyToOne(() => UserEntity, (user) => user.post)
   @JoinColumn({ name: "authorId" })
   author: UserEntity;
 }

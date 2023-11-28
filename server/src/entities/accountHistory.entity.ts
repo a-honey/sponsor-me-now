@@ -43,7 +43,7 @@ export class AccountHistoryEntity {
   date: Date;
 
   // Relationships
-  @ManyToOne(() => UserEntity, (user) => user.accountHistories)
+  @ManyToOne(() => UserEntity, (user) => user.accountHistory)
   @JoinColumn({ name: "userId" })
   user: UserEntity;
 }

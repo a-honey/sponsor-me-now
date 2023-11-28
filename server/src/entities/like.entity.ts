@@ -15,11 +15,11 @@ export class LikeEntity {
   userId: number;
 
   // Relationships
-  @ManyToOne(() => PostEntity, (post) => post.likes)
+  @ManyToOne(() => PostEntity, (post) => post.like)
   @JoinColumn({ name: "postId" })
   post: PostEntity;
 
-  @ManyToOne(() => UserEntity, (user) => user.likes)
+  @ManyToOne(() => UserEntity, (user) => user.like)
   @JoinColumn({ name: "userId" })
   user: UserEntity;
 }
