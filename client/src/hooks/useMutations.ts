@@ -117,7 +117,7 @@ export const usePostLike = () => {
     mutationFn: postPostLike,
     onSuccess: (res) => {
       queryClient.invalidateQueries({
-        queryKey: ['postId', res.id.toString()],
+        queryKey: ['postId', res.postId.toString()],
       });
     },
   });
