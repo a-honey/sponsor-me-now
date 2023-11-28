@@ -67,20 +67,24 @@ export class UserController {
   @Get()
   @ApiOperation({
     summary: "단일 유저 상세 조회",
-    description: "userId를 쿼리로 받을 시 해당 유저 조회, 없을 시 로그인한 사용자 조회",
+    description: "쿼리로 받은 userId에 해당하는 유저 조회",
   })
-  @ApiBody({ description: "유저 상세정보 조회. 쿼리 값이 있을 시 해당 유저 조회" })
   @ApiResponse({ status: 200, type: ResponseUserDto })
-  @UseGuards(AuthGuard("jwt"))
   async getUser(
-    @Request() req: RequestWithUser,
     @Query("userId", new ParseIntWithDefaultUserPipe()) userId: number,
   ): Promise<UserDto> {
-    const reqUserId: number = Number(req.user.id);
-    if (userId !== 0) {
-      return await this.userService.findUserById(userId);
-    }
-    return await this.userService.findUserById(reqUserId);
+    return await this.userService.findUserById(userId);
+  }
+
+  @Get("/my")
+  @ApiOperation({
+    summary: "내 정보 조회",
+  })
+  @ApiResponse({ status: 200, type: ResponseUserDto })
+  @UseGuards(AuthGuard("jwt"))
+  async getMyInfo(@Request() req: RequestWithUser): Promise<UserDto> {
+    const userId: number = Number(req.user.id);
+    return await this.userService.findUserById(userId);
   }
 
   @Get("/list")
