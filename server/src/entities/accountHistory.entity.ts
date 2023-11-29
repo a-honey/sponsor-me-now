@@ -5,6 +5,7 @@ import {
   ManyToOne,
   JoinColumn,
   CreateDateColumn,
+  DeleteDateColumn,
 } from "typeorm";
 import { UserEntity } from "./user.entity";
 
@@ -45,4 +46,7 @@ export class AccountHistoryEntity {
   @ManyToOne(() => UserEntity, (user) => user.accountHistory)
   @JoinColumn({ name: "userId" })
   user: UserEntity;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 }
