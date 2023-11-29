@@ -100,7 +100,9 @@ export class PaymentsController {
   ): Promise<ResponsePaymentsDto> {
     const userId: number = Number(req.user.id);
 
-    const payments = await this.paymentsService.getPaymentsDetail(cancelData.paymentsId);
+    const payments: PaymentsDto = await this.paymentsService.getPaymentsDetail(
+      cancelData.paymentsId,
+    );
 
     const { access_token } = await getIamPortToken();
 

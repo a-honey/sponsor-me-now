@@ -25,7 +25,7 @@ export class CommentService {
     parentId: number,
     createCommentDto: CreateCommentDto,
   ): Promise<ResponseCommentDto> {
-    const user = await this.userRepository.findOne({ where: { id: userId } });
+    const user: UserEntity = await this.userRepository.findOne({ where: { id: userId } });
     const newComment = await this.commentRepository.save({
       ...createCommentDto,
       author: user,
@@ -46,7 +46,7 @@ export class CommentService {
       { ...updateCommentDto },
     );
 
-    const updatedComment = await this.commentRepository.findOne({
+    const updatedComment: CommentEntity = await this.commentRepository.findOne({
       where: { id: commentId, authorId: userId },
       relations: ["author"],
     });
@@ -55,13 +55,13 @@ export class CommentService {
   }
 
   async deleteComment(userId: number, commentId: number): Promise<CommentDto> {
-    const comment = await this.commentRepository.findOne({
+    const comment: CommentEntity = await this.commentRepository.findOne({
       where: { id: commentId, authorId: userId },
     });
     if (!comment) {
       throw new NotFoundException("댓글을 찾을 수 없습니다.");
     }
-    await this.commentRepository.remove(comment);
+    await this.commentRepository.delete(comment);
     return plainToInstance(CommentDto, comment);
   }
 }

@@ -11,6 +11,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { PostEntity } from "../../entities/post.entity";
 import { CommentEntity } from "../../entities/comment.entity";
 import { UserEntity } from "../../entities/user.entity";
+import { PaymentsEntity } from "../../entities/payments.entity";
 
 @Module({
   imports: [
@@ -18,7 +19,7 @@ import { UserEntity } from "../../entities/user.entity";
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: "24h" },
     }),
-    TypeOrmModule.forFeature([PostEntity, CommentEntity, UserEntity]),
+    TypeOrmModule.forFeature([PostEntity, CommentEntity, UserEntity, PaymentsEntity]),
   ],
   controllers: [CommentController],
   providers: [AuthService, CommentService, PostService, UserService, LocalStrategy, PrismaClient],

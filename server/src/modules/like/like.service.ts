@@ -15,7 +15,7 @@ export class LikeService {
   ) {}
 
   async toggleLike(userId: number, postId: number): Promise<LikeDto> {
-    let like = await this.likeRepository.findOne({
+    let like: LikeEntity = await this.likeRepository.findOne({
       where: {
         postId: postId,
         userId: userId,
@@ -23,7 +23,7 @@ export class LikeService {
     });
 
     if (like) {
-      await this.likeRepository.remove(like);
+      await this.likeRepository.delete(like);
     } else {
       like = this.likeRepository.create({ postId: postId, userId: userId });
       await this.likeRepository.save(like);
