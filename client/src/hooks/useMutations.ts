@@ -102,11 +102,11 @@ export const useDeleteUser = () => {
   });
 };
 
-export const usePostPost = () => {
+export const usePostPost = ({ fn }: { fn: () => void }) => {
   return useMutation({
     mutationFn: postPost,
-    onSuccess: (res) => {
-      console.log(res);
+    onSuccess: () => {
+      fn();
     },
   });
 };

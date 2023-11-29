@@ -9,7 +9,7 @@ const PostWrite = ({
   toggleIsWritingPost: () => void;
 }) => {
   const { register, handleSubmit } = useForm<PostBodyType>();
-  const postMutation = usePostPost();
+  const postMutation = usePostPost({ fn: toggleIsWritingPost });
 
   const onSubmit = (data: PostBodyType) => {
     postMutation.mutate(data);
