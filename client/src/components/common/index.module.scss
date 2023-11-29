@@ -16,9 +16,19 @@
   flex-direction: column;
   align-items: center;
   border: 1px solid #ededed;
+  border-radius: 5px;
   padding: 10px;
   gap: 10px;
-  img {
-    width: 70px;
+  .imgContainer {
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    img {
+      width: 120%;
+    }
   }
 }

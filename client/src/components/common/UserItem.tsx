@@ -22,7 +22,9 @@ const UserItem = ({
         navigator(`/user/${id}`);
       }}
     >
-      <UserImg src={profileImg} />
+      <div className={styles.imgContainer}>
+        <UserImg src={profileImg} />
+      </div>
       <div>{username}</div>
     </div>
   );
