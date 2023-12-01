@@ -1,5 +1,5 @@
 import { CreateCommentDto } from "./dto/createComment.dto";
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { PrismaClient } from "@prisma/client";
 import { plainToInstance } from "class-transformer";
 import { CommentDto } from "./dto/comment.dto";
@@ -25,24 +25,13 @@ export class CommentService {
     parentId: number,
     createCommentDto: CreateCommentDto,
   ): Promise<ResponseCommentDto> {
-    const user = await this.userRepository.findOne({ where: { id: userId } });
+    const user: UserEntity = await this.userRepository.findOne({ where: { id: userId } });
     const newComment = await this.commentRepository.save({
       ...createCommentDto,
       author: user,
       postId: postId,
       parentId: parentId,
     });
-    // const newComment = await this.prisma.comment.create({
-    //   data: {
-    //     ...createCommentDto,
-    //     authorId: userId,
-    //     postId: postId,
-    //     parentId: parentId,
-    //   },
-    //   include: {
-    //     author: true,
-    //   },
-    // });
     const { author, ...rest } = newComment;
     return { ...plainToInstance(CommentDto, rest), nickname: author.nickname };
   }
@@ -52,24 +41,12 @@ export class CommentService {
     commentId: number,
     updateCommentDto: CreateCommentDto,
   ): Promise<ResponseCommentDto> {
-    // const updatedComment = await this.prisma.comment.update({
-    //   where: {
-    //     id_authorId: {
-    //       id: commentId,
-    //       authorId: userId,
-    //     },
-    //   },
-    //   data: { ...updateCommentDto },
-    //   include: {
-    //     author: true,
-    //   },
-    // });
     await this.commentRepository.update(
       { id: commentId, authorId: userId },
       { ...updateCommentDto },
     );
 
-    const updatedComment = await this.commentRepository.findOne({
+    const updatedComment: CommentEntity = await this.commentRepository.findOne({
       where: { id: commentId, authorId: userId },
       relations: ["author"],
     });
@@ -78,14 +55,13 @@ export class CommentService {
   }
 
   async deleteComment(userId: number, commentId: number): Promise<CommentDto> {
-    const deleteComment = await this.prisma.comment.delete({
-      where: {
-        id_authorId: {
-          id: commentId,
-          authorId: userId,
-        },
-      },
+    const comment: CommentEntity = await this.commentRepository.findOne({
+      where: { id: commentId, authorId: userId },
     });
-    return plainToInstance(CommentDto, deleteComment);
+    if (!comment) {
+      throw new NotFoundException("댓글을 찾을 수 없습니다.");
+    }
+    await this.commentRepository.delete(comment);
+    return plainToInstance(CommentDto, comment);
   }
 }

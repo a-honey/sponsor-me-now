@@ -40,14 +40,13 @@ export class PostEntity {
   @Column({ nullable: true })
   postImg: string;
 
-  // Relationships
   @OneToMany(() => CommentEntity, (comment) => comment.post)
   comment: CommentEntity[];
 
   @OneToMany(() => LikeEntity, (like) => like.post)
   like: LikeEntity[];
 
-  @ManyToOne(() => UserEntity, (user) => user.post)
+  @ManyToOne(() => UserEntity, (user) => user.post, { onDelete: "CASCADE" })
   @JoinColumn({ name: "authorId" })
   author: UserEntity;
 }

@@ -55,5 +55,5 @@ export class PostDto {
   @ApiProperty()
   @IsOptional()
   @IsObject()
-  comments?: { content: string; nickname: string }[];
+  comments?: { nickname: string; content: string }[];
 }

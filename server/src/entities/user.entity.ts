@@ -5,6 +5,7 @@ import {
   OneToMany,
   CreateDateColumn,
   UpdateDateColumn,
+  DeleteDateColumn,
 } from "typeorm";
 import { PostEntity } from "./post.entity";
 import { CommentEntity } from "./comment.entity";
@@ -62,7 +63,6 @@ export class UserEntity {
   @Column({ default: 0 })
   account: number;
 
-  // Relationships
   @OneToMany(() => PostEntity, (post) => post.author)
   post: PostEntity[];
 
@@ -80,4 +80,7 @@ export class UserEntity {
 
   @OneToMany(() => AccountHistoryEntity, (accountHistory) => accountHistory.user)
   accountHistory: AccountHistoryEntity[];
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 }

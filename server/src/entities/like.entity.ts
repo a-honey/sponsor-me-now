@@ -14,12 +14,11 @@ export class LikeEntity {
   @Column({ nullable: true })
   userId: number;
 
-  // Relationships
-  @ManyToOne(() => PostEntity, (post) => post.like)
+  @ManyToOne(() => PostEntity, (post) => post.like, { onDelete: "CASCADE" })
   @JoinColumn({ name: "postId" })
   post: PostEntity;
 
-  @ManyToOne(() => UserEntity, (user) => user.like)
+  @ManyToOne(() => UserEntity, (user) => user.like, { onDelete: "CASCADE" })
   @JoinColumn({ name: "userId" })
   user: UserEntity;
 }

@@ -1,4 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from "typeorm";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
+  DeleteDateColumn,
+} from "typeorm";
 import { UserEntity } from "./user.entity";
 
 @Entity("Payment")
@@ -166,4 +173,7 @@ export class PaymentsEntity {
   @ManyToOne(() => UserEntity, (user) => user.seller)
   @JoinColumn({ name: "sellerId" })
   seller: UserEntity;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 }

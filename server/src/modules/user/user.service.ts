@@ -3,21 +3,35 @@ import { plainToInstance } from "class-transformer";
 import { UserDto } from "./dto/user.dto";
 import { UpdateUserDataDto } from "./dto/updateUserData.dto";
 import { ValidateUserDto } from "../auth/dto/validateUser.dto";
-import { PrismaClient, User } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import path from "path";
 import fs from "fs";
 import { GetUserListDto } from "./dto/getUserList.dto";
 import { ResponseUserListDto } from "./dto/responseUserList.dto";
 import { UpdatedUserDto } from "./dto/updatedUser.dto";
+import { InjectRepository } from "@nestjs/typeorm";
+import { UserEntity } from "../../entities/user.entity";
+import { Repository } from "typeorm";
+import { PaymentsEntity } from "../../entities/payments.entity";
+import { PostEntity } from "../../entities/post.entity";
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaClient) {}
+  constructor(
+    private prisma: PrismaClient,
+
+    @InjectRepository(UserEntity)
+    private userRepository: Repository<UserEntity>,
+
+    @InjectRepository(PaymentsEntity)
+    private paymentsRepository: Repository<PaymentsEntity>,
+
+    @InjectRepository(PostEntity)
+    private postRepository: Repository<PostEntity>,
+  ) {}
 
   async getUserByEmail(email: string): Promise<ValidateUserDto | null> {
-    const user = await this.prisma.user.findUnique({
-      where: { email },
-    });
+    const user = await this.userRepository.findOne({ where: { email } });
     if (!user) {
       throw new NotFoundException("UserEntity not found");
     }
@@ -25,84 +39,61 @@ export class UserService {
   }
 
   async editUser(userId: number, updateUserDto: UpdateUserDataDto): Promise<UpdatedUserDto> {
-    const updatedUser = await this.prisma.user.update({
-      where: {
-        id: userId,
-      },
-      data: {
-        ...updateUserDto,
-      },
+    let user = await this.userRepository.findOne({
+      where: { id: userId },
     });
+    if (!user) throw new NotFoundException("User not found");
+
+    user = this.userRepository.merge(user, updateUserDto);
+
+    const updatedUser = await this.userRepository.save(user);
+
     return plainToInstance(UpdatedUserDto, updatedUser);
   }
 
   async findUserById(userId: number): Promise<UserDto> {
-    const user = await this.prisma.user.findUnique({
+    const user = await this.userRepository.findOne({
       where: { id: userId },
     });
     return plainToInstance(UserDto, user);
   }
 
   async getUsers(page: number, limit: number): Promise<ResponseUserListDto> {
-    const users = await this.prisma.user.findMany({
+    const [users, totalCount] = await this.userRepository.findAndCount({
       skip: (page - 1) * limit,
       take: limit,
-      orderBy: {
-        createdAt: "desc",
+      order: {
+        createdAt: "DESC",
       },
     });
-    const totalCount: number = users.length;
     const totalPage: number = Math.ceil(totalCount / limit);
 
     return { users: plainToInstance(GetUserListDto, users), totalPage, currentPage: page };
   }
 
   async getRandomUsers(userId: number): Promise<GetUserListDto[]> {
-    const totalUsers: number = await this.prisma.user.count({
-      where: {
-        AND: [
-          {
-            id: {
-              not: userId,
-            },
-          },
-        ],
-        isSponsor: false,
-      },
-    });
-
-    const randomIndex: number = Math.floor(Math.random() * Math.max(0, totalUsers - 7));
-
-    const users: User[] = await this.prisma.user.findMany({
-      where: {
-        AND: [
-          {
-            id: {
-              not: userId,
-            },
-          },
-        ],
-        isSponsor: false,
-      },
-      skip: randomIndex,
-      take: 7,
-    });
-
+    const users = await this.userRepository
+      .createQueryBuilder("UserEntity")
+      .where("UserEntity.id != :id", { id: userId })
+      .andWhere("user.isSponsor = :isSponsor", { isSponsor: false })
+      .orderBy("RANDOM()")
+      .limit(7)
+      .getMany();
     return users.map((user) => plainToInstance(GetUserListDto, user));
   }
 
   async getSponsoredUsers(page: number, limit: number): Promise<ResponseUserListDto> {
-    const users = await this.prisma.user.findMany({
+    const [users, totalCount] = await this.userRepository.findAndCount({
       skip: (page - 1) * limit,
       take: limit,
       where: {
         isSponsor: false,
       },
-      orderBy: {
-        createdAt: "desc",
+      order: {
+        createdAt: "DESC",
       },
     });
-    const totalCount = users.length;
+
     const totalPage: number = Math.ceil(totalCount / limit);
     return { users: plainToInstance(GetUserListDto, users), totalPage, currentPage: page };
   }
@@ -112,20 +103,17 @@ export class UserService {
     limit: number,
     userId: number,
   ): Promise<ResponseUserListDto> {
-    const sponsorships = await this.prisma.payment.findMany({
+    const [sponsorships, totalCount] = await this.paymentsRepository.findAndCount({
       skip: (page - 1) * limit,
       take: limit,
       where: {
         buyerId: userId,
       },
-      select: {
-        seller: true,
-      },
+      relations: ["seller"],
     });
 
     const users = Array.from(new Set(sponsorships.map((sponsorship) => sponsorship.seller)));
 
-    const totalCount = users.length;
     const totalPage: number = Math.ceil(totalCount / limit);
 
     const userList: UserDto[] = users.map((user) => plainToInstance(UserDto, user));
@@ -137,20 +125,17 @@ export class UserService {
     limit: number,
     userId: number,
   ): Promise<ResponseUserListDto> {
-    const sponsorships = await this.prisma.payment.findMany({
+    const [sponsorships, totalCount] = await this.paymentsRepository.findAndCount({
       skip: (page - 1) * limit,
       take: limit,
       where: {
         sellerId: userId,
       },
-      select: {
-        buyer: true,
-      },
+      relations: ["buyer"],
     });
 
     const users = Array.from(new Set(sponsorships.map((sponsorship) => sponsorship.buyer)));
 
-    const totalCount = users.length;
     const totalPage: number = Math.ceil(totalCount / limit);
 
     const userList: GetUserListDto[] = users.map((user) => plainToInstance(GetUserListDto, user));
@@ -160,7 +145,7 @@ export class UserService {
   async deleteUser(userId: number): Promise<UserDto> {
     const serverUrl: string = process.env.SERVER_URL;
 
-    const posts = await this.prisma.post.findMany({
+    const posts = await this.postRepository.find({
       where: { authorId: userId },
     });
 
@@ -173,12 +158,7 @@ export class UserService {
         }
       }
     }
-
-    const deletedUser = await this.prisma.user.delete({
-      where: {
-        id: userId,
-      },
-    });
+    const deletedUser = await this.userRepository.findOne({ where: { id: userId } });
 
     if (deletedUser.backgroundImg) {
       const relativeImagePath: string = deletedUser.backgroundImg
@@ -199,6 +179,8 @@ export class UserService {
         fs.unlinkSync(absoluteImagePath);
       }
     }
+
+    await this.paymentsRepository.softDelete({ id: userId });
 
     return plainToInstance(UserDto, deletedUser);
   }

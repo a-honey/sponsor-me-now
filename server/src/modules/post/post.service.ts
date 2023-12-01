@@ -6,69 +6,80 @@ import { PostDto } from "./dto/post.dto";
 import { deleteRelativeImage } from "../../utils/deleteRelativeImage";
 import { PostTitlesDto } from "./dto/postTitles.dto";
 import { ResponsePostTitlesDto } from "./dto/ResponsePostTitles.dto";
+import { PostEntity } from "../../entities/post.entity";
+import { InjectRepository } from "@nestjs/typeorm";
+import { In, Repository } from "typeorm";
+import { CommentEntity } from "../../entities/comment.entity";
+import { UserEntity } from "../../entities/user.entity";
+import { PaymentsEntity } from "../../entities/payments.entity";
 
 @Injectable()
 export class PostService {
-  constructor(private prisma: PrismaClient) {}
+  constructor(
+    private prisma: PrismaClient,
+
+    @InjectRepository(PostEntity)
+    private postRepository: Repository<PostEntity>,
+
+    @InjectRepository(CommentEntity)
+    private commentRepository: Repository<CommentEntity>,
+
+    @InjectRepository(UserEntity)
+    private userRepository: Repository<UserEntity>,
+
+    @InjectRepository(PaymentsEntity)
+    private paymentsRepository: Repository<PaymentsEntity>,
+  ) {}
 
   async createPost(userId: number, createPostDto: CreatePostDto): Promise<PostDto> {
-    const createdPost = await this.prisma.post.create({
-      data: {
-        ...createPostDto,
-        authorId: userId,
-      },
+    const post: PostEntity = this.postRepository.create({
+      ...createPostDto,
+      authorId: userId,
     });
+
+    const createdPost: PostEntity = await this.postRepository.save(post);
+
     return plainToInstance(PostDto, createdPost);
   }
 
   async getPostTitles(page: number, limit: number, userId: number): Promise<ResponsePostTitlesDto> {
-    const posts = await this.prisma.post.findMany({
+    const [posts, totalCount] = await this.postRepository.findAndCount({
       where: { authorId: userId },
       skip: (page - 1) * limit,
       take: limit,
-      orderBy: {
-        createdAt: "desc",
+      order: {
+        createdAt: "DESC",
       },
     });
-    const totalCount: number = posts.length;
+
     const totalPage: number = Math.ceil(totalCount / limit);
-    const onlyTitles = posts.map((post) => post.title);
+    const onlyTitles: string[] = posts.map((post) => post.title);
 
     return { posts: plainToInstance(PostTitlesDto, onlyTitles), currentPage: page, totalPage };
   }
 
   async getPostAndIncrementView(postId: number): Promise<PostDto> {
-    const post = await this.prisma.post.update({
+    let post = await this.postRepository.findOne({
       where: { id: postId },
-      data: {
-        viewCount: {
-          increment: 1,
-        },
-      },
-      include: {
-        _count: {
-          select: { like: true },
-        },
-        comment: {
-          include: {
-            author: true,
-          },
-        },
-      },
+      relations: ["comment", "comment.author"],
+    });
+    if (!post) throw new NotFoundException("게시글을 찾을 수 없습니다.");
+
+    post.viewCount += 1;
+    post = await this.postRepository.save(post);
+
+    const commentList = await this.commentRepository.find({
+      where: { postId: postId },
+      relations: ["author"],
     });
 
-    if (!post) throw new NotFoundException(`Post with ID ${postId} not found`);
-
     const postDto: PostDto = plainToInstance(PostDto, post);
-    postDto.likeCount = post._count.like;
-    delete postDto._count;
+    postDto.likeCount = post.like.length;
 
-    postDto.comments = post.comment.map((comment) => ({
+    postDto.comments = commentList.map((comment) => ({
       content: comment.content,
       nickname: comment.author.nickname,
     }));
-    delete postDto.comments;
-
     return postDto;
   }
 
@@ -76,15 +87,14 @@ export class PostService {
     page: number,
     limit: number,
   ): Promise<{ posts: PostDto[]; totalPage: number; currentPage: number }> {
-    const posts = await this.prisma.post.findMany({
+    const [posts, totalCount] = await this.postRepository.findAndCount({
       skip: (page - 1) * limit,
       take: limit,
-      orderBy: {
-        createdAt: "desc",
+      order: {
+        createdAt: "DESC",
       },
     });
 
-    const totalCount: number = posts.length;
     const totalPage: number = Math.ceil(totalCount / limit);
     return { posts: plainToInstance(PostDto, posts), totalPage, currentPage: page };
   }
@@ -94,27 +104,25 @@ export class PostService {
     limit: number,
     userId: number,
   ): Promise<{ posts: PostDto[]; totalPage: number; currentPage: number }> {
-    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+    const user = await this.userRepository.findOne({ where: { id: userId } });
     let sponsoredIds: number[];
 
     if (user.isSponsor) {
-      const sponsorRelations = await this.prisma.payment.findMany({ where: { buyerId: userId } });
+      const sponsorRelations = await this.paymentsRepository.find({ where: { buyerId: userId } });
       sponsoredIds = sponsorRelations.map((relation: { sellerId: number }) => relation.sellerId);
     }
 
-    const posts = await this.prisma.post.findMany({
+    const [posts, totalCount] = await this.postRepository.findAndCount({
       where: {
-        authorId: {
-          in: sponsoredIds,
-        },
+        authorId: In(sponsoredIds),
       },
       skip: (page - 1) * limit,
       take: limit,
-      orderBy: {
-        createdAt: "desc",
+      order: {
+        createdAt: "DESC",
       },
     });
-    const totalCount = posts.length;
+
     const totalPage: number = Math.ceil(totalCount / limit);
 
     return { posts: plainToInstance(PostDto, posts), totalPage, currentPage: page };
@@ -135,15 +143,20 @@ export class PostService {
     postId: number,
     updatedPostData: CreatePostDto,
   ): Promise<PostDto> {
-    const updatedPost = await this.prisma.post.update({
+    let post: PostEntity = await this.postRepository.findOne({
       where: {
-        id_authorId: {
-          id: postId,
-          authorId: userId,
-        },
+        id: postId,
+        authorId: userId,
       },
-      data: { ...updatedPostData },
     });
+
+    if (!post) {
+      throw new NotFoundException(`해당 게시글을 찾을 수 없습니다.`);
+    }
+
+    post = this.postRepository.merge(post, updatedPostData);
+    const updatedPost: PostEntity = await this.postRepository.save(post);
+
     return plainToInstance(PostDto, updatedPost);
   }
 }
