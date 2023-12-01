@@ -28,7 +28,7 @@ import { AccountHistoryEntity } from "./entities/accountHistory.entity";
     TypeOrmModule.forRoot({
       type: "postgres",
       host: process.env.DB_HOST,
-      port: 5432,
+      port: Number(process.env.DB_PORT),
       username: process.env.DB_USER_NAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
@@ -41,6 +41,9 @@ import { AccountHistoryEntity } from "./entities/accountHistory.entity";
         AccountHistoryEntity,
       ],
       synchronize: true,
+      ssl: {
+        rejectUnauthorized: false,
+      },
     }),
     ServeStaticModule.forRoot({ rootPath: join(__dirname, "..", "public") }),
   ],
