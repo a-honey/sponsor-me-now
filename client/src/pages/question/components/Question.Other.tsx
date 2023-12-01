@@ -53,6 +53,7 @@ const Other = () => {
       />
       <label>문의 내용</label>
       <textarea
+        rows={6}
         placeholder="자세한 사항을 입력해주세요"
         {...register('message')}
       />
