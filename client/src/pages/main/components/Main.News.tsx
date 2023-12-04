@@ -10,10 +10,12 @@ const News = () => {
   });
 
   return (
-    <div className={styles.container}>
-      {postData?.posts?.map((item) => (
-        <PostItem data={item} />
-      ))}
+    <div className={styles.containerContainer}>
+      <div className={styles.container}>
+        {postData?.posts?.map((item) => (
+          <PostItem data={item} />
+        ))}
+      </div>
     </div>
   );
 };
