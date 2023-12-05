@@ -47,7 +47,7 @@ export class UploadService {
           Bucket: process.env.AWS_BUCKET_NAME,
           Key: user.profileImg.split(`${process.env.AWS_BUCKET_NAME}/`)[1],
         };
-        await s3.deleteObject(params).promise();
+        await s3.deleteObject(params);
       } catch (error) {
         throw new InternalServerErrorException("Failed to delete image from S3");
       }
@@ -82,7 +82,7 @@ export class UploadService {
           Bucket: process.env.AWS_BUCKET_NAME,
           Key: user.profileImg.split(`${process.env.AWS_BUCKET_NAME}/`)[1],
         };
-        await s3.deleteObject(params).promise();
+        await s3.deleteObject(params);
       } catch (error) {
         throw new InternalServerErrorException("Failed to delete image from S3");
       }
@@ -113,7 +113,7 @@ export class UploadService {
           Bucket: process.env.AWS_BUCKET_NAME,
           Key: post.postImg.split(`${process.env.AWS_BUCKET_NAME}/`)[1],
         };
-        await s3.deleteObject(params).promise();
+        await s3.deleteObject(params);
       } catch (error) {
         throw new InternalServerErrorException("Failed to delete image from S3");
       }
