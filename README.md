@@ -25,9 +25,11 @@
 자신의 페이지를 홍보하기 위해 공유하기 기능을 통해 손쉽게 SNS 프로필 등에 자신의 후원 페이지를 설정할 수 있습니다. 이를 통해 더 많은 후원자들을 유입시킬 수 있습니다.
 
 ## **프로젝트 기간**
+
 - 2023.11.08 ~
 
 ## **프로젝트 WIKI**
+
 - 협업규칙
 - ERD
 - Swagger
@@ -36,7 +38,9 @@
 [바로가기](https://github.com/a-honey/sponsor-me-now/wiki)
 
 ## **기술 스택 및 도구**
+
 ### 프론트엔드
+
 ![React](https://img.shields.io/badge/React-222222?style=for-the-badge&logo=react&logoColor=ffffff)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=ffffff)
 ![React Query](https://img.shields.io/badge/React_Query-FF4154?style=for-the-badge&logo=react-query&logoColor=ffffff)
@@ -78,7 +82,9 @@
 
 ## **프로젝트 팀원 및 역할 분담**
 
-|  이름  |    역할    |
-| :----: | :--------: |
-| 조대찬 |  백엔드/ 배포 |
-| 정아현 | 프론트엔드 |
+|  이름  |     역할     |
+| :----: | :----------: |
+| 조대찬 | 백엔드/ 배포 |
+| 정아현 |  프론트엔드  |
+
+test
