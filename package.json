@@ -8,19 +8,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "echo '뿅' && lint-staged",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+      "pre-commit": "echo '뿅'"
     }
-  },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "eslint --fix",
-      "git add"
-    ],
-    "*.{json,md}": [
-      "prettier --write",
-      "git add"
-    ]
   },
   "keywords": [],
   "author": "",
