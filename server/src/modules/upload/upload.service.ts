@@ -9,6 +9,7 @@ import { UserEntity } from "../../entities/user.entity";
 import { Repository } from "typeorm";
 import { PostEntity } from "../../entities/post.entity";
 import { s3 } from "./multer.module";
+import { DeleteObjectCommand } from "@aws-sdk/client-s3";
 
 @Injectable()
 export class UploadService {
@@ -47,7 +48,8 @@ export class UploadService {
           Bucket: process.env.AWS_BUCKET_NAME,
           Key: user.profileImg.split(`${process.env.AWS_BUCKET_NAME}/`)[1],
         };
-        await s3.deleteObject(params).promise();
+        const deleteObjectCommand = new DeleteObjectCommand(params);
+        await s3.send(deleteObjectCommand);
       } catch (error) {
         throw new InternalServerErrorException("Failed to delete image from S3");
       }
@@ -82,7 +84,8 @@ export class UploadService {
           Bucket: process.env.AWS_BUCKET_NAME,
           Key: user.profileImg.split(`${process.env.AWS_BUCKET_NAME}/`)[1],
         };
-        await s3.deleteObject(params).promise();
+        const deleteObjectCommand = new DeleteObjectCommand(params);
+        await s3.send(deleteObjectCommand);
       } catch (error) {
         throw new InternalServerErrorException("Failed to delete image from S3");
       }
@@ -113,7 +116,8 @@ export class UploadService {
           Bucket: process.env.AWS_BUCKET_NAME,
           Key: post.postImg.split(`${process.env.AWS_BUCKET_NAME}/`)[1],
         };
-        await s3.deleteObject(params).promise();
+        const deleteObjectCommand = new DeleteObjectCommand(params);
+        await s3.send(deleteObjectCommand);
       } catch (error) {
         throw new InternalServerErrorException("Failed to delete image from S3");
       }

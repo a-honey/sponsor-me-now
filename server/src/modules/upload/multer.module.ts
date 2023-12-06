@@ -2,11 +2,15 @@ import { MulterModule } from "@nestjs/platform-express";
 import { v4 as uuidv4 } from "uuid";
 import * as path from "path";
 import { diskStorage } from "multer";
-import aws from "aws-sdk";
+import { S3Client } from "@aws-sdk/client-s3";
 import multerS3 from "multer-s3";
 
-export const s3 = new aws.S3({
-  region: process.env.AWS_REGION,
+export const s3 = new S3Client({
+  region: "your-region",
+  credentials: {
+    accessKeyId: "your-access-key",
+    secretAccessKey: "your-secret-access-key",
+  },
 });
 
 export const MulterConfigModule = MulterModule.register({
