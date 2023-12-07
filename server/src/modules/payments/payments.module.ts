@@ -8,10 +8,10 @@ import { PaymentsService } from "./payments.service";
 import { AuthService } from "../auth/auth.service";
 import { UserService } from "../user/user.service";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { PaymentsEntity } from "../../entitys/payments.entity";
-import { UserEntity } from "../../entitys/user.entity";
-import { AccountHistoryEntity } from "../../entitys/accountHistory.entity";
-import { PostEntity } from "../../entitys/post.entity";
+import { Payments } from "../../entitys/payments";
+import { User } from "../../entitys/user";
+import { AccountHistory } from "../../entitys/accountHistory";
+import { Post } from "../../entitys/post";
 
 @Module({
   imports: [
@@ -20,7 +20,7 @@ import { PostEntity } from "../../entitys/post.entity";
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: "24h" },
     }),
-    TypeOrmModule.forFeature([UserEntity, PaymentsEntity, AccountHistoryEntity, PostEntity]),
+    TypeOrmModule.forFeature([User, Payments, AccountHistory, Post]),
   ],
   controllers: [PaymentsController],
   providers: [PaymentsService, AuthService, UserService, JwtStrategy],

@@ -1,24 +1,21 @@
 import { Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
-import { PrismaClient } from "@prisma/client";
-import * as path from "path";
-import * as fs from "fs";
 import { createUploadUrl } from "../../utils/createUploadUrl";
 import { deleteRelativeImage } from "../../utils/deleteRelativeImage";
 import { InjectRepository } from "@nestjs/typeorm";
-import { UserEntity } from "../../entitys/user.entity";
+import { User } from "../../entitys/user";
 import { Repository } from "typeorm";
-import { PostEntity } from "../../entitys/post.entity";
+import { Post } from "../../entitys/post";
 import { s3 } from "./multer.module";
 import { DeleteObjectCommand } from "@aws-sdk/client-s3";
 
 @Injectable()
 export class UploadService {
   constructor(
-    @InjectRepository(UserEntity)
-    private userRepository: Repository<UserEntity>,
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
 
-    @InjectRepository(PostEntity)
-    private postRepository: Repository<PostEntity>,
+    @InjectRepository(Post)
+    private postRepository: Repository<Post>,
   ) {}
 
   async deleteImage(target: "user" | "post", targetId: number, isProduction: boolean) {

@@ -7,22 +7,22 @@ import { UserDto } from "../user/dto/user.dto";
 import { PaymentsListDto } from "./dto/paymentsList.dto";
 import { PaymentsDto } from "./dto/payments.dto";
 import { InjectEntityManager, InjectRepository } from "@nestjs/typeorm";
-import { UserEntity } from "../../entitys/user.entity";
-import { PaymentsEntity } from "src/entitys/payments.entity";
-import { AccountHistoryEntity, TransactionType } from "../../entitys/accountHistory.entity";
+import { User } from "../../entitys/user";
+import { Payments } from "src/entitys/payments";
+import { AccountHistory, TransactionType } from "../../entitys/accountHistory";
 import { EntityManager, Repository } from "typeorm";
 
 @Injectable()
 export class PaymentsService {
   constructor(
-    @InjectRepository(UserEntity)
-    private userRepository: Repository<UserEntity>,
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
 
-    @InjectRepository(PaymentsEntity)
-    private paymentRepository: Repository<PaymentsEntity>,
+    @InjectRepository(Payments)
+    private paymentRepository: Repository<Payments>,
 
-    @InjectRepository(AccountHistoryEntity)
-    private accountHistoryRepository: Repository<AccountHistoryEntity>,
+    @InjectRepository(AccountHistory)
+    private accountHistoryRepository: Repository<AccountHistory>,
 
     @InjectEntityManager()
     private manager: EntityManager,
@@ -34,13 +34,13 @@ export class PaymentsService {
     paymentsData: ImpResponseDataDto,
   ): Promise<ResponsePaymentsDto> {
     const result = await this.manager.transaction(async (transactionalEntityManager) => {
-      const user = await transactionalEntityManager.findOne(UserEntity, {
+      const user = await transactionalEntityManager.findOne(User, {
         where: { id: userId },
       });
       user.account += paymentsData.amount;
-      const updatedUser = await transactionalEntityManager.save(UserEntity, user);
+      const updatedUser = await transactionalEntityManager.save(User, user);
 
-      const payment = transactionalEntityManager.create(PaymentsEntity, {
+      const payment = transactionalEntityManager.create(Payments, {
         buyerId: userId,
         sellerEmail: data.sellerEmail,
         sellerName: data.sellerName,
@@ -91,9 +91,9 @@ export class PaymentsService {
         vbankName: paymentsData.vbank_name,
         vbankNum: paymentsData.vbank_num,
       });
-      const createdPayments = await transactionalEntityManager.save(PaymentsEntity, payment);
+      const createdPayments = await transactionalEntityManager.save(Payments, payment);
 
-      const accountHistory = transactionalEntityManager.create(AccountHistoryEntity, {
+      const accountHistory = transactionalEntityManager.create(AccountHistory, {
         withdrawnAmount: paymentsData.amount,
         remainingAmount: updatedUser.account,
         bank: paymentsData.bank_name,
@@ -101,7 +101,7 @@ export class PaymentsService {
         transactionType: TransactionType.DEPOSIT,
         user: user,
       });
-      await transactionalEntityManager.save(AccountHistoryEntity, accountHistory);
+      await transactionalEntityManager.save(AccountHistory, accountHistory);
 
       return createdPayments;
     });
@@ -131,7 +131,7 @@ export class PaymentsService {
       cardNumber: true,
     };
 
-    const [payments, totalPayments]: [PaymentsEntity[], number] =
+    const [payments, totalPayments]: [Payments[], number] =
       await this.paymentRepository.findAndCount({
         where: queryCondition,
         skip: (page - 1) * limit,
@@ -166,14 +166,14 @@ export class PaymentsService {
     id: number,
   ): Promise<ResponsePaymentsDto> {
     const result = await this.manager.transaction(async (transactionalEntityManager) => {
-      const user = await transactionalEntityManager.findOne(UserEntity, {
+      const user = await transactionalEntityManager.findOne(User, {
         where: { id: userId },
       });
       user.account -= updatePaymentsData.cancel_amount;
 
-      const updatedUser = await transactionalEntityManager.save(UserEntity, user);
+      const updatedUser = await transactionalEntityManager.save(User, user);
 
-      const payment = await transactionalEntityManager.findOne(PaymentsEntity, {
+      const payment = await transactionalEntityManager.findOne(Payments, {
         where: { id: id },
       });
       payment.cancelAmount = updatePaymentsData.cancel_amount;
@@ -185,7 +185,7 @@ export class PaymentsService {
 
       const updatedPayment = await transactionalEntityManager.save(payment);
 
-      const accountHistory = transactionalEntityManager.create(AccountHistoryEntity, {
+      const accountHistory = transactionalEntityManager.create(AccountHistory, {
         withdrawnAmount: updatePaymentsData.cancel_amount,
         remainingAmount: updatedUser.account,
         bank: updatePaymentsData.bank_name,
@@ -193,7 +193,7 @@ export class PaymentsService {
         transactionType: TransactionType.WITHDRAW,
         user: user,
       });
-      await transactionalEntityManager.save(AccountHistoryEntity, accountHistory);
+      await transactionalEntityManager.save(AccountHistory, accountHistory);
 
       return updatedPayment;
     });

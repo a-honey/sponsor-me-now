@@ -6,10 +6,10 @@ import {
   JoinColumn,
   DeleteDateColumn,
 } from "typeorm";
-import { UserEntity } from "./user.entity";
+import { User } from "./user";
 
 @Entity("Payment")
-export class PaymentsEntity {
+export class Payments {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -166,13 +166,13 @@ export class PaymentsEntity {
   @Column({ type: "json", nullable: true })
   cancelReceiptUrls: any;
 
-  @ManyToOne(() => UserEntity, (user) => user.buyer)
+  @ManyToOne(() => User, (user) => user.buyer)
   @JoinColumn({ name: "buyerId" })
-  buyer: UserEntity;
+  buyer: User;
 
-  @ManyToOne(() => UserEntity, (user) => user.seller)
+  @ManyToOne(() => User, (user) => user.seller)
   @JoinColumn({ name: "sellerId" })
-  seller: UserEntity;
+  seller: User;
 
   @DeleteDateColumn()
   deletedAt: Date;

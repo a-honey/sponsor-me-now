@@ -9,13 +9,13 @@ import {
   OneToMany,
   Unique,
 } from "typeorm";
-import { UserEntity } from "./user.entity";
-import { CommentEntity } from "./comment.entity";
-import { LikeEntity } from "./like.entity";
+import { User } from "./user";
+import { Comment } from "./comment";
+import { Like } from "./like";
 
 @Entity("Post")
 @Unique(["id", "authorId"])
-export class PostEntity {
+export class Post {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -40,13 +40,13 @@ export class PostEntity {
   @Column({ nullable: true })
   postImg: string;
 
-  @OneToMany(() => CommentEntity, (comment) => comment.post)
-  comment: CommentEntity[];
+  @OneToMany(() => Comment, (comment) => comment.post)
+  comment: Comment[];
 
-  @OneToMany(() => LikeEntity, (like) => like.post)
-  like: LikeEntity[];
+  @OneToMany(() => Like, (like) => like.post)
+  like: Like[];
 
-  @ManyToOne(() => UserEntity, (user) => user.post, { onDelete: "CASCADE" })
+  @ManyToOne(() => User, (user) => user.post, { onDelete: "CASCADE" })
   @JoinColumn({ name: "authorId" })
-  author: UserEntity;
+  author: User;
 }

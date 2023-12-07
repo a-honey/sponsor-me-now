@@ -1,10 +1,10 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, Unique } from "typeorm";
-import { UserEntity } from "./user.entity";
-import { PostEntity } from "./post.entity";
+import { User } from "./user";
+import { Post } from "./post";
 
 @Entity("Like")
 @Unique(["postId", "userId"])
-export class LikeEntity {
+export class Like {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -14,11 +14,11 @@ export class LikeEntity {
   @Column({ nullable: true })
   userId: number;
 
-  @ManyToOne(() => PostEntity, (post) => post.like, { onDelete: "CASCADE" })
+  @ManyToOne(() => Post, (post) => post.like, { onDelete: "CASCADE" })
   @JoinColumn({ name: "postId" })
-  post: PostEntity;
+  post: Post;
 
-  @ManyToOne(() => UserEntity, (user) => user.like, { onDelete: "CASCADE" })
+  @ManyToOne(() => User, (user) => user.like, { onDelete: "CASCADE" })
   @JoinColumn({ name: "userId" })
-  user: UserEntity;
+  user: User;
 }

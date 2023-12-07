@@ -6,36 +6,36 @@ import { PostDto } from "./dto/post.dto";
 import { deleteRelativeImage } from "../../utils/deleteRelativeImage";
 import { PostTitlesDto } from "./dto/postTitles.dto";
 import { ResponsePostTitlesDto } from "./dto/ResponsePostTitles.dto";
-import { PostEntity } from "../../entitys/post.entity";
+import { Post } from "../../entitys/post";
 import { InjectRepository } from "@nestjs/typeorm";
 import { In, Repository } from "typeorm";
-import { CommentEntity } from "../../entitys/comment.entity";
-import { UserEntity } from "../../entitys/user.entity";
-import { PaymentsEntity } from "../../entitys/payments.entity";
+import { Comment } from "../../entitys/comment";
+import { User } from "../../entitys/user";
+import { Payments } from "../../entitys/payments";
 
 @Injectable()
 export class PostService {
   constructor(
-    @InjectRepository(PostEntity)
-    private postRepository: Repository<PostEntity>,
+    @InjectRepository(Post)
+    private postRepository: Repository<Post>,
 
-    @InjectRepository(CommentEntity)
-    private commentRepository: Repository<CommentEntity>,
+    @InjectRepository(Comment)
+    private commentRepository: Repository<Comment>,
 
-    @InjectRepository(UserEntity)
-    private userRepository: Repository<UserEntity>,
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
 
-    @InjectRepository(PaymentsEntity)
-    private paymentsRepository: Repository<PaymentsEntity>,
+    @InjectRepository(Payments)
+    private paymentsRepository: Repository<Payments>,
   ) {}
 
   async createPost(userId: number, createPostDto: CreatePostDto): Promise<PostDto> {
-    const post: PostEntity = this.postRepository.create({
+    const post: Post = this.postRepository.create({
       ...createPostDto,
       authorId: userId,
     });
 
-    const createdPost: PostEntity = await this.postRepository.save(post);
+    const createdPost: Post = await this.postRepository.save(post);
 
     return plainToInstance(PostDto, createdPost);
   }
@@ -140,7 +140,7 @@ export class PostService {
     postId: number,
     updatedPostData: CreatePostDto,
   ): Promise<PostDto> {
-    let post: PostEntity = await this.postRepository.findOne({
+    let post: Post = await this.postRepository.findOne({
       where: {
         id: postId,
         authorId: userId,
@@ -152,7 +152,7 @@ export class PostService {
     }
 
     post = this.postRepository.merge(post, updatedPostData);
-    const updatedPost: PostEntity = await this.postRepository.save(post);
+    const updatedPost: Post = await this.postRepository.save(post);
 
     return plainToInstance(PostDto, updatedPost);
   }

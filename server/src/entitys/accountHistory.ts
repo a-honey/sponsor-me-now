@@ -7,7 +7,7 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
 } from "typeorm";
-import { UserEntity } from "./user.entity";
+import { User } from "./user";
 
 export enum TransactionType {
   DEPOSIT = "DEPOSIT",
@@ -15,7 +15,7 @@ export enum TransactionType {
 }
 
 @Entity("AccountHistory")
-export class AccountHistoryEntity {
+export class AccountHistory {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -43,9 +43,9 @@ export class AccountHistoryEntity {
   @CreateDateColumn()
   date: Date;
 
-  @ManyToOne(() => UserEntity, (user) => user.accountHistory)
+  @ManyToOne(() => User, (user) => user.accountHistory)
   @JoinColumn({ name: "userId" })
-  user: UserEntity;
+  user: User;
 
   @DeleteDateColumn()
   deletedAt: Date;

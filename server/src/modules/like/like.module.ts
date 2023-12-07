@@ -9,11 +9,11 @@ import { AuthService } from "../auth/auth.service";
 import { UserService } from "../user/user.service";
 import { PostService } from "../post/post.service";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { PostEntity } from "../../entitys/post.entity";
-import { LikeEntity } from "../../entitys/like.entity";
-import { UserEntity } from "../../entitys/user.entity";
-import { CommentEntity } from "../../entitys/comment.entity";
-import { PaymentsEntity } from "../../entitys/payments.entity";
+import { Post } from "../../entitys/post";
+import { Like } from "../../entitys/like";
+import { User } from "../../entitys/user";
+import { Comment } from "../../entitys/comment";
+import { Payments } from "../../entitys/payments";
 
 @Module({
   imports: [
@@ -22,7 +22,7 @@ import { PaymentsEntity } from "../../entitys/payments.entity";
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: "24h" },
     }),
-    TypeOrmModule.forFeature([PostEntity, LikeEntity, UserEntity, CommentEntity, PaymentsEntity]),
+    TypeOrmModule.forFeature([Post, Like, User, Comment, Payments]),
   ],
   controllers: [LikeController],
   providers: [PostService, AuthService, UserService, LikeService, JwtStrategy],

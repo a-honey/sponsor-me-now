@@ -7,10 +7,10 @@ import { CommentController } from "./comment.controller";
 import { CommentService } from "./comment.service";
 import { PostService } from "../post/post.service";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { PostEntity } from "../../entitys/post.entity";
-import { CommentEntity } from "../../entitys/comment.entity";
-import { UserEntity } from "../../entitys/user.entity";
-import { PaymentsEntity } from "../../entitys/payments.entity";
+import { Post } from "../../entitys/post";
+import { Comment } from "../../entitys/comment";
+import { User } from "../../entitys/user";
+import { Payments } from "../../entitys/payments";
 
 @Module({
   imports: [
@@ -18,7 +18,7 @@ import { PaymentsEntity } from "../../entitys/payments.entity";
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: "24h" },
     }),
-    TypeOrmModule.forFeature([PostEntity, CommentEntity, UserEntity, PaymentsEntity]),
+    TypeOrmModule.forFeature([Post, Comment, User, Payments]),
   ],
   controllers: [CommentController],
   providers: [AuthService, CommentService, PostService, UserService, LocalStrategy],

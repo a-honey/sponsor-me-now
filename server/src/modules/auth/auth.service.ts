@@ -8,7 +8,7 @@ import * as bcrypt from "bcrypt";
 import { LoginUserDto } from "./dto/loginUser.dto";
 import { ValidateUserDto } from "./dto/validateUser.dto";
 import { Repository } from "typeorm";
-import { UserEntity } from "../../entitys/user.entity";
+import { User } from "../../entitys/user";
 import { InjectRepository } from "@nestjs/typeorm";
 
 @Injectable()
@@ -17,8 +17,8 @@ export class AuthService {
     private userService: UserService,
     private jwtService: JwtService,
 
-    @InjectRepository(UserEntity)
-    private userRepository: Repository<UserEntity>,
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
   ) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<AuthDto> {

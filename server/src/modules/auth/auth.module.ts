@@ -5,9 +5,9 @@ import { LocalStrategy } from "../../passport/local.strategy";
 import { UserService } from "../user/user.service";
 import { JwtModule } from "@nestjs/jwt";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { UserEntity } from "../../entitys/user.entity";
-import { PaymentsEntity } from "../../entitys/payments.entity";
-import { PostEntity } from "../../entitys/post.entity";
+import { User } from "../../entitys/user";
+import { Payments } from "../../entitys/payments";
+import { Post } from "../../entitys/post";
 
 @Module({
   imports: [
@@ -15,7 +15,7 @@ import { PostEntity } from "../../entitys/post.entity";
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: "24h" },
     }),
-    TypeOrmModule.forFeature([UserEntity, PaymentsEntity, PostEntity]),
+    TypeOrmModule.forFeature([User, Payments, Post]),
   ],
   controllers: [AuthController],
   providers: [AuthService, UserService, LocalStrategy],

@@ -2,18 +2,18 @@ import { Injectable } from "@nestjs/common";
 import { plainToInstance } from "class-transformer";
 import { LikeDto } from "./dto/like.dto";
 import { InjectRepository } from "@nestjs/typeorm";
-import { LikeEntity } from "src/entitys/like.entity";
+import { Like } from "src/entitys/like";
 import { Repository } from "typeorm";
 
 @Injectable()
 export class LikeService {
   constructor(
-    @InjectRepository(LikeEntity)
-    private likeRepository: Repository<LikeEntity>,
+    @InjectRepository(Like)
+    private likeRepository: Repository<Like>,
   ) {}
 
   async toggleLike(userId: number, postId: number): Promise<LikeDto> {
-    let like: LikeEntity = await this.likeRepository.findOne({
+    let like: Like = await this.likeRepository.findOne({
       where: {
         postId: postId,
         userId: userId,

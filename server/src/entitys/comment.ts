@@ -10,13 +10,13 @@ import {
   Unique,
   Index,
 } from "typeorm";
-import { UserEntity } from "./user.entity";
-import { PostEntity } from "./post.entity";
+import { User } from "./user";
+import { Post } from "./post";
 
 @Entity("Comment")
 @Unique(["id", "authorId"])
 @Index("parentId_index", ["parentId"])
-export class CommentEntity {
+export class Comment {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -38,18 +38,18 @@ export class CommentEntity {
   @Column({ nullable: true })
   parentId: number;
 
-  @ManyToOne(() => UserEntity, (user) => user.comment, { onDelete: "CASCADE" })
+  @ManyToOne(() => User, (user) => user.comment, { onDelete: "CASCADE" })
   @JoinColumn({ name: "authorId" })
-  author: UserEntity;
+  author: User;
 
-  @ManyToOne(() => PostEntity, (post) => post.comment, { onDelete: "CASCADE" })
+  @ManyToOne(() => Post, (post) => post.comment, { onDelete: "CASCADE" })
   @JoinColumn({ name: "postId" })
-  post: PostEntity;
+  post: Post;
 
-  @ManyToOne(() => CommentEntity, (comment) => comment.children, { onDelete: "CASCADE" })
+  @ManyToOne(() => Comment, (comment) => comment.children, { onDelete: "CASCADE" })
   @JoinColumn({ name: "parentId" })
-  parent: CommentEntity;
+  parent: Comment;
 
-  @OneToMany(() => CommentEntity, (comment) => comment.parent)
-  children: CommentEntity[];
+  @OneToMany(() => Comment, (comment) => comment.parent)
+  children: Comment[];
 }

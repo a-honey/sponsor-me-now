@@ -4,18 +4,18 @@ import { plainToInstance } from "class-transformer";
 import { CommentDto } from "./dto/comment.dto";
 import { ResponseCommentDto } from "./dto/responseComment.dto";
 import { Repository } from "typeorm";
-import { UserEntity } from "../../entitys/user.entity";
-import { CommentEntity } from "../../entitys/comment.entity";
+import { User } from "../../entitys/user";
+import { Comment } from "../../entitys/comment";
 import { InjectRepository } from "@nestjs/typeorm";
 
 @Injectable()
 export class CommentService {
   constructor(
-    @InjectRepository(CommentEntity)
-    private commentRepository: Repository<CommentEntity>,
+    @InjectRepository(Comment)
+    private commentRepository: Repository<Comment>,
 
-    @InjectRepository(UserEntity)
-    private userRepository: Repository<UserEntity>,
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
   ) {}
 
   async createComment(
@@ -24,7 +24,7 @@ export class CommentService {
     parentId: number,
     createCommentDto: CreateCommentDto,
   ): Promise<ResponseCommentDto> {
-    const user: UserEntity = await this.userRepository.findOne({ where: { id: userId } });
+    const user: User = await this.userRepository.findOne({ where: { id: userId } });
     const newComment = await this.commentRepository.save({
       ...createCommentDto,
       author: user,
@@ -45,7 +45,7 @@ export class CommentService {
       { ...updateCommentDto },
     );
 
-    const updatedComment: CommentEntity = await this.commentRepository.findOne({
+    const updatedComment: Comment = await this.commentRepository.findOne({
       where: { id: commentId, authorId: userId },
       relations: ["author"],
     });
@@ -54,7 +54,7 @@ export class CommentService {
   }
 
   async deleteComment(userId: number, commentId: number): Promise<CommentDto> {
-    const comment: CommentEntity = await this.commentRepository.findOne({
+    const comment: Comment = await this.commentRepository.findOne({
       where: { id: commentId, authorId: userId },
     });
     if (!comment) {

@@ -4,11 +4,11 @@ import { UploadService } from "./upload.service";
 import { UploadController } from "./upload.controller";
 import { PrismaClient } from "@prisma/client";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { UserEntity } from "../../entitys/user.entity";
-import { PostEntity } from "../../entitys/post.entity";
+import { User } from "../../entitys/user";
+import { Post } from "../../entitys/post";
 
 @Module({
-  imports: [MulterConfigModule, TypeOrmModule.forFeature([UserEntity, PostEntity])],
+  imports: [MulterConfigModule, TypeOrmModule.forFeature([User, Post])],
   providers: [UploadService, PrismaClient],
   controllers: [UploadController],
 })

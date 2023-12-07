@@ -9,22 +9,22 @@ import { GetUserListDto } from "./dto/getUserList.dto";
 import { ResponseUserListDto } from "./dto/responseUserList.dto";
 import { UpdatedUserDto } from "./dto/updatedUser.dto";
 import { InjectRepository } from "@nestjs/typeorm";
-import { UserEntity } from "../../entitys/user.entity";
+import { User } from "../../entitys/user";
 import { Repository } from "typeorm";
-import { PaymentsEntity } from "../../entitys/payments.entity";
-import { PostEntity } from "../../entitys/post.entity";
+import { Payments } from "../../entitys/payments";
+import { Post } from "../../entitys/post";
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(UserEntity)
-    private userRepository: Repository<UserEntity>,
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
 
-    @InjectRepository(PaymentsEntity)
-    private paymentsRepository: Repository<PaymentsEntity>,
+    @InjectRepository(Payments)
+    private paymentsRepository: Repository<Payments>,
 
-    @InjectRepository(PostEntity)
-    private postRepository: Repository<PostEntity>,
+    @InjectRepository(Post)
+    private postRepository: Repository<Post>,
   ) {}
 
   async getUserByEmail(email: string): Promise<ValidateUserDto | null> {

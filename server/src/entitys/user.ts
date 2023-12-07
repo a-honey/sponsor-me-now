@@ -7,14 +7,14 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
 } from "typeorm";
-import { PostEntity } from "./post.entity";
-import { CommentEntity } from "./comment.entity";
-import { LikeEntity } from "./like.entity";
-import { PaymentsEntity } from "./payments.entity";
-import { AccountHistoryEntity } from "./accountHistory.entity";
+import { Post } from "./post";
+import { Comment } from "./comment";
+import { Like } from "./like";
+import { Payments } from "./payments";
+import { AccountHistory } from "./accountHistory";
 
 @Entity("User")
-export class UserEntity {
+export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -63,23 +63,23 @@ export class UserEntity {
   @Column({ default: 0 })
   account: number;
 
-  @OneToMany(() => PostEntity, (post) => post.author)
-  post: PostEntity[];
+  @OneToMany(() => Post, (post) => post.author)
+  post: Post[];
 
-  @OneToMany(() => CommentEntity, (comment) => comment.author)
-  comment: CommentEntity[];
+  @OneToMany(() => Comment, (comment) => comment.author)
+  comment: Comment[];
 
-  @OneToMany(() => LikeEntity, (like) => like.user)
-  like: LikeEntity[];
+  @OneToMany(() => Like, (like) => like.user)
+  like: Like[];
 
-  @OneToMany(() => PaymentsEntity, (Payments) => Payments.buyer)
-  buyer: PaymentsEntity[];
+  @OneToMany(() => Payments, (Payments) => Payments.buyer)
+  buyer: Payments[];
 
-  @OneToMany(() => PaymentsEntity, (Payments) => Payments.seller)
-  seller: PaymentsEntity[];
+  @OneToMany(() => Payments, (Payments) => Payments.seller)
+  seller: Payments[];
 
-  @OneToMany(() => AccountHistoryEntity, (accountHistory) => accountHistory.user)
-  accountHistory: AccountHistoryEntity[];
+  @OneToMany(() => AccountHistory, (accountHistory) => accountHistory.user)
+  accountHistory: AccountHistory[];
 
   @DeleteDateColumn()
   deletedAt: Date;
