@@ -2,18 +2,17 @@ import { Module } from "@nestjs/common";
 import { PassportModule } from "@nestjs/passport";
 import { JwtModule } from "@nestjs/jwt";
 import * as process from "process";
-import { PrismaClient } from "@prisma/client";
 import { JwtStrategy } from "../../passport/jwt.strategy";
 import { PostController } from "./post.controller";
 import { PostService } from "./post.service";
 import { AuthService } from "../auth/auth.service";
 import { UserService } from "../user/user.service";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { PostEntity } from "../../entities/post.entity";
-import { UserEntity } from "../../entities/user.entity";
-import { CommentEntity } from "../../entities/comment.entity";
-import { LikeEntity } from "../../entities/like.entity";
-import { PaymentsEntity } from "../../entities/payments.entity";
+import { PostEntity } from "../../entitys/post.entity";
+import { UserEntity } from "../../entitys/user.entity";
+import { CommentEntity } from "../../entitys/comment.entity";
+import { LikeEntity } from "../../entitys/like.entity";
+import { PaymentsEntity } from "../../entitys/payments.entity";
 
 @Module({
   imports: [
@@ -32,7 +31,7 @@ import { PaymentsEntity } from "../../entities/payments.entity";
     ]),
   ],
   controllers: [PostController],
-  providers: [PostService, AuthService, UserService, PrismaClient, JwtStrategy],
+  providers: [PostService, AuthService, UserService, JwtStrategy],
   exports: [PostService],
 })
 export class PostModule {}

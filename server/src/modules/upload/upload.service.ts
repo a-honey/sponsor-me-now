@@ -1,21 +1,19 @@
 import { Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
 import { PrismaClient } from "@prisma/client";
-// import * as path from "path";
-// import * as fs from "fs";
-// import { createUploadUrl } from "../../utils/createUploadUrl";
-// import { deleteRelativeImage } from "../../utils/deleteRelativeImage";
+import * as path from "path";
+import * as fs from "fs";
+import { createUploadUrl } from "../../utils/createUploadUrl";
+import { deleteRelativeImage } from "../../utils/deleteRelativeImage";
 import { InjectRepository } from "@nestjs/typeorm";
-import { UserEntity } from "../../entities/user.entity";
+import { UserEntity } from "../../entitys/user.entity";
 import { Repository } from "typeorm";
-import { PostEntity } from "../../entities/post.entity";
+import { PostEntity } from "../../entitys/post.entity";
 import { s3 } from "./multer.module";
 import { DeleteObjectCommand } from "@aws-sdk/client-s3";
 
 @Injectable()
 export class UploadService {
   constructor(
-    private prisma: PrismaClient,
-
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
 
@@ -23,76 +21,79 @@ export class UploadService {
     private postRepository: Repository<PostEntity>,
   ) {}
 
+  async deleteImage(target: "user" | "post", targetId: number, isProduction: boolean) {
+    const repository = target === "user" ? this.userRepository : this.postRepository;
+    const entity = await repository.findOne({ where: { id: targetId } });
+
+    if (!entity) throw new NotFoundException(`${target}를 찾을 수 없습니다.`);
+
+    const imageField = target === "user" ? "profileImg" : "postImg";
+    const image = entity[imageField];
+
+    if (image) {
+      if (isProduction) {
+        try {
+          const params = {
+            Bucket: process.env.AWS_BUCKET_NAME,
+            Key: image.split(`${process.env.AWS_BUCKET_NAME}/`)[1],
+          };
+          const deleteObjectCommand = new DeleteObjectCommand(params);
+          await s3.send(deleteObjectCommand);
+        } catch (error) {
+          throw new InternalServerErrorException("Failed to delete image from S3");
+        }
+      } else {
+        await deleteRelativeImage(image);
+      }
+    }
+    return;
+  }
+
+  async updateImage(
+    target: "user" | "post",
+    targetId: number,
+    imageUrl: string,
+    field: "profileImg" | "backgroundImg" | "postImg",
+    isProduction: boolean,
+  ): Promise<string> {
+    const repository = target === "user" ? this.userRepository : this.postRepository;
+
+    let finalUrl: string;
+
+    if (isProduction) {
+      finalUrl = imageUrl;
+    } else {
+      finalUrl = await createUploadUrl(imageUrl);
+    }
+
+    await repository.update({ id: targetId }, { [field]: finalUrl });
+
+    return finalUrl;
+  }
+
   async uploadProfileImage(userId: number, imageUrl: string): Promise<string> {
     const user = await this.userRepository.findOne({
       where: { id: userId },
     });
-    if (!user) throw new NotFoundException("유저를 찾을 수 없습니다.");
 
-    // if (user.profileImg) {
-    //   const serverUrl: string = process.env.SERVER_URL;
-    //   const relativeImagePath: string = user.profileImg.replace(serverUrl, "").replace(/^\//, "");
-    //   const absoluteImagePath: string = path.join(__dirname, "..", "public", relativeImagePath);
-    //   if (fs.existsSync(absoluteImagePath)) {
-    //     fs.unlinkSync(absoluteImagePath);
-    //   }
-    // }
-    //
-    // const finalUrl: string = await createUploadUrl(imageUrl);
-    // await this.userRepository.update({ id: userId }, { profileImg: finalUrl });
-    //
-    // return finalUrl;
-    if (user.profileImg) {
-      try {
-        const params = {
-          Bucket: process.env.AWS_BUCKET_NAME,
-          Key: user.profileImg.split(`${process.env.AWS_BUCKET_NAME}/`)[1],
-        };
-        const deleteObjectCommand = new DeleteObjectCommand(params);
-        await s3.send(deleteObjectCommand);
-      } catch (error) {
-        throw new InternalServerErrorException("Failed to delete image from S3");
-      }
-    }
-    await this.userRepository.update({ id: userId }, { profileImg: imageUrl });
+    if (!user) throw new NotFoundException("Failed to find user");
 
-    return imageUrl;
+    const isProduction = process.env.NODE_ENV === "production";
+
+    if (user.profileImg) await this.deleteImage("user", userId, isProduction);
+    return this.updateImage("user", userId, imageUrl, "profileImg", isProduction);
   }
 
   async uploadBackgroundImage(userId: number, imageUrl: string): Promise<string> {
     const user = await this.userRepository.findOne({
       where: { id: userId },
     });
-    if (!user) throw new NotFoundException("유저를 찾을 수 없습니다.");
+    if (!user) throw new NotFoundException("Failed to find user");
 
-    // if (user.backgroundImg) {
-    //   const serverUrl: string = process.env.SERVER_URL;
-    //   const relativeImagePath: string = user.backgroundImg
-    //     .replace(serverUrl, "")
-    //     .replace(/^\//, "");
-    //   const absoluteImagePath: string = path.join(__dirname, "..", "public", relativeImagePath);
-    //   if (fs.existsSync(absoluteImagePath)) {
-    //     fs.unlinkSync(absoluteImagePath);
-    //   }
-    // }
-    // const finalUrl: string = await createUploadUrl(imageUrl);
-    // await this.userRepository.update({ id: userId }, { backgroundImg: finalUrl });
-    // return finalUrl;
-    if (user.backgroundImg) {
-      try {
-        const params = {
-          Bucket: process.env.AWS_BUCKET_NAME,
-          Key: user.profileImg.split(`${process.env.AWS_BUCKET_NAME}/`)[1],
-        };
-        const deleteObjectCommand = new DeleteObjectCommand(params);
-        await s3.send(deleteObjectCommand);
-      } catch (error) {
-        throw new InternalServerErrorException("Failed to delete image from S3");
-      }
-    }
-    await this.userRepository.update({ id: userId }, { profileImg: imageUrl });
+    const isProduction = process.env.NODE_ENV === "production";
 
-    return imageUrl;
+    if (user.backgroundImg) await this.deleteImage("user", userId, isProduction);
+    return this.updateImage("user", userId, imageUrl, "backgroundImg", isProduction);
   }
 
   async uploadPostImage(postId: number, imageUrl: string): Promise<string> {
@@ -101,29 +102,11 @@ export class UploadService {
         id: postId,
       },
     });
-    if (!post) throw new NotFoundException("게시글을 찾을 수 없습니다.");
+    if (!post) throw new NotFoundException("Failed to find post");
 
-    // if (post.postImg) await deleteRelativeImage(post);
-    //
-    // const finalUrl: string = await createUploadUrl(imageUrl);
-    //
-    // await this.postRepository.update({ id: postId }, { postImg: finalUrl });
-    //
-    // return finalUrl;
-    if (post.postImg) {
-      try {
-        const params = {
-          Bucket: process.env.AWS_BUCKET_NAME,
-          Key: post.postImg.split(`${process.env.AWS_BUCKET_NAME}/`)[1],
-        };
-        const deleteObjectCommand = new DeleteObjectCommand(params);
-        await s3.send(deleteObjectCommand);
-      } catch (error) {
-        throw new InternalServerErrorException("Failed to delete image from S3");
-      }
-    }
-    await this.userRepository.update({ id: postId }, { profileImg: imageUrl });
+    const isProduction = process.env.NODE_ENV === "production";
 
-    return imageUrl;
+    if (post.postImg) await this.deleteImage("post", postId, isProduction);
+    return this.updateImage("post", postId, imageUrl, "postImg", isProduction);
   }
 }

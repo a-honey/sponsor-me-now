@@ -6,11 +6,10 @@ import { PassportModule } from "@nestjs/passport";
 import { JwtModule } from "@nestjs/jwt";
 import { JwtStrategy } from "../../passport/jwt.strategy";
 import { AuthService } from "../auth/auth.service";
-import { PrismaClient } from "@prisma/client";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { UserEntity } from "../../entities/user.entity";
-import { PaymentsEntity } from "../../entities/payments.entity";
-import { PostEntity } from "../../entities/post.entity";
+import { UserEntity } from "../../entitys/user.entity";
+import { PaymentsEntity } from "../../entitys/payments.entity";
+import { PostEntity } from "../../entitys/post.entity";
 
 @Module({
   imports: [
@@ -22,7 +21,7 @@ import { PostEntity } from "../../entities/post.entity";
     TypeOrmModule.forFeature([UserEntity, PostEntity, PaymentsEntity]),
   ],
   controllers: [UserController],
-  providers: [UserService, AuthService, PrismaClient, JwtStrategy],
+  providers: [UserService, AuthService, JwtStrategy],
   exports: [UserService],
 })
 export class UserModule {}

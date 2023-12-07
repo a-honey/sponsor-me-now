@@ -1,5 +1,4 @@
 import { Injectable } from "@nestjs/common";
-import { PrismaClient } from "@prisma/client";
 import { ImpUidDto } from "./dto/impUid.dto";
 import { ImpResponseDataDto } from "./dto/impResponseData.dto";
 import { ResponsePaymentsDto } from "./dto/responsePayments.dto";
@@ -8,16 +7,14 @@ import { UserDto } from "../user/dto/user.dto";
 import { PaymentsListDto } from "./dto/paymentsList.dto";
 import { PaymentsDto } from "./dto/payments.dto";
 import { InjectEntityManager, InjectRepository } from "@nestjs/typeorm";
-import { UserEntity } from "../../entities/user.entity";
-import { PaymentsEntity } from "src/entities/payments.entity";
-import { AccountHistoryEntity, TransactionType } from "../../entities/accountHistory.entity";
+import { UserEntity } from "../../entitys/user.entity";
+import { PaymentsEntity } from "src/entitys/payments.entity";
+import { AccountHistoryEntity, TransactionType } from "../../entitys/accountHistory.entity";
 import { EntityManager, Repository } from "typeorm";
 
 @Injectable()
 export class PaymentsService {
   constructor(
-    private prisma: PrismaClient,
-
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
 
@@ -117,7 +114,7 @@ export class PaymentsService {
     page: number,
     limit: number,
   ): Promise<{ payments: PaymentsListDto[]; totalPages: number; currentPage: number }> {
-    const user: UserDto = await this.prisma.user.findUnique({ where: { id: userId } });
+    const user = await this.userRepository.findOne({ where: { id: userId } });
 
     const queryCondition = user.isSponsor ? { buyerId: userId } : { sellerId: userId };
     const selectOption = {
@@ -134,14 +131,13 @@ export class PaymentsService {
       cardNumber: true,
     };
 
-    const payments: PaymentsListDto[] = await this.prisma.payment.findMany({
-      where: queryCondition,
-      skip: (page - 1) * limit,
-      take: limit,
-      select: selectOption,
-    });
-
-    const totalPayments: number = await this.prisma.payment.count({ where: queryCondition });
+    const [payments, totalPayments]: [PaymentsEntity[], number] =
+      await this.paymentRepository.findAndCount({
+        where: queryCondition,
+        skip: (page - 1) * limit,
+        take: limit,
+        select: selectOption,
+      });
 
     const totalPages: number = Math.ceil(totalPayments / limit);
 
@@ -157,7 +153,7 @@ export class PaymentsService {
   }
 
   async getPaymentsDetail(paymentsId: number): Promise<PaymentsDto> {
-    const paymentsDetail = await this.prisma.payment.findUnique({
+    const paymentsDetail = await this.paymentRepository.findOne({
       where: { id: paymentsId },
     });
 
@@ -169,43 +165,38 @@ export class PaymentsService {
     updatePaymentsData: ImpResponseDataDto,
     id: number,
   ): Promise<ResponsePaymentsDto> {
-    const result = await this.prisma.$transaction(async (prisma) => {
-      const updatedUser = await this.prisma.user.update({
+    const result = await this.manager.transaction(async (transactionalEntityManager) => {
+      const user = await transactionalEntityManager.findOne(UserEntity, {
         where: { id: userId },
-        data: {
-          account: {
-            decrement: updatePaymentsData.cancel_amount,
-          },
-        },
       });
+      user.account -= updatePaymentsData.cancel_amount;
 
-      const updatePayments = await this.prisma.payment.update({
+      const updatedUser = await transactionalEntityManager.save(UserEntity, user);
+
+      const payment = await transactionalEntityManager.findOne(PaymentsEntity, {
         where: { id: id },
-        data: {
-          cancelAmount: updatePaymentsData.cancel_amount,
-          cancelReason: updatePaymentsData.cancel_reason,
-          cancelledAt: updatePaymentsData.cancelled_at,
-          status: updatePaymentsData.status,
-          cancelHistories: updatePaymentsData.cancel_history,
-          cancelReceiptUrls: updatePaymentsData.cancel_receipt_urls,
-        },
       });
+      payment.cancelAmount = updatePaymentsData.cancel_amount;
+      payment.cancelReason = updatePaymentsData.cancel_reason;
+      payment.cancelledAt = updatePaymentsData.cancelled_at;
+      payment.status = updatePaymentsData.status;
+      payment.cancelHistories = updatePaymentsData.cancel_history;
+      payment.cancelReceiptUrls = updatePaymentsData.cancel_receipt_urls;
 
-      await this.prisma.accountHistory.create({
-        data: {
-          withdrawnAmount: updatePaymentsData.cancel_amount,
-          remainingAmount: updatedUser.account,
-          bank: updatePaymentsData.bank_name,
-          accountNumber: updatePaymentsData.vbank_num,
-          transactionType: "WITHDRAW",
-          user: {
-            connect: { id: userId },
-          },
-        },
+      const updatedPayment = await transactionalEntityManager.save(payment);
+
+      const accountHistory = transactionalEntityManager.create(AccountHistoryEntity, {
+        withdrawnAmount: updatePaymentsData.cancel_amount,
+        remainingAmount: updatedUser.account,
+        bank: updatePaymentsData.bank_name,
+        accountNumber: updatePaymentsData.vbank_num,
+        transactionType: TransactionType.WITHDRAW,
+        user: user,
       });
-      return updatePayments;
+      await transactionalEntityManager.save(AccountHistoryEntity, accountHistory);
+
+      return updatedPayment;
     });
-
     return plainToInstance(ResponsePaymentsDto, result);
   }
 }

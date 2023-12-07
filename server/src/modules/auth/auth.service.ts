@@ -1,4 +1,4 @@
-import { Injectable, Res } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { CreateUserDto } from "./dto/createUser.dto";
 import { AuthDto } from "./dto/auth.dto";
 import { JwtService } from "@nestjs/jwt";
@@ -7,17 +7,16 @@ import { plainToInstance } from "class-transformer";
 import * as bcrypt from "bcrypt";
 import { LoginUserDto } from "./dto/loginUser.dto";
 import { ValidateUserDto } from "./dto/validateUser.dto";
-import { PrismaClient } from "@prisma/client";
 import { Repository } from "typeorm";
-import { UserEntity } from "../../entities/user.entity";
+import { UserEntity } from "../../entitys/user.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 
 @Injectable()
 export class AuthService {
   constructor(
     private userService: UserService,
-    private prisma: PrismaClient,
     private jwtService: JwtService,
+
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
   ) {}

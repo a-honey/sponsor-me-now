@@ -6,18 +6,16 @@ import { PostDto } from "./dto/post.dto";
 import { deleteRelativeImage } from "../../utils/deleteRelativeImage";
 import { PostTitlesDto } from "./dto/postTitles.dto";
 import { ResponsePostTitlesDto } from "./dto/ResponsePostTitles.dto";
-import { PostEntity } from "../../entities/post.entity";
+import { PostEntity } from "../../entitys/post.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { In, Repository } from "typeorm";
-import { CommentEntity } from "../../entities/comment.entity";
-import { UserEntity } from "../../entities/user.entity";
-import { PaymentsEntity } from "../../entities/payments.entity";
+import { CommentEntity } from "../../entitys/comment.entity";
+import { UserEntity } from "../../entitys/user.entity";
+import { PaymentsEntity } from "../../entitys/payments.entity";
 
 @Injectable()
 export class PostService {
   constructor(
-    private prisma: PrismaClient,
-
     @InjectRepository(PostEntity)
     private postRepository: Repository<PostEntity>,
 
@@ -129,9 +127,8 @@ export class PostService {
   }
 
   async deletePost(postId: number, userId: number): Promise<PostDto> {
-    const deletedPost = await this.prisma.post.delete({
-      where: { id: postId },
-    });
+    const post = await this.postRepository.findOne({ where: { id: postId } });
+    const deletedPost = await this.postRepository.remove(post);
     if (deletedPost.authorId !== userId) throw new NotFoundException();
     if (deletedPost.postImg) await deleteRelativeImage(deletedPost);
 

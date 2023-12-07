@@ -1,20 +1,19 @@
 import { CreateCommentDto } from "./dto/createComment.dto";
 import { Injectable, NotFoundException } from "@nestjs/common";
-import { PrismaClient } from "@prisma/client";
 import { plainToInstance } from "class-transformer";
 import { CommentDto } from "./dto/comment.dto";
 import { ResponseCommentDto } from "./dto/responseComment.dto";
 import { Repository } from "typeorm";
-import { UserEntity } from "../../entities/user.entity";
-import { CommentEntity } from "../../entities/comment.entity";
+import { UserEntity } from "../../entitys/user.entity";
+import { CommentEntity } from "../../entitys/comment.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 
 @Injectable()
 export class CommentService {
   constructor(
-    private prisma: PrismaClient,
     @InjectRepository(CommentEntity)
     private commentRepository: Repository<CommentEntity>,
+
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
   ) {}
