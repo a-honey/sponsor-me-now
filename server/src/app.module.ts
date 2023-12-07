@@ -41,9 +41,9 @@ import { AccountHistoryEntity } from "./entitys/accountHistory.entity";
         AccountHistoryEntity,
       ],
       synchronize: true,
-      // ssl: {
-      //   rejectUnauthorized: false,
-      // },
+      ssl: {
+        rejectUnauthorized: false,
+      },
     }),
     ServeStaticModule.forRoot({ rootPath: join(__dirname, "..", "public") }),
   ],
