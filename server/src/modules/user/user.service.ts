@@ -3,23 +3,20 @@ import { plainToInstance } from "class-transformer";
 import { UserDto } from "./dto/user.dto";
 import { UpdateUserDataDto } from "./dto/updateUserData.dto";
 import { ValidateUserDto } from "../auth/dto/validateUser.dto";
-import { PrismaClient } from "@prisma/client";
 import path from "path";
 import fs from "fs";
 import { GetUserListDto } from "./dto/getUserList.dto";
 import { ResponseUserListDto } from "./dto/responseUserList.dto";
 import { UpdatedUserDto } from "./dto/updatedUser.dto";
 import { InjectRepository } from "@nestjs/typeorm";
-import { UserEntity } from "../../entities/user.entity";
+import { UserEntity } from "../../entitys/user.entity";
 import { Repository } from "typeorm";
-import { PaymentsEntity } from "../../entities/payments.entity";
-import { PostEntity } from "../../entities/post.entity";
+import { PaymentsEntity } from "../../entitys/payments.entity";
+import { PostEntity } from "../../entitys/post.entity";
 
 @Injectable()
 export class UserService {
   constructor(
-    private prisma: PrismaClient,
-
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
 

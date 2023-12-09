@@ -9,12 +9,12 @@ import { ServeStaticModule } from "@nestjs/serve-static";
 import { PaymentsModule } from "./modules/payments/payments.module";
 import { join } from "path";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { UserEntity } from "./entities/user.entity";
-import { PostEntity } from "./entities/post.entity";
-import { CommentEntity } from "./entities/comment.entity";
-import { LikeEntity } from "./entities/like.entity";
-import { PaymentsEntity } from "./entities/payments.entity";
-import { AccountHistoryEntity } from "./entities/accountHistory.entity";
+import { UserEntity } from "./entitys/user.entity";
+import { PostEntity } from "./entitys/post.entity";
+import { CommentEntity } from "./entitys/comment.entity";
+import { LikeEntity } from "./entitys/like.entity";
+import { PaymentsEntity } from "./entitys/payments.entity";
+import { AccountHistoryEntity } from "./entitys/accountHistory.entity";
 
 @Module({
   imports: [
@@ -41,9 +41,9 @@ import { AccountHistoryEntity } from "./entities/accountHistory.entity";
         AccountHistoryEntity,
       ],
       synchronize: true,
-      ssl: {
-        rejectUnauthorized: false,
-      },
+      // ssl: {
+      //   rejectUnauthorized: false,
+      // },
     }),
     ServeStaticModule.forRoot({ rootPath: join(__dirname, "..", "public") }),
   ],
