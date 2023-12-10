@@ -1,0 +1,46 @@
+config:
+  plugins:
+    publish-metrics:
+      - reportFile: './report.html'
+  target: 'https://showmethemoney.p-e.kr'
+  phases:
+    - duration: 1
+      arrivalRate: 1
+      name: Warm up
+scenarios:
+  - name: User logs in and makes authenticated request
+    flow:
+      - post:
+          url: '/api/auth/login'
+          json:
+            email: 'daechan476@gmail.com'
+            password: '1234'
+          capture:
+            json: '$.token'
+            as: 'authToken'
+      - get:
+          url: '/api/user/list-all'
+          headers:
+            Authorization: 'Bearer {{ authToken }}'
+      - get:
+          url: '/api/user/list?search=random'
+          headers:
+            Authorization: 'Bearer {{ authToken }}'
+      - get:
+          url : '/api/user/list?search=sponsor'
+          headers:
+            Authorization: 'Bearer {{ authToken }}'
+      - get:
+          url : '/api/user/list?search=sponsored'
+          headers:
+            Authorization: 'Bearer {{ authToken }}'
+      - get:
+          url : '/api/user/list?search=allSponsored'
+          headers:
+            Authorization: 'Bearer {{ authToken }}'
+#  - flow:
+#      - get:
+#          url: '/api/study/experience' # 부하테스트 해볼 API 앤드포인트
+
+# artillery run --output test-run-report.json loadtest.yaml
+# artillery report test-run-report.json

@@ -1,5 +1,4 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
-import { PrismaClient } from "@prisma/client";
 import { CreatePostDto } from "./dto/createPost.dto";
 import { plainToInstance } from "class-transformer";
 import { PostDto } from "./dto/post.dto";

@@ -26,9 +26,6 @@ import { LoggingInterceptor } from "../../interceptors/logging.interceptor";
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  private isValidPassword(submitUserDto: SubmitUserDataDto): boolean {
-    return submitUserDto.password === submitUserDto.passwordConfirm;
-  }
   @Post()
   @ApiOperation({
     summary: "회원가입",
@@ -37,7 +34,7 @@ export class AuthController {
   @ApiResponse({ status: 201, type: ResponseCreateUserDto })
   @UsePipes(new ValidationPipe())
   async createUser(@Body() submitUserDto: SubmitUserDataDto): Promise<AuthDto> {
-    if (!this.isValidPassword(submitUserDto)) {
+    if (!this.authService.isValidPassword(submitUserDto)) {
       throw new HttpException("Passwords do not match", 400);
     }
     const { passwordConfirm: _passwordConfirm, ...createUserDto } = submitUserDto;

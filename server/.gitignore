@@ -12,3 +12,5 @@
 /public/images/
 ../.idea
 dist
+test-run-report.json
+test-run-report.json.html

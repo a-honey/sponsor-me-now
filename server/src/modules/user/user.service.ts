@@ -70,9 +70,9 @@ export class UserService {
 
   async getRandomUsers(userId: number): Promise<GetUserListDto[]> {
     const users = await this.userRepository
-      .createQueryBuilder("UserEntity")
+      .createQueryBuilder("User")
       .where("UserEntity.id != :id", { id: userId })
-      .andWhere("user.isSponsor = :isSponsor", { isSponsor: false })
+      .andWhere("User.isSponsor = :isSponsor", { isSponsor: false })
       .orderBy("RANDOM()")
       .limit(7)
       .getMany();

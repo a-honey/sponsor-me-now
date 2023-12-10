@@ -10,6 +10,7 @@ import { ValidateUserDto } from "./dto/validateUser.dto";
 import { Repository } from "typeorm";
 import { User } from "../../entitys/user";
 import { InjectRepository } from "@nestjs/typeorm";
+import { SubmitUserDataDto } from "./dto/submitUserData.dto";
 
 @Injectable()
 export class AuthService {
@@ -20,6 +21,10 @@ export class AuthService {
     @InjectRepository(User)
     private userRepository: Repository<User>,
   ) {}
+
+  isValidPassword(submitUserDto: SubmitUserDataDto): boolean {
+    return submitUserDto.password === submitUserDto.passwordConfirm;
+  }
 
   async createUser(createUserDto: CreateUserDto): Promise<AuthDto> {
     createUserDto.password = await bcrypt.hash(createUserDto.password, 10);
