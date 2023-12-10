@@ -34,9 +34,9 @@ import { AccountHistory } from "./entitys/accountHistory";
       database: process.env.DB_NAME,
       entities: [User, Post, Comment, Like, Payments, AccountHistory],
       synchronize: true,
-      // ssl: {
-      //   rejectUnauthorized: false,
-      // },
+      ssl: {
+        rejectUnauthorized: false,
+      },
     }),
     ServeStaticModule.forRoot({ rootPath: join(__dirname, "..", "public") }),
   ],
