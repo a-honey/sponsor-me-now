@@ -8,6 +8,9 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { User } from "../../entitys/user";
 import { Payments } from "../../entitys/payments";
 import { Post } from "../../entitys/post";
+import * as dotenv from "dotenv";
+
+dotenv.config();
 
 @Module({
   imports: [

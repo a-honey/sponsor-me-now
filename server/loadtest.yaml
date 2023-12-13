@@ -2,19 +2,20 @@ config:
   plugins:
     publish-metrics:
       - reportFile: './report.html'
-  target: 'https://showmethemoney.p-e.kr'
+#  target: 'https://showmethemoney.p-e.kr'
+  target: 'http://localhost:3000'
   phases:
-    - duration: 1
-      arrivalRate: 1
+    - duration: 60 # 몇초간
+      arrivalRate: 50 # 초당 생성할 가상 유저
       name: Warm up
-scenarios:
+scenarios: # 각 가상 유저가 실행할 작업(밀도)
   - name: User logs in and makes authenticated request
     flow:
       - post:
           url: '/api/auth/login'
           json:
-            email: 'daechan476@gmail.com'
-            password: '1234'
+            email: "daechan476@gmail.com"
+            password: "1234"
           capture:
             json: '$.token'
             as: 'authToken'
@@ -38,9 +39,6 @@ scenarios:
           url : '/api/user/list?search=allSponsored'
           headers:
             Authorization: 'Bearer {{ authToken }}'
-#  - flow:
-#      - get:
-#          url: '/api/study/experience' # 부하테스트 해볼 API 앤드포인트
 
 # artillery run --output test-run-report.json loadtest.yaml
 # artillery report test-run-report.json

@@ -15,6 +15,9 @@ import { Comment } from "./entitys/comment";
 import { Like } from "./entitys/like";
 import { Payments } from "./entitys/payments";
 import { AccountHistory } from "./entitys/accountHistory";
+import * as dotenv from "dotenv";
+
+dotenv.config();
 
 @Module({
   imports: [
@@ -30,7 +33,7 @@ import { AccountHistory } from "./entitys/accountHistory";
       host: process.env.DB_HOST,
       port: Number(process.env.DB_PORT),
       username: process.env.DB_USER_NAME,
-      password: process.env.DB_PASSWORD,
+      password: String(process.env.DB_PASSWORD),
       database: process.env.DB_NAME,
       entities: [User, Post, Comment, Like, Payments, AccountHistory],
       synchronize: true,

@@ -19,12 +19,12 @@ async function bootstrap(): Promise<void> {
 
   app.enableCors();
   app.use(helmet.default());
-  app.use(
-    rateLimit.default({
-      windowMs: 15 * 60 * 1000,
-      limit: 1000,
-    }),
-  );
+  // app.use(
+  //   rateLimit.default({
+  //     windowMs: 15 * 60 * 1000,
+  //     limit: 1000,
+  //   }),
+  // );
 
   const config: Omit<OpenAPIObject, "paths"> = new DocumentBuilder()
     .setTitle("Sponsor me now API")

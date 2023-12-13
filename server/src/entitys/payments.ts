@@ -5,6 +5,7 @@ import {
   ManyToOne,
   JoinColumn,
   DeleteDateColumn,
+  Index,
 } from "typeorm";
 import { User } from "./user";
 
@@ -14,9 +15,11 @@ export class Payments {
   id: number;
 
   @Column()
+  @Index()
   buyerId: number;
 
   @Column()
+  @Index()
   sellerId: number;
 
   @Column()

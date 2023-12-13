@@ -6,6 +6,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
+  Index,
 } from "typeorm";
 import { Post } from "./post";
 import { Comment } from "./comment";
@@ -49,12 +50,14 @@ export class User {
   description: string;
 
   @Column({ default: true })
+  @Index()
   isSponsor: boolean;
 
   @Column({ default: false })
   manager: boolean;
 
   @CreateDateColumn()
+  @Index()
   createdAt: Date;
 
   @UpdateDateColumn()

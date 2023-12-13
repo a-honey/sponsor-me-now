@@ -27,23 +27,33 @@ export class UserService {
     private postRepository: Repository<Post>,
   ) {}
 
+  generateRandomIds(totalUsers: number, excludeId: number) {
+    const randomIds = new Set<number>();
+    while (randomIds.size < 7) {
+      const randomId = Math.floor(Math.random() * totalUsers) + 1;
+      if (randomId !== excludeId) {
+        randomIds.add(randomId);
+      }
+    }
+    return Array.from(randomIds);
+  }
+
   async getUserByEmail(email: string): Promise<ValidateUserDto | null> {
     const user = await this.userRepository.findOne({ where: { email } });
     if (!user) {
-      throw new NotFoundException("UserEntity not found");
+      throw new NotFoundException("User not found");
     }
     return plainToInstance(ValidateUserDto, user);
   }
 
   async editUser(userId: number, updateUserDto: UpdateUserDataDto): Promise<UpdatedUserDto> {
-    let user = await this.userRepository.findOne({
-      where: { id: userId },
-    });
-    if (!user) throw new NotFoundException("User not found");
+    const updateResult = await this.userRepository.update(userId, updateUserDto);
 
-    user = this.userRepository.merge(user, updateUserDto);
+    if (updateResult.affected === 0) {
+      throw new NotFoundException("User not found");
+    }
 
-    const updatedUser = await this.userRepository.save(user);
+    const updatedUser = await this.userRepository.findOne({ where: { id: userId } });
 
     return plainToInstance(UpdatedUserDto, updatedUser);
   }
@@ -69,13 +79,14 @@ export class UserService {
   }
 
   async getRandomUsers(userId: number): Promise<GetUserListDto[]> {
+    const totalUsers = await this.userRepository.count({ where: { isSponsor: false } });
+    const randomIds = this.generateRandomIds(totalUsers, userId);
     const users = await this.userRepository
       .createQueryBuilder("User")
-      .where("UserEntity.id != :id", { id: userId })
+      .where("User.id IN (:...ids)", { ids: randomIds })
       .andWhere("User.isSponsor = :isSponsor", { isSponsor: false })
-      .orderBy("RANDOM()")
-      .limit(7)
       .getMany();
+
     return users.map((user) => plainToInstance(GetUserListDto, user));
   }
 
@@ -108,11 +119,9 @@ export class UserService {
       },
       relations: ["seller"],
     });
-
     const users = Array.from(new Set(sponsorships.map((sponsorship) => sponsorship.seller)));
 
     const totalPage: number = Math.ceil(totalCount / limit);
-
     const userList: UserDto[] = users.map((user) => plainToInstance(UserDto, user));
     return { users: userList, totalPage, currentPage: page };
   }
