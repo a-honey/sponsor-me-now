@@ -4,8 +4,8 @@ import { plainToInstance } from "class-transformer";
 import { CommentDto } from "./dto/comment.dto";
 import { ResponseCommentDto } from "./dto/responseComment.dto";
 import { Repository } from "typeorm";
-import { User } from "../../entitys/user";
-import { Comment } from "../../entitys/comment";
+import { User } from "../../entities/User";
+import { Comment } from "../../entities/Comment";
 import { InjectRepository } from "@nestjs/typeorm";
 
 @Injectable()

@@ -7,9 +7,9 @@ import { UserDto } from "../user/dto/user.dto";
 import { PaymentsListDto } from "./dto/paymentsList.dto";
 import { PaymentsDto } from "./dto/payments.dto";
 import { InjectEntityManager, InjectRepository } from "@nestjs/typeorm";
-import { User } from "../../entitys/user";
-import { Payments } from "src/entitys/payments";
-import { AccountHistory, TransactionType } from "../../entitys/accountHistory";
+import { User } from "../../entities/User";
+import { Payments } from "src/entities/Payments";
+import { AccountHistory, TransactionType } from "../../entities/AccountHistory";
 import { EntityManager, Repository } from "typeorm";
 
 @Injectable()

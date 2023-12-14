@@ -6,7 +6,26 @@
 
 <img src="https://github.com/a-honey/sponsor-me-now/assets/75254185/8b860bf9-191b-462f-990e-cdfa5b9beb03" width={200} />
 
-## **주요 기능 및 특징**
+<br />
+<br />
+
+## | System Architecture
+![server-architecture drawio](https://github.com/daechan-jo/sponsor-me-now/assets/103374153/ba978a00-5415-4572-8134-cb5bcd71f082)
+
+
+<br />
+<br />
+
+## | ERD
+![erd](https://github.com/daechan-jo/sponsor-me-now/assets/103374153/332c3b58-c410-4b28-a974-406f57d75f7a)
+
+<br />
+<br />
+
+## | Payment Sequence Diagram
+![payments-save drawio](https://github.com/daechan-jo/sponsor-me-now/assets/103374153/b468602e-9357-4d6c-ac74-d01375ed95c8)
+
+## **| 주요 기능 및 특징**
 
 ### **1. 사용자 등록 및 프로필 관리 기능**
 
@@ -24,11 +43,13 @@
 
 자신의 페이지를 홍보하기 위해 공유하기 기능을 통해 손쉽게 SNS 프로필 등에 자신의 후원 페이지를 설정할 수 있습니다. 이를 통해 더 많은 후원자들을 유입시킬 수 있습니다.
 
-## **프로젝트 기간**
+<br />
+
+## **| 프로젝트 기간**
 
 - 2023.11.08 ~ 2023.12.10
 
-## **프로젝트 WIKI**
+## **| 프로젝트 WIKI**
 
 - 협업규칙
 - ERD
@@ -37,7 +58,9 @@
 
 [바로가기](https://github.com/a-honey/sponsor-me-now/wiki)
 
-## **기술 스택 및 도구**
+<br />
+
+## **| 기술 스택 및 도구**
 
 ### 프론트엔드
 
@@ -61,26 +84,24 @@
 
 ![Nest.js](https://img.shields.io/badge/Nest.js-E0234E?style=for-the-badge&logo=nestjs&logoColor=ffffff)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=ffffff)
-![TypeORM](https://img.shields.io/badge/TypeORM-2D3748?style=for-the-badge&logo=typeORM&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=PostgreSQL&logoColor=white)
+![TypeORM](https://img.shields.io/badge/TypeORM-2D3748?style=for-the-badge&logo=typeORM&logoColor=white)
 ![Swagger](https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=000000)
 ![iamport](https://img.shields.io/badge/iamport-00AEEF?style=for-the-badge)
 ![Multer](https://img.shields.io/badge/Multer-FFD700?style=for-the-badge)
 
 - **Nest.js**: 데코레이터와 강력한 추상화로 API 엔드포인트를 정의하고 관리하는 데 용이하며, 모듈 구조와 의존성 주입(DI)을 통해 효율적인 서버 개발을 지원하기 위해 사용되었습니다.
 - **TypeScript**: 정적 타입 언어로, 프로젝트의 안정성과 개발 생산성을 향상시키기 위해 사용되었습니다.
-- **Prisma**: 데이터베이스 쿼리 및 데이터 모델링을 위한 도구로, 간단한 문법으로 통한 데이터베이스와의 상호작용을 위해 사용되었습니다.
+- **TypeORM**: 타입스크립트를 위한 ORM라이브러리로 OOP를 지향하므로 개체 간의 관계를 쉽게 설정할 수 있기에 사용되었습니다.
 - **Swagger**: 프로젝트의 API 엔드포인트 및 스펙을 문서화하는 API 문서 생성 도구로 사용되었습니다.
 - **iamport**: 결제 관련 서비스로, 온라인 결제 시스템을 쉽게 구축하고 관리하기 위해 사용되었습니다.
-- **Multer**: 파일 업로드를 처리하기 위한 라이브러리로 사용되었습니다.
 
-### 기획 및 배포
 
-![Amazon EC2](https://img.shields.io/badge/Amazon_EC2-232F3E?style=for-the-badge&logo=amazonEC2&logoColor=white)
-![Amazon RDS](https://img.shields.io/badge/Amazon_RDS-527FFF?style=for-the-badge&logo=AmazonRDS&logoColor=white)
-![Nginx](https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=nginx&logoColor=ffffff)
 
-## **프로젝트 팀원 및 역할 분담**
+<br />
+<br />
+
+## **| 프로젝트 팀원 및 역할 분담**
 
 |  이름  |     역할     |
 | :----: | :----------: |

@@ -5,12 +5,12 @@ import { PostDto } from "./dto/post.dto";
 import { deleteRelativeImage } from "../../utils/deleteRelativeImage";
 import { PostTitlesDto } from "./dto/postTitles.dto";
 import { ResponsePostTitlesDto } from "./dto/ResponsePostTitles.dto";
-import { Post } from "../../entitys/post";
+import { Post } from "../../entities/Post";
 import { InjectRepository } from "@nestjs/typeorm";
 import { In, Repository } from "typeorm";
-import { Comment } from "../../entitys/comment";
-import { User } from "../../entitys/user";
-import { Payments } from "../../entitys/payments";
+import { Comment } from "../../entities/Comment";
+import { User } from "../../entities/User";
+import { Payments } from "../../entities/Payments";
 
 @Injectable()
 export class PostService {

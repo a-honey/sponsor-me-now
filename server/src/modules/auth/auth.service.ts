@@ -8,7 +8,7 @@ import * as bcrypt from "bcrypt";
 import { LoginUserDto } from "./dto/loginUser.dto";
 import { ValidateUserDto } from "./dto/validateUser.dto";
 import { Repository } from "typeorm";
-import { User } from "../../entitys/user";
+import { User } from "../../entities/User";
 import { InjectRepository } from "@nestjs/typeorm";
 import { SubmitUserDataDto } from "./dto/submitUserData.dto";
 

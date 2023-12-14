@@ -9,9 +9,9 @@ import {
   OneToMany,
   Unique,
 } from "typeorm";
-import { User } from "./user";
-import { Comment } from "./comment";
-import { Like } from "./like";
+import { User } from "./User";
+import { Comment } from "./Comment";
+import { Like } from "./Like";
 
 @Entity("Post")
 @Unique(["id", "authorId"])

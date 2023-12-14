@@ -7,10 +7,10 @@ import { CommentController } from "./comment.controller";
 import { CommentService } from "./comment.service";
 import { PostService } from "../post/post.service";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { Post } from "../../entitys/post";
-import { Comment } from "../../entitys/comment";
-import { User } from "../../entitys/user";
-import { Payments } from "../../entitys/payments";
+import { Post } from "../../entities/Post";
+import { Comment } from "../../entities/Comment";
+import { User } from "../../entities/User";
+import { Payments } from "../../entities/Payments";
 
 @Module({
   imports: [

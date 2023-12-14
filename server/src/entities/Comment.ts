@@ -10,8 +10,8 @@ import {
   Unique,
   Index,
 } from "typeorm";
-import { User } from "./user";
-import { Post } from "./post";
+import { User } from "./User";
+import { Post } from "./Post";
 
 @Entity("Comment")
 @Unique(["id", "authorId"])

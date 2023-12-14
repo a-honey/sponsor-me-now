@@ -7,7 +7,7 @@ import {
   DeleteDateColumn,
   Index,
 } from "typeorm";
-import { User } from "./user";
+import { User } from "./User";
 
 @Entity("Payment")
 export class Payments {

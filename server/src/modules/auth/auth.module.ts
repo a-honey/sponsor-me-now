@@ -5,9 +5,9 @@ import { LocalStrategy } from "../../passport/local.strategy";
 import { UserService } from "../user/user.service";
 import { JwtModule } from "@nestjs/jwt";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { User } from "../../entitys/user";
-import { Payments } from "../../entitys/payments";
-import { Post } from "../../entitys/post";
+import { User } from "../../entities/User";
+import { Payments } from "../../entities/Payments";
+import { Post } from "../../entities/Post";
 import * as dotenv from "dotenv";
 
 dotenv.config();

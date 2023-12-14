@@ -8,11 +8,11 @@ import {
   DeleteDateColumn,
   Index,
 } from "typeorm";
-import { Post } from "./post";
-import { Comment } from "./comment";
-import { Like } from "./like";
-import { Payments } from "./payments";
-import { AccountHistory } from "./accountHistory";
+import { Post } from "./Post";
+import { Comment } from "./Comment";
+import { Like } from "./Like";
+import { Payments } from "./Payments";
+import { AccountHistory } from "./AccountHistory";
 
 @Entity("User")
 export class User {

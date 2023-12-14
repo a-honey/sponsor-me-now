@@ -7,9 +7,9 @@ import { JwtModule } from "@nestjs/jwt";
 import { JwtStrategy } from "../../passport/jwt.strategy";
 import { AuthService } from "../auth/auth.service";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { User } from "../../entitys/user";
-import { Payments } from "../../entitys/payments";
-import { Post } from "../../entitys/post";
+import { User } from "../../entities/User";
+import { Payments } from "../../entities/Payments";
+import { Post } from "../../entities/Post";
 
 @Module({
   imports: [

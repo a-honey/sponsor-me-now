@@ -9,10 +9,10 @@ import { GetUserListDto } from "./dto/getUserList.dto";
 import { ResponseUserListDto } from "./dto/responseUserList.dto";
 import { UpdatedUserDto } from "./dto/updatedUser.dto";
 import { InjectRepository } from "@nestjs/typeorm";
-import { User } from "../../entitys/user";
+import { User } from "../../entities/User";
 import { Repository } from "typeorm";
-import { Payments } from "../../entitys/payments";
-import { Post } from "../../entitys/post";
+import { Payments } from "../../entities/Payments";
+import { Post } from "../../entities/Post";
 
 @Injectable()
 export class UserService {

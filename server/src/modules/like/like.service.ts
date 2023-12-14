@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { plainToInstance } from "class-transformer";
 import { LikeDto } from "./dto/like.dto";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Like } from "src/entitys/like";
+import { Like } from "src/entities/Like";
 import { Repository } from "typeorm";
 
 @Injectable()

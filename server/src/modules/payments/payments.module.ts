@@ -8,10 +8,10 @@ import { PaymentsService } from "./payments.service";
 import { AuthService } from "../auth/auth.service";
 import { UserService } from "../user/user.service";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { Payments } from "../../entitys/payments";
-import { User } from "../../entitys/user";
-import { AccountHistory } from "../../entitys/accountHistory";
-import { Post } from "../../entitys/post";
+import { Payments } from "../../entities/Payments";
+import { User } from "../../entities/User";
+import { AccountHistory } from "../../entities/AccountHistory";
+import { Post } from "../../entities/Post";
 
 @Module({
   imports: [
